@@ -32,3 +32,8 @@ run
 *.iml
 *.db
 .idea
+.gradle/2.8
+.gradle/2.9
+.gradle/gradle.log
+.gradle/minecraft/
+src/test/

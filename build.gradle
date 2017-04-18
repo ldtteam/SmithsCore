@@ -68,15 +68,12 @@ configurations {
 version = config.minecraft_version.toString() + "-" + config.mod_version.toString() + "-" + System.getenv().TRAVIS_BUILD_NUMBER.toString()
 def apiversion = config.minecraft_version.toString() + "-" + config.api_version.toString() + "-" + System.getenv().TRAVIS_BUILD_NUMBER.toString()
 
-if(System.getenv().TRAVIS_BRANCH.toString().contains("Development"))
+def release = System.getenv().RELEASETYPE
+
+if(release != "release")
 {
     version = version + "-SNAPSHOT"
     apiversion = apiversion + "-SNAPSHOT"
-}
-if(System.getenv().TRAVIS_BRANCH.toString().toLowerCase().contains("master") && config.build_mode.toString().trim().equals("RELEASE"))
-{
-	version = version + "-RC"
-    apiversion = apiversion + "-RC"
 }
 
 group = "com.smithsmodding.smithscore"
@@ -107,10 +104,15 @@ dependencies {
 sourceSets {
     main {
         java { 
-            srcDir 'src' 
+            srcDir 'src/main'
         }
         resources {
-            srcDir 'resources'
+            srcDir 'src/resources'
+        }
+    }
+    test {
+        java {
+            srcDir 'src/test'
         }
     }
 }
@@ -158,60 +160,23 @@ artifacts {
     archives javadocJar
 }
 
-task makeChangelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-    filePath = "changelog.html"
-    untaggedName = "Current release ${project.version}"
-    templateContent = """
-Alpha version, still buggy. Do not create a world you care about with this version, it can and will break things severely.<br/>
-Please help the project by trying it out and <a href="https://github.com/SmithsModding/SmithsCore/issues">reporting issues here.</a><br/>
-{{#tags}}
-  <h3>{{name}}</h3>
-  <ul>
-    {{#commits}}
-    <li>{{{message}}} - {{authorName}}</li>
-    {{/commits}}
-  </ul>
-{{/tags}}
-"""
-}
-
 curseforge {
-    if (System.getenv().CURSEAPIKEY != null)
+    if (System.getenv().CURSEAPIKEY != null || System.getenv().CURSERELEASETYPE != null)
     {
-        if (!build_mode.toString().trim().equals("SYNC"))
-        {
-            if ((build_mode.toString().trim().equals("DEBUG") && System.getenv().TRAVIS_BRANCH.toString().contains("Development")) || ((build_mode.toString().trim().equals("RELEASE") && !System.getenv().TRAVIS_BRANCH.toString().contains("Development"))))
-            {
-                apiKey = System.getenv().CURSEAPIKEY
+        apiKey = System.getenv().CURSEAPIKEY
 
-                project {
-                    id = '246525'
-                    changelog = file('changelog.html')
-                    changelogType = 'html'
+        project {
+            id = '246525'
 
-                    if (System.getenv().TRAVIS_BRANCH.toString().contains("Development")) {
-                        releaseType = "alpha"
-                    } else {
-                        releaseType = "beta"
-                    }
+            releaseType = release
 
-                    addArtifact devJar
-                    addArtifact javadocJar
-                }
-            }
-            else
-            {
-                logger.lifecycle("Cannor run the CurseUpload sequence. Curse upload is only done on the Development-Branch when in Debug mode, or on any other branch in Release mode. Current Branch: " + System.getenv().TRAVIS_BRANCH.toString() + " - Current build mode: " + build_mode.toString())
-            }
-        }
-        else
-        {
-            logger.lifecycle("Cannot run CurseUpload sequence. We are currently synchronising to Computers.")
+            addArtifact devJar
+            addArtifact javadocJar
         }
     }
     else
     {
-        logger.lifecycle("Cannot run the CurseUpload sequence. No API-Key was available.")
+        logger.lifecycle("Cannot run the CurseUpload sequence. No API-Key or release type has been provided.")
     }
 }
 
@@ -219,13 +184,13 @@ curseforge {
 uploadArchives {
     repositories.mavenDeployer {
         configuration = configurations.deployerJars
-        if (System.getenv().TRAVIS_BRANCH.toString().contains("Development")) {
+        if (release != "release") {
             snapshotRepository(url: "ftp://mavenrepo.smithscore.orionminecraft.com") {
-                authentication(userName: "mavenrepo.smithscore.orionminecraft.com|" + System.getenv().FTPUserName.toString(), password: System.getenv().FTPPassword.toString())
+                authentication(userName: "mavenrepo.smithscore.orionminecraft.com|" + System.getenv().FTPUSERNAME.toString(), password: System.getenv().FTPPASSWORD.toString())
             }
         } else {
             repository(url: "ftp://mavenrepo.smithscore.orionminecraft.com") {
-                authentication(userName: "mavenrepo.smithscore.orionminecraft.com|" + System.getenv().FTPUserName.toString(), password: System.getenv().FTPPassword.toString())
+                authentication(userName: "mavenrepo.smithscore.orionminecraft.com|" + System.getenv().FTPUSERNAME.toString(), password: System.getenv().FTPPASSWORD.toString())
             }
         }
 
@@ -264,60 +229,5 @@ uploadArchives {
         }
 
     }
-}
-
-
-task checkOutLocalMinecraftBranch(type: Exec) {
-    commandLine "git", "checkout", "-b", "Minecraft-" + config.minecraft_version.toString()
-}
-
-task gitSetEmail(type: Exec) {
-    commandLine "git", "config", "user.email", "smithsmodding-travis@outlook.com"
-}
-
-task gitSetName(type: Exec) {
-    commandLine "git", "config", "user.name", "Travic CI For Smithsmodding"
-}
-
-task configRemoteGit(type: Exec) {
-    commandLine "git", "config", "remote.origin.url", "https://" + System.getenv().GitUsername.toString() + ":" + System.getenv().GitPassword.toString() + "@github.com/SmithsGaming/SmithsCore"
-}
-
-task createVersionTag(type: Exec) {
-    commandLine "git", "tag", "-a", version, "-m", "'Autobuild by Travis CI. Build on: " + getDate() + ".'"
-}
-
-task pushGitChanges(type: Exec) {
-    commandLine "git", "push", "origin", "-f", "Minecraft-" + config.minecraft_version.toString(), "--quiet"
-}
-
-task pushGitTags(type: Exec) {
-    commandLine "git", "push", "--tags", "--quiet"
-}
-
-gitSetEmail.mustRunAfter checkOutLocalMinecraftBranch
-gitSetName.mustRunAfter gitSetEmail
-configRemoteGit.mustRunAfter gitSetName
-createVersionTag.mustRunAfter configRemoteGit
-pushGitChanges.mustRunAfter createVersionTag
-pushGitTags.mustRunAfter pushGitChanges
-
-task createGithubBranches() {
-    if ((System.getenv().TRAVIS_BRANCH.toString().contains("Development")) && (build_mode.toString().trim().equals("RELEASE"))) {
-        logger.lifecycle("Configuring upload to git.")
-        dependsOn checkOutLocalMinecraftBranch, gitSetName, gitSetEmail, configRemoteGit, pushGitChanges
-        logger.lifecycle("Configuration complete. Current MC Version: " + config.minecraft_version.toString() + ". Branch name: Minecraft-" + config.minecraft_version.toString() + ".")
-    } else if ((System.getenv().TRAVIS_BRANCH.toString().contains("Minecraft")) && (build_mode.toString().trim().equals("RELEASE"))) {
-        logger.lifecycle("Configuring version marking on git.")
-        dependsOn gitSetName, gitSetEmail, configRemoteGit, createVersionTag, pushGitTags
-        logger.lifecycle("Configuration complete. Current MC Version: " + config.minecraft_version.toString() + ". Branch name: Minecraft-" + config.minecraft_version.toString() + ".")
-    } else {
-        logger.lifecycle("The sync of the branches is not being executed, because we are not releasing a new version.")
-    }
-}
-
-//The external task that executes the uploadAtchives function.
-task('uploadJars', dependsOn: uploadArchives) {
-    description = "uploads JARs"
 }
 
