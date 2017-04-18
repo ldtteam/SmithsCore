@@ -65,8 +65,8 @@ configurations {
 }
 
 //Initializing the mod environment
-version = config.minecraft_version.toString() + "-" + config.mod_version.toString() + "-" + System.getenv().TRAVIS_BUILD_NUMBER.toString()
-def apiversion = config.minecraft_version.toString() + "-" + config.api_version.toString() + "-" + System.getenv().TRAVIS_BUILD_NUMBER.toString()
+version = config.minecraft_version.toString() + "-" + config.mod_version.toString() + "-" + System.getenv().BUILDID.toString()
+def apiversion = config.minecraft_version.toString() + "-" + config.api_version.toString() + "-" + System.getenv().BUILDID.toString()
 
 def release = System.getenv().RELEASETYPE
 
