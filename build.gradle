@@ -36,9 +36,6 @@ apply plugin: 'java'
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
 //Buildscript: SmithsCore
 // Load the properties of this project.
 ext.configFile = file "build.properties"
@@ -50,19 +47,8 @@ configFile.withReader {
     project.ext.config = new ConfigSlurper().parse prop
 }
 
-//Date formatting helper function
-def getDate() {
-    def date = new Date()
-    def formattedDate = date.format('dd-MM-yyyy : hh:mm:ss')
-    return formattedDate
-}
-
-def build_mode = config.build_mode
-
-//These configurations are needed for uploading to a MavenRepo:
-configurations {
-    deployerJars
-}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 //Initializing the mod environment
 version = config.minecraft_version.toString() + "-" + config.mod_version.toString() + "-" + System.getenv().BUILDID.toString()
@@ -97,8 +83,12 @@ dependencies {
 	//Mod dependencies
     deobfCompile "mezz.jei:jei_" + config.minecraft_version + ":" + config.jei_version
 
-    //Maven uploader
-    deployerJars 'org.apache.maven.wagon:wagon-ftp:2.8'
+    //Test dependencies
+    testCompile 'junit:junit:4.11'
+    testCompile "org.mockito:mockito-core:1.+"
+    testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: '1.6.5'
+    testCompile group: 'org.powermock', name: 'powermock-api-mockito', version: '1.6.5'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
 }
 
 sourceSets {
@@ -177,57 +167,6 @@ curseforge {
     else
     {
         logger.lifecycle("Cannot run the CurseUpload sequence. No API-Key or release type has been provided.")
-    }
-}
-
-//Function to upload completed project to the maven repo.
-uploadArchives {
-    repositories.mavenDeployer {
-        configuration = configurations.deployerJars
-        if (release != "release") {
-            snapshotRepository(url: "ftp://mavenrepo.smithscore.orionminecraft.com") {
-                authentication(userName: "mavenrepo.smithscore.orionminecraft.com|" + System.getenv().FTPUSERNAME.toString(), password: System.getenv().FTPPASSWORD.toString())
-            }
-        } else {
-            repository(url: "ftp://mavenrepo.smithscore.orionminecraft.com") {
-                authentication(userName: "mavenrepo.smithscore.orionminecraft.com|" + System.getenv().FTPUSERNAME.toString(), password: System.getenv().FTPPASSWORD.toString())
-            }
-        }
-
-        pom {
-            groupId = project.group
-            version = project.version
-            artifactId = project.archivesBaseName
-        }
-
-        pom.project {
-            name project.archivesBaseName
-            packaging 'jar'
-            description 'smithscore'
-            url 'https://github.com/smithsmodding/smithscore'
-
-            scm {
-                url 'https://github.com/smithsmodding/smithscore'
-                connection 'scm:git:git://github.com/smithsmodding/smithscore.git'
-                developerConnection 'scm:git:git@github.com/smithsmodding/smithscore.git'
-            }
-
-            issueManagement {
-                system 'github'
-                url 'https://github.com/smithsmodding/smithscore/issues'
-            }
-
-            developers {
-                developer {
-                    id 'OrionDevelopment'
-                    name 'Orion'
-                    roles {
-                        role 'developer'
-                    }
-                }
-            }
-        }
-
     }
 }
 
