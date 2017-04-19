@@ -12,13 +12,21 @@ import javax.annotation.Nonnull;
 /**
  * Author Orion (Created on: 23.06.2016)
  */
-public class TileEntityDataUpdatedEventHandler {
+public class TileEntityDataUpdatedEventHandler
+{
 
     @SubscribeEvent
-    public void onDataUpdated(@Nonnull TileEntityDataUpdatedEvent event) {
-        TileEntity tileEntity = FMLClientHandler.instance().getClientPlayerEntity().getEntityWorld().getTileEntity(new BlockPos(event.getDataCompound().getInteger("x"), event.getDataCompound().getInteger("y"), event.getDataCompound().getInteger("z")));
+    public void onDataUpdated(@Nonnull TileEntityDataUpdatedEvent event)
+    {
+        TileEntity tileEntity = FMLClientHandler.instance()
+                                  .getClientPlayerEntity()
+                                  .getEntityWorld()
+                                  .getTileEntity(new BlockPos(event.getDataCompound().getInteger("x"),
+                                                               event.getDataCompound().getInteger("y"),
+                                                               event.getDataCompound().getInteger("z")));
 
-        if (tileEntity == null || !(tileEntity instanceof TileEntitySmithsCore)) {
+        if (tileEntity == null || !(tileEntity instanceof TileEntitySmithsCore))
+        {
             return;
         }
 

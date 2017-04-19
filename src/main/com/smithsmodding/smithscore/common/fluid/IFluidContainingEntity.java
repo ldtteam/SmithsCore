@@ -8,9 +8,11 @@ import javax.annotation.Nullable;
 /**
  * Created by Marc on 20.12.2015.
  */
-public interface IFluidContainingEntity {
+public interface IFluidContainingEntity
+{
 
-    default boolean requiresNBTStorage(EnumFacing side) {
+    default boolean requiresNBTStorage(EnumFacing side)
+    {
         return true;
     }
 

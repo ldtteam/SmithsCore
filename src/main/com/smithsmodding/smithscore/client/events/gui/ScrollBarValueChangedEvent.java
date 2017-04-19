@@ -7,22 +7,23 @@ import javax.annotation.Nonnull;
 /**
  * Created by Marc on 10.02.2016.
  */
-public class ScrollBarValueChangedEvent extends GuiInputEvent {
+public class ScrollBarValueChangedEvent extends GuiInputEvent
+{
 
     int maximum;
     int minimum;
 
-    public ScrollBarValueChangedEvent (@Nonnull String componentID, @Nonnull float value, @Nonnull int maximum, @Nonnull int minimum) {
+    public ScrollBarValueChangedEvent(@Nonnull String componentID, @Nonnull float value, @Nonnull int maximum, @Nonnull int minimum)
+    {
         super(InputTypes.SCROLLED, componentID, String.valueOf(value));
 
         this.maximum = maximum;
         this.minimum = minimum;
-
     }
 
-    public ScrollBarValueChangedEvent () {
+    public ScrollBarValueChangedEvent()
+    {
     }
-
 
     /**
      * Function used by the instance created on the receiving side to reset its state from the sending side stored by it
@@ -31,7 +32,8 @@ public class ScrollBarValueChangedEvent extends GuiInputEvent {
      * @param pMessageBuffer The ByteBuffer from the IMessage used to Synchronize the implementing events.
      */
     @Override
-    public void readFromMessageBuffer (@Nonnull ByteBuf pMessageBuffer) {
+    public void readFromMessageBuffer(@Nonnull ByteBuf pMessageBuffer)
+    {
         super.readFromMessageBuffer(pMessageBuffer);
 
         this.maximum = pMessageBuffer.readInt();
@@ -45,7 +47,8 @@ public class ScrollBarValueChangedEvent extends GuiInputEvent {
      * @param pMessageBuffer The buffer from the IMessage
      */
     @Override
-    public void writeToMessageBuffer (@Nonnull ByteBuf pMessageBuffer) {
+    public void writeToMessageBuffer(@Nonnull ByteBuf pMessageBuffer)
+    {
         super.writeToMessageBuffer(pMessageBuffer);
 
         pMessageBuffer.writeInt(maximum);

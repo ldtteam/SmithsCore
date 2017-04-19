@@ -13,7 +13,7 @@ import java.util.UUID;
  * Created by Orion
  * Created on 01.12.2015
  * 18:09
- *
+ * <p>
  * Copyrighted according to Project specific license
  */
 public interface IGUIManager
@@ -38,7 +38,6 @@ public interface IGUIManager
      * Method used by components that support overriding tooltips to grab the new tooltip string.
      *
      * @param component The component requesting the override.
-     *
      * @return A string displayed as tooltip for the IGUIComponent during rendering.
      */
     @Nullable
@@ -48,46 +47,42 @@ public interface IGUIManager
      * Method to get the value for a progressbar. RAnged between 0 and 1.
      *
      * @param component The component to get the value for
-     *
      * @return A float between 0 and 1 with 0 meaning no progress on the specific bar and 1 meaning full.
      */
-    float getProgressBarValue (@Nonnull IGUIComponent component);
+    float getProgressBarValue(@Nonnull IGUIComponent component);
 
     /**
      * Method used by the rendering system to dynamically update a Label.
      *
      * @param component The component requesting the content.
-     *
      * @return THe string that should be displayed.
      */
     @Nullable
-    String getLabelContents (@Nonnull IGUIComponent component);
+    String getLabelContents(@Nonnull IGUIComponent component);
 
     /**
      * Method used by components to get the Fluids to display
      *
      * @param component The component that is requesting the Fluids
-     *
      * @return The Fluids to display.
      */
     @Nullable
-    ArrayList<FluidStack> getTankContents (@Nonnull IGUIComponent component);
+    ArrayList<FluidStack> getTankContents(@Nonnull IGUIComponent component);
 
     /**
      * Method used by components to get the total fluid amount they can display, used for scaling.
      *
      * @param component The component requesting the total fluid amount
-     *
      * @return Total fluid amount to display. Used for scaling.
      */
-    int getTotalTankContents (@Nonnull IGUIComponent component);
+    int getTotalTankContents(@Nonnull IGUIComponent component);
 
     /**
      * Method called by GUI's that are tab based when the active Tab changed.
      *
      * @param newActiveTabId The new active Tabs ID.
      */
-    void onTabChanged (@Nonnull String newActiveTabId);
+    void onTabChanged(@Nonnull String newActiveTabId);
 
     void onInput(GuiInputEvent.InputTypes types, @Nonnull String componentId, @Nonnull String input);
 }

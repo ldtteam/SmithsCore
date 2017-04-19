@@ -6,7 +6,6 @@
 
 package com.smithsmodding.smithscore.util.client.gui;
 
-
 import com.smithsmodding.smithscore.util.client.CustomResource;
 import com.smithsmodding.smithscore.util.client.color.MinecraftColor;
 import com.smithsmodding.smithscore.util.common.positioning.Coordinate2D;
@@ -29,7 +28,8 @@ import javax.annotation.Nullable;
 /**
  * Helper class to perform several functions while rendering
  */
-public final class GuiHelper {
+public final class GuiHelper
+{
     public static int DISPLAYHEIGHT;
     public static int DISPLAYWIDTH;
     public static int GUISCALE;
@@ -43,7 +43,8 @@ public final class GuiHelper {
      * @param pX        The X Offset from the current Origin
      * @param pY        The Y Offset from the current Origin
      */
-    public static void drawResource(@Nonnull CustomResource pResource, int pX, int pY) {
+    public static void drawResource(@Nonnull CustomResource pResource, int pX, int pY)
+    {
         GL11.glPushMatrix();
         pResource.getColor().performOpenGLColoring();
         GuiHelper.bindTexture(pResource.getPrimaryLocation());
@@ -113,7 +114,8 @@ public final class GuiHelper {
      * @param pHeight            The Total Height
      * @param pElementCoordinate The Offset.
      */
-    public static void drawRectangleStretched(@Nonnull TextureComponent pCenterComponent, int pWidth, int pHeight, @Nonnull Coordinate2D pElementCoordinate) {
+    public static void drawRectangleStretched(@Nonnull TextureComponent pCenterComponent, int pWidth, int pHeight, @Nonnull Coordinate2D pElementCoordinate)
+    {
         renderCenter(pCenterComponent, pWidth, pHeight, pElementCoordinate);
     }
 
@@ -193,18 +195,41 @@ public final class GuiHelper {
      * @param pHeight            The Total Height
      * @param pElementCoordinate The Offset
      */
-    public static void drawRectangleStretched(@Nonnull MultiComponentTexture pComponents, int pWidth, int pHeight, @Nonnull Coordinate2D pElementCoordinate) {
-        renderCenter(pComponents.iCenterComponent, pWidth - pComponents.iCornerComponents[0].iWidth - pComponents.iCornerComponents[1].iWidth, pHeight - pComponents.iCornerComponents[0].iHeight - pComponents.iCornerComponents[3].iHeight, new Coordinate2D(pElementCoordinate.getXComponent() + pComponents.iCornerComponents[0].iWidth, pElementCoordinate.getYComponent() + pComponents.iCornerComponents[0].iHeight));
+    public static void drawRectangleStretched(@Nonnull MultiComponentTexture pComponents, int pWidth, int pHeight, @Nonnull Coordinate2D pElementCoordinate)
+    {
+        renderCenter(pComponents.iCenterComponent,
+          pWidth - pComponents.iCornerComponents[0].iWidth - pComponents.iCornerComponents[1].iWidth,
+          pHeight - pComponents.iCornerComponents[0].iHeight - pComponents.iCornerComponents[3].iHeight,
+          new Coordinate2D(pElementCoordinate.getXComponent() + pComponents.iCornerComponents[0].iWidth,
+                            pElementCoordinate.getYComponent() + pComponents.iCornerComponents[0].iHeight));
 
         renderCorner(pComponents.iCornerComponents[0], pElementCoordinate);
-        renderCorner(pComponents.iCornerComponents[1], new Coordinate2D(pElementCoordinate.getXComponent() + pWidth - pComponents.iCornerComponents[1].iWidth, pElementCoordinate.getYComponent()));
-        renderCorner(pComponents.iCornerComponents[2], new Coordinate2D(pElementCoordinate.getXComponent() + pWidth - pComponents.iCornerComponents[2].iWidth, pElementCoordinate.getYComponent() + pHeight - pComponents.iCornerComponents[2].iHeight));
-        renderCorner(pComponents.iCornerComponents[3], new Coordinate2D(pElementCoordinate.getXComponent(), pElementCoordinate.getYComponent() + pHeight - pComponents.iCornerComponents[3].iHeight));
+        renderCorner(pComponents.iCornerComponents[1],
+          new Coordinate2D(pElementCoordinate.getXComponent() + pWidth - pComponents.iCornerComponents[1].iWidth, pElementCoordinate.getYComponent()));
+        renderCorner(pComponents.iCornerComponents[2],
+          new Coordinate2D(pElementCoordinate.getXComponent() + pWidth - pComponents.iCornerComponents[2].iWidth,
+                            pElementCoordinate.getYComponent() + pHeight - pComponents.iCornerComponents[2].iHeight));
+        renderCorner(pComponents.iCornerComponents[3],
+          new Coordinate2D(pElementCoordinate.getXComponent(), pElementCoordinate.getYComponent() + pHeight - pComponents.iCornerComponents[3].iHeight));
 
-        renderBorder(pComponents.iSideComponents[0], pWidth - (pComponents.iCornerComponents[0].iWidth * 2), pComponents.iSideComponents[0].iHeight, new Coordinate2D(pElementCoordinate.getXComponent() + pComponents.iCornerComponents[0].iWidth, pElementCoordinate.getYComponent()));
-        renderBorder(pComponents.iSideComponents[1], pComponents.iSideComponents[1].iWidth, pHeight - pComponents.iCornerComponents[0].iHeight - pComponents.iCornerComponents[2].iHeight, new Coordinate2D(pElementCoordinate.getXComponent() + pWidth - pComponents.iSideComponents[1].iWidth, pElementCoordinate.getYComponent() + pComponents.iCornerComponents[1].iHeight));
-        renderBorder(pComponents.iSideComponents[2], pWidth - pComponents.iCornerComponents[2].iWidth - pComponents.iCornerComponents[3].iWidth, pComponents.iSideComponents[2].iHeight, new Coordinate2D(pElementCoordinate.getXComponent() + pComponents.iCornerComponents[0].iWidth, pElementCoordinate.getYComponent() + (pHeight - pComponents.iSideComponents[2].iHeight)));
-        renderBorder(pComponents.iSideComponents[3], pComponents.iSideComponents[3].iWidth, pHeight - (pComponents.iCornerComponents[0].iHeight * 2), new Coordinate2D(pElementCoordinate.getXComponent(), pElementCoordinate.getYComponent() + pComponents.iCornerComponents[0].iHeight));
+        renderBorder(pComponents.iSideComponents[0],
+          pWidth - (pComponents.iCornerComponents[0].iWidth * 2),
+          pComponents.iSideComponents[0].iHeight,
+          new Coordinate2D(pElementCoordinate.getXComponent() + pComponents.iCornerComponents[0].iWidth, pElementCoordinate.getYComponent()));
+        renderBorder(pComponents.iSideComponents[1],
+          pComponents.iSideComponents[1].iWidth,
+          pHeight - pComponents.iCornerComponents[0].iHeight - pComponents.iCornerComponents[2].iHeight,
+          new Coordinate2D(pElementCoordinate.getXComponent() + pWidth - pComponents.iSideComponents[1].iWidth,
+                            pElementCoordinate.getYComponent() + pComponents.iCornerComponents[1].iHeight));
+        renderBorder(pComponents.iSideComponents[2],
+          pWidth - pComponents.iCornerComponents[2].iWidth - pComponents.iCornerComponents[3].iWidth,
+          pComponents.iSideComponents[2].iHeight,
+          new Coordinate2D(pElementCoordinate.getXComponent() + pComponents.iCornerComponents[0].iWidth,
+                            pElementCoordinate.getYComponent() + (pHeight - pComponents.iSideComponents[2].iHeight)));
+        renderBorder(pComponents.iSideComponents[3],
+          pComponents.iSideComponents[3].iWidth,
+          pHeight - (pComponents.iCornerComponents[0].iHeight * 2),
+          new Coordinate2D(pElementCoordinate.getXComponent(), pElementCoordinate.getYComponent() + pComponents.iCornerComponents[0].iHeight));
     }
 
     /**
@@ -217,23 +242,45 @@ public final class GuiHelper {
      * @param pHeight            The total Height
      * @param pElementCoordinate The Offset
      */
-    public static void drawRectangleStretched(@Nonnull TextureComponent pCenterComponent, @Nonnull TextureComponent[] pSideComponents, @Nonnull TextureComponent[] pCornerComponents, int pWidth, int pHeight, @Nonnull Coordinate2D pElementCoordinate) {
-        renderCenter(pCenterComponent, pWidth - pCornerComponents[0].iWidth - pCornerComponents[1].iWidth, pHeight - pCornerComponents[0].iHeight - pCornerComponents[3].iHeight, new Coordinate2D(pElementCoordinate.getXComponent() + pCornerComponents[0].iWidth, pElementCoordinate.getYComponent() + pCornerComponents[0].iHeight));
+    public static void drawRectangleStretched(
+                                               @Nonnull TextureComponent pCenterComponent,
+                                               @Nonnull TextureComponent[] pSideComponents,
+                                               @Nonnull TextureComponent[] pCornerComponents,
+                                               int pWidth,
+                                               int pHeight,
+                                               @Nonnull Coordinate2D pElementCoordinate)
+    {
+        renderCenter(pCenterComponent,
+          pWidth - pCornerComponents[0].iWidth - pCornerComponents[1].iWidth,
+          pHeight - pCornerComponents[0].iHeight - pCornerComponents[3].iHeight,
+          new Coordinate2D(pElementCoordinate.getXComponent() + pCornerComponents[0].iWidth, pElementCoordinate.getYComponent() + pCornerComponents[0].iHeight));
 
         renderCorner(pCornerComponents[0], pElementCoordinate);
         renderCorner(pCornerComponents[1], new Coordinate2D(pElementCoordinate.getXComponent() + pWidth, pElementCoordinate.getYComponent()));
         renderCorner(pCornerComponents[2], new Coordinate2D(pElementCoordinate.getXComponent() + pWidth, pElementCoordinate.getYComponent() + pHeight));
         renderCorner(pCornerComponents[3], new Coordinate2D(pElementCoordinate.getXComponent(), pElementCoordinate.getYComponent() + pHeight));
 
-        renderBorder(pSideComponents[0], pWidth - pCornerComponents[0].iWidth - pCornerComponents[1].iWidth, pSideComponents[0].iHeight, new Coordinate2D(pElementCoordinate.getXComponent() + pCornerComponents[0].iWidth, pElementCoordinate.getYComponent()));
-        renderBorder(pSideComponents[1], pHeight - pCornerComponents[1].iHeight - pCornerComponents[2].iHeight, pSideComponents[1].iHeight, new Coordinate2D(pElementCoordinate.getXComponent() + pWidth - pSideComponents[1].iHeight, pElementCoordinate.getYComponent() + pHeight - pCornerComponents[2].iHeight));
-        renderBorder(pSideComponents[2], pWidth - pCornerComponents[2].iWidth - pCornerComponents[3].iWidth, pSideComponents[2].iHeight, new Coordinate2D(pElementCoordinate.getXComponent() + pCornerComponents[3].iWidth, pElementCoordinate.getYComponent() + pHeight - pSideComponents[2].iHeight));
-        renderBorder(pSideComponents[3], pHeight - pCornerComponents[3].iHeight - pCornerComponents[0].iHeight, pSideComponents[3].iHeight, new Coordinate2D(pElementCoordinate.getXComponent(), pElementCoordinate.getYComponent() + pHeight - pCornerComponents[3].iHeight));
+        renderBorder(pSideComponents[0],
+          pWidth - pCornerComponents[0].iWidth - pCornerComponents[1].iWidth,
+          pSideComponents[0].iHeight,
+          new Coordinate2D(pElementCoordinate.getXComponent() + pCornerComponents[0].iWidth, pElementCoordinate.getYComponent()));
+        renderBorder(pSideComponents[1],
+          pHeight - pCornerComponents[1].iHeight - pCornerComponents[2].iHeight,
+          pSideComponents[1].iHeight,
+          new Coordinate2D(pElementCoordinate.getXComponent() + pWidth - pSideComponents[1].iHeight, pElementCoordinate.getYComponent() + pHeight - pCornerComponents[2].iHeight));
+        renderBorder(pSideComponents[2],
+          pWidth - pCornerComponents[2].iWidth - pCornerComponents[3].iWidth,
+          pSideComponents[2].iHeight,
+          new Coordinate2D(pElementCoordinate.getXComponent() + pCornerComponents[3].iWidth, pElementCoordinate.getYComponent() + pHeight - pSideComponents[2].iHeight));
+        renderBorder(pSideComponents[3],
+          pHeight - pCornerComponents[3].iHeight - pCornerComponents[0].iHeight,
+          pSideComponents[3].iHeight,
+          new Coordinate2D(pElementCoordinate.getXComponent(), pElementCoordinate.getYComponent() + pHeight - pCornerComponents[3].iHeight));
     }
 
     /**
      * Draws a given FluidStack on the Screen.
-     *
+     * <p>
      * This function comes with regards to the BuildCraft Team
      *
      * @param pFluidStack The Stack to render
@@ -243,14 +290,17 @@ public final class GuiHelper {
      * @param pWidth      The total Width
      * @param pHeight     The total Height
      */
-    public static void drawFluid(@Nullable FluidStack pFluidStack, int pX, int pY, int pZ, int pWidth, int pHeight) {
-        if (pFluidStack == null || pFluidStack.getFluid() == null) {
+    public static void drawFluid(@Nullable FluidStack pFluidStack, int pX, int pY, int pZ, int pWidth, int pHeight)
+    {
+        if (pFluidStack == null || pFluidStack.getFluid() == null)
+        {
             return;
         }
 
         TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(pFluidStack.getFluid().getStill(pFluidStack).toString());
 
-        if (texture == null) {
+        if (texture == null)
+        {
             texture = ((TextureMap) Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE)).getAtlasSprite("missingno");
         }
 
@@ -261,8 +311,10 @@ public final class GuiHelper {
 
         int tFullX = pWidth / 16 + 1;
         int tFullY = pHeight / 16 + 1;
-        for (int i = 0; i < tFullX; i++) {
-            for (int j = 0; j < tFullY; j++) {
+        for (int i = 0; i < tFullX; i++)
+        {
+            for (int j = 0; j < tFullY; j++)
+            {
                 drawCutIcon(texture, pX + i * 16, pY + j * 16, pZ, 16, 16, 0);
             }
         }
@@ -273,7 +325,6 @@ public final class GuiHelper {
      * <p/>
      * This function comes with regards to the BuildCraft Team
      *
-     * @param pIcon
      * @param pX              The x offset
      * @param pY              The y offset
      * @param pZ              The z offset
@@ -281,14 +332,19 @@ public final class GuiHelper {
      * @param pHeight         The total Height
      * @param pCutOffVertical The vertical distance to cut of.
      */
-    private static void drawCutIcon(@Nonnull TextureAtlasSprite pIcon, int pX, int pY, int pZ, int pWidth, int pHeight, int pCutOffVertical) {
+    private static void drawCutIcon(@Nonnull TextureAtlasSprite pIcon, int pX, int pY, int pZ, int pWidth, int pHeight, int pCutOffVertical)
+    {
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer worldrenderer = tessellator.getBuffer();
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 
         worldrenderer.pos((double) (pX + 0), (double) (pY + pHeight), (double) pZ).tex((double) pIcon.getMinU(), (double) pIcon.getInterpolatedV(pHeight)).endVertex();
-        worldrenderer.pos((double) (pX + pWidth), (double) (pY + pHeight), (double) pZ).tex((double) pIcon.getInterpolatedU(pWidth), (double) pIcon.getInterpolatedV(pHeight)).endVertex();
-        worldrenderer.pos((double) (pX + pWidth), (double) (pY + 0), (double) pZ).tex((double) pIcon.getInterpolatedU(pWidth), (double) pIcon.getInterpolatedV(pCutOffVertical)).endVertex();
+        worldrenderer.pos((double) (pX + pWidth), (double) (pY + pHeight), (double) pZ)
+          .tex((double) pIcon.getInterpolatedU(pWidth), (double) pIcon.getInterpolatedV(pHeight))
+          .endVertex();
+        worldrenderer.pos((double) (pX + pWidth), (double) (pY + 0), (double) pZ)
+          .tex((double) pIcon.getInterpolatedU(pWidth), (double) pIcon.getInterpolatedV(pCutOffVertical))
+          .endVertex();
         worldrenderer.pos((double) (pX + 0), (double) (pY + 0), (double) pZ).tex((double) pIcon.getMinU(), (double) pIcon.getInterpolatedV(pCutOffVertical)).endVertex();
 
         tessellator.draw();
@@ -300,9 +356,12 @@ public final class GuiHelper {
      * @param pComponent         The Component to Render
      * @param pElementCoordinate The offset of the Component from the current GL Buffer Matric Origin.
      */
-    private static void renderCorner(@Nonnull TextureComponent pComponent, @Nonnull Coordinate2D pElementCoordinate) {
+    private static void renderCorner(@Nonnull TextureComponent pComponent, @Nonnull Coordinate2D pElementCoordinate)
+    {
         GL11.glPushMatrix();
-        GL11.glTranslatef(pElementCoordinate.getXComponent() + pComponent.iRelativeTranslation.getXComponent(), pElementCoordinate.getYComponent() + pComponent.iRelativeTranslation.getYComponent(), 0F);
+        GL11.glTranslatef(pElementCoordinate.getXComponent() + pComponent.iRelativeTranslation.getXComponent(),
+          pElementCoordinate.getYComponent() + pComponent.iRelativeTranslation.getYComponent(),
+          0F);
         pComponent.iRotation.performGLRotation();
 
         bindTexture(pComponent.iAddress);
@@ -319,33 +378,48 @@ public final class GuiHelper {
      * @param pHeight            The total height of the Component in the End
      * @param pElementCoordinate The offset of the Component from the current GL Buffer Matric Origin.
      */
-    private static void renderBorder(@Nonnull TextureComponent pComponent, int pWidth, int pHeight, @Nonnull Coordinate2D pElementCoordinate) {
+    private static void renderBorder(@Nonnull TextureComponent pComponent, int pWidth, int pHeight, @Nonnull Coordinate2D pElementCoordinate)
+    {
         GL11.glPushMatrix();
-        GL11.glTranslatef(pElementCoordinate.getXComponent() + pComponent.iRelativeTranslation.getXComponent(), pElementCoordinate.getYComponent() + pComponent.iRelativeTranslation.getYComponent(), 0F);
+        GL11.glTranslatef(pElementCoordinate.getXComponent() + pComponent.iRelativeTranslation.getXComponent(),
+          pElementCoordinate.getYComponent() + pComponent.iRelativeTranslation.getYComponent(),
+          0F);
         pComponent.iRotation.performGLRotation();
 
         bindTexture(pComponent.iAddress);
 
-        if (pWidth <= pComponent.iWidth && pHeight <= pComponent.iHeight) {
+        if (pWidth <= pComponent.iWidth && pHeight <= pComponent.iHeight)
+        {
             drawTexturedModalRect(0, 0, 0, pComponent.iU, pComponent.iV, pWidth, pHeight);
-        } else {
+        }
+        else
+        {
             int tDrawnHeigth = 0;
             int tDrawnWidth = 0;
-            if (pWidth <= pComponent.iWidth) {
-                while (pHeight > tDrawnHeigth) {
+            if (pWidth <= pComponent.iWidth)
+            {
+                while (pHeight > tDrawnHeigth)
+                {
                     int tDrawableHeight = pHeight - tDrawnHeigth;
                     if (tDrawableHeight > pComponent.iHeight)
+                    {
                         tDrawableHeight = pComponent.iHeight;
+                    }
 
                     drawTexturedModalRect(0, tDrawnHeigth, 0, pComponent.iU, pComponent.iV, pWidth, tDrawableHeight);
 
                     tDrawnHeigth += tDrawableHeight;
                 }
-            } else {
-                while (tDrawnWidth < (pWidth)) {
+            }
+            else
+            {
+                while (tDrawnWidth < (pWidth))
+                {
                     int tWidthToRender = pWidth - tDrawnWidth;
                     if (tWidthToRender >= pComponent.iWidth)
+                    {
                         tWidthToRender = pComponent.iWidth;
+                    }
 
                     drawTexturedModalRect(tDrawnWidth, 0, 0, pComponent.iU, pComponent.iV, tWidthToRender, pComponent.iHeight);
                     tDrawnWidth += tWidthToRender;
@@ -357,7 +431,7 @@ public final class GuiHelper {
 
     /**
      * Helper function copied from the gui class to make it possible to use it outside of a gui class.
-     *
+     * <p>
      * TRhe function comes with regards to the Minecraft Team
      *
      * @param pXCoord The x offset
@@ -367,7 +441,8 @@ public final class GuiHelper {
      * @param pHeight The total Height
      * @param pIIcon  The IIcon describing the Texture
      */
-    public static void drawTexturedModelRectFromIcon(int pXCoord, int pYCoord, int pZCoord, @Nonnull TextureAtlasSprite pIIcon, int pWidth, int pHeight) {
+    public static void drawTexturedModelRectFromIcon(int pXCoord, int pYCoord, int pZCoord, @Nonnull TextureAtlasSprite pIIcon, int pWidth, int pHeight)
+    {
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer worldrenderer = tessellator.getBuffer();
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
@@ -385,7 +460,8 @@ public final class GuiHelper {
      * @param pZKoord The Z-Level to render on.
      * @param pColor  The color to render.
      */
-    public static void drawColoredRect(@Nonnull Plane pPlane, int pZKoord, @Nonnull MinecraftColor pColor) {
+    public static void drawColoredRect(@Nonnull Plane pPlane, int pZKoord, @Nonnull MinecraftColor pColor)
+    {
         drawGradiendColoredRect(pPlane, pZKoord, pColor, pColor);
     }
 
@@ -397,7 +473,8 @@ public final class GuiHelper {
      * @param pColorStart The left color
      * @param pColorEnd   The right color.
      */
-    public static void drawGradiendColoredRect(@Nonnull Plane pPlane, int pZKoord, @Nonnull MinecraftColor pColorStart, @Nonnull MinecraftColor pColorEnd) {
+    public static void drawGradiendColoredRect(@Nonnull Plane pPlane, int pZKoord, @Nonnull MinecraftColor pColorStart, @Nonnull MinecraftColor pColorEnd)
+    {
         float f = pColorStart.getAlphaFloat();
         float f1 = pColorStart.getBlueFloat();
         float f2 = pColorStart.getGreenFloat();
@@ -432,17 +509,20 @@ public final class GuiHelper {
      * @param x     The X Coordinate to render on
      * @param y     The Y Coordinate to render on
      */
-    public static void drawItemStack(@Nonnull ItemStack stack, int x, int y) {
+    public static void drawItemStack(@Nonnull ItemStack stack, int x, int y)
+    {
         GlStateManager.enableLighting();
         GlStateManager.enableDepth();
         RenderHelper.enableGUIStandardItemLighting();
 
         FontRenderer font = null;
-        if (!stack.isEmpty()) {
+        if (!stack.isEmpty())
+        {
             font = stack.getItem().getFontRenderer(stack);
         }
 
-        if (font == null) {
+        if (font == null)
+        {
             font = Minecraft.getMinecraft().fontRendererObj;
         }
 
@@ -462,17 +542,20 @@ public final class GuiHelper {
      * @param y       The Y Coordinate to render on
      * @param altText The overlay text to render.
      */
-    private static void drawItemStack(@Nonnull ItemStack stack, int x, int y, String altText) {
+    private static void drawItemStack(@Nonnull ItemStack stack, int x, int y, String altText)
+    {
         GlStateManager.enableLighting();
         GlStateManager.enableDepth();
         RenderHelper.enableGUIStandardItemLighting();
 
         FontRenderer font = null;
-        if (!stack.isEmpty()) {
+        if (!stack.isEmpty())
+        {
             font = stack.getItem().getFontRenderer(stack);
         }
 
-        if (font == null) {
+        if (font == null)
+        {
             font = Minecraft.getMinecraft().fontRendererObj;
         }
 
@@ -501,7 +584,6 @@ public final class GuiHelper {
           ((DISPLAYHEIGHT - pTargetPlane.LowerRightCoord().getYComponent()) * GUISCALE),
           (pTargetPlane.getWidth()) * GUISCALE,
           (pTargetPlane.getHeigth()) * GUISCALE);
-
     }
 
     /**
@@ -511,7 +593,8 @@ public final class GuiHelper {
      * As there is no way to detect that, we currently call it before we need a function that uses the data provided
      * by this function.
      */
-    public static void calcScaleFactor() {
+    public static void calcScaleFactor()
+    {
         Minecraft mc = Minecraft.getMinecraft();
         ScaledResolution sc = new ScaledResolution(mc);
         DISPLAYWIDTH = sc.getScaledWidth();
@@ -522,17 +605,18 @@ public final class GuiHelper {
     /**
      * Disables all Scissors currently active
      */
-    public static void disableScissor() {
+    public static void disableScissor()
+    {
 
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
         GL11.glPopAttrib();
-
     }
 
     /**
      * Renders the debug overlay for the Scissor box
      */
-    public static void renderScissorDebugOverlay() {
+    public static void renderScissorDebugOverlay()
+    {
         bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         drawTexturedModalRect(-10, -10, 10, 0, 0, DISPLAYWIDTH, DISPLAYHEIGHT);
     }

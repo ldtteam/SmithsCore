@@ -14,18 +14,21 @@ import java.util.HashMap;
 /**
  * Author Marc (Created on: 04.06.2016)
  */
-public abstract class PreBakedItemOverride extends ItemOverride {
+public abstract class PreBakedItemOverride extends ItemOverride
+{
 
     private final IBakedModel model;
 
-    public PreBakedItemOverride(@Nonnull IBakedModel model) {
+    public PreBakedItemOverride(@Nonnull IBakedModel model)
+    {
         super(new ResourceLocation(""), new HashMap<>());
 
         this.model = model;
     }
 
     @Nonnull
-    public IBakedModel getModel() {
+    public IBakedModel getModel()
+    {
         return model;
     }
 

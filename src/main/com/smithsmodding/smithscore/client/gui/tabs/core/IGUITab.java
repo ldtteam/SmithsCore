@@ -30,7 +30,7 @@ public interface IGUITab extends IGUIBasedComponentHost
      * @return The TabManager of this Tab.
      */
     @Nonnull
-    ITabManager getTabManager ();
+    ITabManager getTabManager();
 
     /**
      * Method to get the display stack.
@@ -46,7 +46,7 @@ public interface IGUITab extends IGUIBasedComponentHost
      * @return The tabs color.
      */
     @Nonnull
-    MinecraftColor getTabColor ();
+    MinecraftColor getTabColor();
 
     /**
      * Function to get the tooltiptext of the gui System.
@@ -55,5 +55,4 @@ public interface IGUITab extends IGUIBasedComponentHost
      */
     @Nullable
     ArrayList<String> getIconToolTipText();
-
 }

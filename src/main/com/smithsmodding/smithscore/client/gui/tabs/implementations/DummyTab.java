@@ -11,9 +11,17 @@ import javax.annotation.Nonnull;
 /**
  * Created by Marc on 17.01.2016.
  */
-public class DummyTab extends CoreTab {
+public class DummyTab extends CoreTab
+{
 
-    public DummyTab (@Nonnull String uniqueID, @Nonnull IGUIBasedTabHost root, @Nonnull IGUIComponentState state, @Nonnull ItemStack displayStack, @Nonnull MinecraftColor tabColor, @Nonnull String toolTipString) {
+    public DummyTab(
+                     @Nonnull String uniqueID,
+                     @Nonnull IGUIBasedTabHost root,
+                     @Nonnull IGUIComponentState state,
+                     @Nonnull ItemStack displayStack,
+                     @Nonnull MinecraftColor tabColor,
+                     @Nonnull String toolTipString)
+    {
         super(uniqueID, root, state, displayStack, tabColor, toolTipString);
     }
 
@@ -23,7 +31,8 @@ public class DummyTab extends CoreTab {
      * @param host This ComponentHosts host. For the Root GUIObject a reference to itself will be passed in..
      */
     @Override
-    public void registerComponents (@Nonnull IGUIBasedComponentHost host) {
+    public void registerComponents(@Nonnull IGUIBasedComponentHost host)
+    {
         getRootGuiObject().registerComponents(this);
     }
 }

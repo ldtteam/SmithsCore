@@ -20,12 +20,13 @@ import java.util.concurrent.TimeUnit;
  * Created by Orion
  * Created on 25.10.2015
  * 21:46
- *
+ * <p>
  * Copyrighted according to Project specific license
  */
 @Mod(modid = CoreReferences.General.MOD_ID, name = "smithscore", version = CoreReferences.General.VERSION,
-        dependencies = "required-after:forge@[13.19,)")
-public class SmithsCore {
+  dependencies = "required-after:forge@[13.19,)")
+public class SmithsCore
+{
 
     // Instance of this mod use for internal and Forge references
     @Mod.Instance(CoreReferences.General.MOD_ID)
@@ -44,21 +45,25 @@ public class SmithsCore {
     @SidedProxy(clientSide = "com.smithsmodding.smithscore.client.proxy.CoreClientProxy", serverSide = "com.smithsmodding.smithscore.common.proxy.CoreCommonProxy")
     private static CoreCommonProxy proxy;
 
-    public static final SmithsCore getInstance(){ return instance; }
+    public static final SmithsCore getInstance() { return instance; }
 
-    public static final CoreCommonProxy getProxy() {
+    public static final CoreCommonProxy getProxy()
+    {
         return proxy;
     }
 
-    public static final CommonRegistry getRegistry() {
+    public static final CommonRegistry getRegistry()
+    {
         return iRegistry;
     }
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
+    public void preInit(FMLPreInitializationEvent event)
+    {
         Stopwatch watch = Stopwatch.createStarted();
 
-        if (isInDevenvironment()){
+        if (isInDevenvironment())
+        {
             getLogger().warn(CoreReferences.LogMarkers.PREINIT, "");
             getLogger().warn(CoreReferences.LogMarkers.PREINIT, "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             getLogger().warn(CoreReferences.LogMarkers.PREINIT, "SmithsCore starting in Dev mode. Current active Features:");
@@ -88,7 +93,8 @@ public class SmithsCore {
     public static final Logger getLogger() { return iLogger; }
 
     @Mod.EventHandler
-    public void init(FMLInitializationEvent event) {
+    public void init(FMLInitializationEvent event)
+    {
         Stopwatch watch = Stopwatch.createStarted();
 
         proxy.Init();
@@ -100,7 +106,8 @@ public class SmithsCore {
     }
 
     @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event) {
+    public void postInit(FMLPostInitializationEvent event)
+    {
         Stopwatch watch = Stopwatch.createStarted();
 
         watch.stop();
@@ -110,7 +117,8 @@ public class SmithsCore {
     }
 
     @Mod.EventHandler
-    public void onServerStarting(FMLServerStartingEvent event) {
+    public void onServerStarting(FMLServerStartingEvent event)
+    {
         PlayerManager.getInstance().onServerStart(event);
     }
 }

@@ -15,7 +15,6 @@ public interface IScissorRegionManager
      * intersects somewhere with the current region before applying.
      *
      * @param scissorRegion The new scissor region
-     *
      * @return True when either completely or partially applied, false when not.
      */
     boolean setScissorRegionTo(@Nonnull Plane scissorRegion);

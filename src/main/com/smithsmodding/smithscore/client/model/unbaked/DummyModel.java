@@ -16,32 +16,39 @@ import java.util.Collections;
 /**
  * Dummy model to be returned on the initial load to silence the missing model messages.
  * It's never actually used and gets replaced with the real models when the resource manager reloads.
- *
+ * <p>
  * Thanks to TinkersConstruct as a resource of how to load multilayered objects.
  */
-public class DummyModel implements IModel {
+public class DummyModel implements IModel
+{
 
     public static final DummyModel INSTANCE = new DummyModel();
     public static IBakedModel BAKED_MODEL;
 
     @Override
     @Nonnull
-    public Collection<ResourceLocation> getDependencies() {
+    public Collection<ResourceLocation> getDependencies()
+    {
         return Collections.EMPTY_LIST;
     }
 
     @Override
     @Nonnull
-    public Collection<ResourceLocation> getTextures() {
+    public Collection<ResourceLocation> getTextures()
+    {
         return Collections.EMPTY_LIST;
     }
 
     @Override
     @Nonnull
-    public IBakedModel bake(@Nonnull IModelState state, @Nonnull VertexFormat format,
-                            @Nonnull Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+    public IBakedModel bake(
+                             @Nonnull IModelState state, @Nonnull VertexFormat format,
+                             @Nonnull Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter)
+    {
         if (BAKED_MODEL != null)
+        {
             return BAKED_MODEL;
+        }
 
         BAKED_MODEL = ModelLoaderRegistry.getMissingModel().bake(ModelLoaderRegistry.getMissingModel().getDefaultState(), format, bakedTextureGetter);
 
@@ -50,7 +57,8 @@ public class DummyModel implements IModel {
 
     @Override
     @Nonnull
-    public IModelState getDefaultState() {
+    public IModelState getDefaultState()
+    {
         return ModelLoaderRegistry.getMissingModel().getDefaultState();
     }
 }

@@ -14,32 +14,57 @@ import javax.annotation.Nonnull;
 /**
  * Author Orion (Created on: 25.06.2016)
  */
-public abstract class StructureEvent extends NBTNetworkableEvent {
+public abstract class StructureEvent extends NBTNetworkableEvent
+{
 
     private IStructure structure;
     private Integer    dimension;
 
-    public StructureEvent() {
+    public StructureEvent()
+    {
     }
 
-    public StructureEvent(@Nonnull IStructure structure, @Nonnull Integer dimension) {
+    public StructureEvent(@Nonnull IStructure structure, @Nonnull Integer dimension)
+    {
         this.structure = structure;
         this.dimension = dimension;
     }
 
     @Nonnull
-    public IStructure getStructure() {
+    public IStructure getStructure()
+    {
         return structure;
     }
 
     @Nonnull
-    public Integer getDimension() {
+    public Integer getDimension()
+    {
         return dimension;
     }
 
     @Override
+    protected void readSyncCompound(@Nonnull NBTTagCompound compound)
+    {
+        dimension = compound.getInteger(CoreReferences.NBT.StructureData.DIMENSION);
+
+        try
+        {
+            IStructureFactory factory =
+              StructureRegistry.getInstance().getFactory((Class<? extends IStructure>) Class.forName(compound.getString(CoreReferences.NBT.StructureData.TYPE)));
+            structure = factory.loadStructureFromNBT(compound.getCompoundTag(CoreReferences.NBT.StructureData.STRUCTURE));
+            structure.setMasterLocation(Coordinate3D.fromNBT(compound.getCompoundTag(CoreReferences.NBT.StructureData.MASTERLOCATION)));
+        }
+        catch (ClassNotFoundException e)
+        {
+            SmithsCore.getLogger()
+              .error(CoreReferences.LogMarkers.STRUCTURE, (Object) new Exception("Cannot retrieve Factory for synced Structure, this is supposed to be impossible!", e));
+        }
+    }
+
+    @Override
     @Nonnull
-    protected NBTTagCompound getSyncCompound() {
+    protected NBTTagCompound getSyncCompound()
+    {
         NBTTagCompound compound = new NBTTagCompound();
 
         compound.setInteger(CoreReferences.NBT.StructureData.DIMENSION, dimension);
@@ -50,80 +75,82 @@ public abstract class StructureEvent extends NBTNetworkableEvent {
         return compound;
     }
 
-    @Override
-    protected void readSyncCompound(@Nonnull NBTTagCompound compound) {
-        dimension = compound.getInteger(CoreReferences.NBT.StructureData.DIMENSION);
-
-        try {
-            IStructureFactory factory = StructureRegistry.getInstance().getFactory((Class<? extends IStructure>) Class.forName(compound.getString(CoreReferences.NBT.StructureData.TYPE)));
-            structure = factory.loadStructureFromNBT(compound.getCompoundTag(CoreReferences.NBT.StructureData.STRUCTURE));
-            structure.setMasterLocation(Coordinate3D.fromNBT(compound.getCompoundTag(CoreReferences.NBT.StructureData.MASTERLOCATION)));
-        } catch (ClassNotFoundException e) {
-            SmithsCore.getLogger().error(CoreReferences.LogMarkers.STRUCTURE, (Object) new Exception("Cannot retrieve Factory for synced Structure, this is supposed to be impossible!", e));
-        }
-    }
-
-    public static class Create extends StructureEvent {
-        public Create() {
+    public static class Create extends StructureEvent
+    {
+        public Create()
+        {
             super();
         }
 
-        public Create(@Nonnull IStructure structure, @Nonnull Integer dimension) {
+        public Create(@Nonnull IStructure structure, @Nonnull Integer dimension)
+        {
             super(structure, dimension);
         }
     }
 
-    public static class Destroyed extends StructureEvent {
-        public Destroyed() {
+    public static class Destroyed extends StructureEvent
+    {
+        public Destroyed()
+        {
             super();
         }
 
-        public Destroyed(@Nonnull IStructure structure, @Nonnull Integer dimension) {
+        public Destroyed(@Nonnull IStructure structure, @Nonnull Integer dimension)
+        {
             super(structure, dimension);
         }
     }
 
-    public static class Updated extends StructureEvent {
-        public Updated() {
+    public static class Updated extends StructureEvent
+    {
+        public Updated()
+        {
             super();
         }
 
-        public Updated(@Nonnull IStructure structure, @Nonnull Integer dimension) {
+        public Updated(@Nonnull IStructure structure, @Nonnull Integer dimension)
+        {
             super(structure, dimension);
         }
     }
 
-    public static class MasterBlockChanged extends StructureEvent {
+    public static class MasterBlockChanged extends StructureEvent
+    {
         private Coordinate3D oldMaster;
 
-        public MasterBlockChanged() {
+        public MasterBlockChanged()
+        {
             super();
         }
 
-        public MasterBlockChanged(@Nonnull IStructure structure, @Nonnull Coordinate3D oldMaster, @Nonnull Integer dimension) {
+        public MasterBlockChanged(@Nonnull IStructure structure, @Nonnull Coordinate3D oldMaster, @Nonnull Integer dimension)
+        {
             super(structure, dimension);
             this.oldMaster = oldMaster;
         }
 
         @Nonnull
-        public Coordinate3D getOldMaster() {
+        public Coordinate3D getOldMaster()
+        {
             return oldMaster;
         }
 
         @Override
+        protected void readSyncCompound(@Nonnull NBTTagCompound compound)
+        {
+            super.readSyncCompound(compound);
+
+            oldMaster = Coordinate3D.fromNBT(compound.getCompoundTag(CoreReferences.NBT.StructureData.OLDMASTER));
+        }
+
+        @Override
         @Nonnull
-        protected NBTTagCompound getSyncCompound() {
+        protected NBTTagCompound getSyncCompound()
+        {
             NBTTagCompound compound = super.getSyncCompound();
             compound.setTag(CoreReferences.NBT.StructureData.OLDMASTER, oldMaster.toCompound());
 
             return compound;
-        }
-
-        @Override
-        protected void readSyncCompound(@Nonnull NBTTagCompound compound) {
-            super.readSyncCompound(compound);
-
-            oldMaster = Coordinate3D.fromNBT(compound.getCompoundTag(CoreReferences.NBT.StructureData.OLDMASTER));
         }
     }
 }

@@ -20,31 +20,32 @@ import java.util.*;
 
 /**
  * Created by Marc on 06.12.2015.
- *
+ * <p>
  * TextureManager used to handle grayscale textures and color them for each material. Modelled after parts of the
  * TinkersConstruct CustomTextureCreator.
  */
-public class TextureCreator implements IResourceManagerReloadListener {
+public class TextureCreator implements IResourceManagerReloadListener
+{
     //Variable containing all the mappings for
     @Nonnull
-    private static Set<ITextureController> controllers = new HashSet<>();
+    private static Set<ITextureController>                          controllers  = new HashSet<>();
     //Variable containing the location of all grayscale base textures.
     @Nonnull
-    private static Set<ResourceLocation> baseTextures = new HashSet<>();
+    private static Set<ResourceLocation>                            baseTextures = new HashSet<>();
     //Variable that holds the colored end textures when the Creator has reloaded
     @Nonnull
     private static Map<String, HashMap<String, TextureAtlasSprite>> buildSprites = Maps.newHashMap();
-
-    static {
+    static
+    {
         registerController(new HolographicTexture.HolographicTextureController());
     }
-
     /**
      * Static method to register a new GrayScale texture to the Creator.
      *
      * @param location The location of the Texture.
      */
-    public static void registerBaseTexture(@Nonnull ResourceLocation location) {
+    public static void registerBaseTexture(@Nonnull ResourceLocation location)
+    {
         baseTextures.add(location);
     }
 
@@ -53,15 +54,18 @@ public class TextureCreator implements IResourceManagerReloadListener {
      *
      * @param locations The location of the textures to register.
      */
-    public static void registerBaseTexture (@Nonnull Collection<ResourceLocation> locations) {
+    public static void registerBaseTexture(@Nonnull Collection<ResourceLocation> locations)
+    {
         baseTextures.addAll(locations);
     }
 
     /**
      * Method to register a new TextureController.
+     *
      * @param controller The new controller to register.
      */
-    public static void registerController(@Nonnull ITextureController controller) {
+    public static void registerController(@Nonnull ITextureController controller)
+    {
         controllers.add(controller);
     }
 
@@ -70,7 +74,8 @@ public class TextureCreator implements IResourceManagerReloadListener {
      *
      * @param controller The controller to unregister.
      */
-    public static void unregisterController(@Nonnull ITextureController controller) {
+    public static void unregisterController(@Nonnull ITextureController controller)
+    {
         controllers.remove(controller);
     }
 
@@ -80,7 +85,8 @@ public class TextureCreator implements IResourceManagerReloadListener {
      * @return A map containing all the colored textures using the base texture and the materialname as keys.
      */
     @Nonnull
-    public static Map<String, HashMap<String, TextureAtlasSprite>> getBuildSprites() {
+    public static Map<String, HashMap<String, TextureAtlasSprite>> getBuildSprites()
+    {
         return buildSprites;
     }
 
@@ -91,9 +97,11 @@ public class TextureCreator implements IResourceManagerReloadListener {
      * @param event The events fired before the TextureSheet is stitched. TextureStitchEvent.Pre instance.
      */
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void createCustomTextures (@Nonnull TextureStitchEvent.Pre event) {
+    public void createCustomTextures(@Nonnull TextureStitchEvent.Pre event)
+    {
         //Only run the creation once, after all mods have been loaded.
-        if (!Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION)) {
+        if (!Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION))
+        {
             return;
         }
 
@@ -106,18 +114,23 @@ public class TextureCreator implements IResourceManagerReloadListener {
      *
      * @param map The map to register the textures to.
      */
-    public void createMaterialTextures (@Nonnull TextureMap map) {
-        for (ResourceLocation baseTexture : baseTextures) {
+    public void createMaterialTextures(@Nonnull TextureMap map)
+    {
+        for (ResourceLocation baseTexture : baseTextures)
+        {
             buildSprites.put(baseTexture.toString(), new HashMap<>());
-            for (ITextureController controller : controllers) {
-                if (baseTexture.toString().equals("minecraft:missingno")) {
+            for (ITextureController controller : controllers)
+            {
+                if (baseTexture.toString().equals("minecraft:missingno"))
+                {
                     //A missing texture does not need coloring. Skipping.
                     continue;
                 }
 
                 //Grabbing the base texture so that we can color a copy.
                 TextureAtlasSprite base = map.getTextureExtry(baseTexture.toString());
-                if (base == null) {
+                if (base == null)
+                {
                     //A missing texture does not need coloring. Skipping.
                     SmithsCore.getLogger().error("Missing base texture: " + baseTexture.toString());
                     continue;
@@ -129,24 +142,36 @@ public class TextureCreator implements IResourceManagerReloadListener {
     }
 
     @Nullable
-    private TextureAtlasSprite createTexture(@Nonnull ITextureController controller, @Nonnull ResourceLocation baseTexture, @Nonnull TextureAtlasSprite base, @Nonnull TextureMap map) {
+    private TextureAtlasSprite createTexture(
+                                              @Nonnull ITextureController controller,
+                                              @Nonnull ResourceLocation baseTexture,
+                                              @Nonnull TextureAtlasSprite base,
+                                              @Nonnull TextureMap map)
+    {
         String location = baseTexture.toString() + "_" + controller.getCreationIdentifier();
         TextureAtlasSprite sprite = null;
 
-        if (ResourceHelper.exists(location)) {
+        if (ResourceHelper.exists(location))
+        {
             sprite = map.registerSprite(new ResourceLocation(location));
-        } else {
+        }
+        else
+        {
             TextureAtlasSprite matBase = base;
 
             // different base texture?
-            if (controller.getTextureSuffix() != null) {
+            if (controller.getTextureSuffix() != null)
+            {
                 String loc2 = baseTexture.toString() + "_" + controller.getTextureSuffix();
                 TextureAtlasSprite base2 = map.getTextureExtry(loc2);
                 // can we manually load it?
-                if (base2 == null && ResourceHelper.exists(loc2)) {
-                    base2 = new AbstractColoredTexture(loc2, loc2) {
+                if (base2 == null && ResourceHelper.exists(loc2))
+                {
+                    base2 = new AbstractColoredTexture(loc2, loc2)
+                    {
                         @Override
-                        protected int colorPixel(int pixel, int mipmap, int pxCoord) {
+                        protected int colorPixel(int pixel, int mipmap, int pxCoord)
+                        {
                             return pixel;
                         }
                     };
@@ -154,7 +179,8 @@ public class TextureCreator implements IResourceManagerReloadListener {
                     // save in the map so it's getting reused by the others and is available
                     map.setTextureEntry(base2);
                 }
-                if (base2 != null) {
+                if (base2 != null)
+                {
                     matBase = base2;
                 }
                 sprite = controller.getTexture(matBase, location);
@@ -162,7 +188,8 @@ public class TextureCreator implements IResourceManagerReloadListener {
         }
 
         // stitch new textures
-        if (sprite != null) {
+        if (sprite != null)
+        {
             map.setTextureEntry(sprite);
         }
 
@@ -175,7 +202,8 @@ public class TextureCreator implements IResourceManagerReloadListener {
      * @param resourceManager The resource manager that reloaded.
      */
     @Override
-    public void onResourceManagerReload(@Nonnull IResourceManager resourceManager) {
+    public void onResourceManagerReload(@Nonnull IResourceManager resourceManager)
+    {
         baseTextures.clear();
         buildSprites.clear();
     }

@@ -36,7 +36,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public abstract class GuiContainerSmithsCore extends GuiContainer implements IGUIBasedComponentHost, IGUIBasedLedgerHost, IGUIBasedTabHost {
+public abstract class GuiContainerSmithsCore extends GuiContainer implements IGUIBasedComponentHost, IGUIBasedLedgerHost, IGUIBasedTabHost
+{
 
     private boolean               isInitialized = false;
     @Nonnull
@@ -51,7 +52,8 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
     @Nonnull
     private ITabManager tabs = new StandardTabManager(this);
 
-    public GuiContainerSmithsCore(@Nonnull ContainerSmithsCore container) {
+    public GuiContainerSmithsCore(@Nonnull ContainerSmithsCore container)
+    {
         super(container);
 
         uniqueUIID = container.getContainerID() + "-gui";
@@ -98,16 +100,19 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
     /**
      * Called when the mouse is clicked. Args : mouseX, mouseY, clickedButton
      *
-     * @param mouseX The absolute X-Coordinate of the mouse click
-     * @param mouseY The absolute Y-Coordinate of the mouse click
+     * @param mouseX      The absolute X-Coordinate of the mouse click
+     * @param mouseY      The absolute Y-Coordinate of the mouse click
      * @param mouseButton The mouse button that was used to perform the click
      */
     @Override
-    protected void mouseClicked (int mouseX, int mouseY, int mouseButton) throws IOException {
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
+    {
         super.mouseClicked(mouseX, mouseY, mouseButton);
 
         if (requiresForcedMouseInput())
+        {
             this.handleMouseClickedOutside(mouseX - getLocalCoordinate().getXComponent(), mouseY - getLocalCoordinate().getYComponent(), mouseButton);
+        }
 
         this.handleMouseClickedInside(mouseX - getLocalCoordinate().getXComponent(), mouseY - getLocalCoordinate().getYComponent(), mouseButton);
     }
@@ -117,12 +122,15 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
      * KeyListener.keyTyped(KeyEvent e). Args : character (character on the key), keyCode (lwjgl Keyboard key code)
      *
      * @param typedChar The char pressed
-     * @param keyCode The corresponding keycode.
+     * @param keyCode   The corresponding keycode.
      */
     @Override
-    protected void keyTyped (char typedChar, int keyCode) throws IOException {
+    protected void keyTyped(char typedChar, int keyCode) throws IOException
+    {
         if (this.handleKeyTyped(typedChar, keyCode))
+        {
             return;
+        }
 
         super.keyTyped(typedChar, keyCode);
     }
@@ -259,7 +267,8 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
             return true;
         }
 
-        for (IGUIComponent component : getLedgerManager().getLeftLedgers().values()) {
+        for (IGUIComponent component : getLedgerManager().getLeftLedgers().values())
+        {
             Coordinate2D location = component.getLocalCoordinate();
             Plane localOccupiedArea = component.getSize().Move(location.getXComponent(), location.getYComponent());
 
@@ -269,10 +278,13 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
             }
 
             if (component.handleMouseClickedInside(relativeMouseX - location.getXComponent(), relativeMouseY - location.getYComponent(), mouseButton))
+            {
                 return true;
+            }
         }
 
-        for (IGUIComponent component : getLedgerManager().getRightLedgers().values()) {
+        for (IGUIComponent component : getLedgerManager().getRightLedgers().values())
+        {
             Coordinate2D location = component.getLocalCoordinate();
             Plane localOccupiedArea = component.getSize().Move(location.getXComponent(), location.getYComponent());
 
@@ -282,7 +294,9 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
             }
 
             if (component.handleMouseClickedInside(relativeMouseX - location.getXComponent(), relativeMouseY - location.getYComponent(), mouseButton))
+            {
                 return true;
+            }
         }
 
 
@@ -293,7 +307,7 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
      * Function called when the mouse was clicked outside of this component. It is only called when the function
      * requiresForcedMouseInput() return true Either it should pass this function to its SubComponents (making sure that
      * it recalculates the location and checks if it is inside before hand, handle the Click them self or both.
-     *
+     * <p>
      * When this Component or one of its SubComponents handles the Click it should return True.
      *
      * @param relativeMouseX The relative (to the Coordinate returned by @see #getLocalCoordinate) X-Coordinate of the
@@ -301,27 +315,33 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
      * @param relativeMouseY The relative (to the Coordinate returned by @see #getLocalCoordinate) Y-Coordinate of the
      *                       mouseclick.
      * @param mouseButton    The 0-BasedIndex of the mouse button that was pressed.
-     *
      * @return True when the click has been handled, false when it did not.
      */
     @Override
-    public boolean handleMouseClickedOutside (int relativeMouseX, int relativeMouseY, int mouseButton) {
-        for (IGUIComponent component : getLedgerManager().getLeftLedgers().values()) {
-            if (component.requiresForcedMouseInput()) {
+    public boolean handleMouseClickedOutside(int relativeMouseX, int relativeMouseY, int mouseButton)
+    {
+        for (IGUIComponent component : getLedgerManager().getLeftLedgers().values())
+        {
+            if (component.requiresForcedMouseInput())
+            {
                 Coordinate2D location = component.getLocalCoordinate();
                 component.handleMouseClickedOutside(relativeMouseX - location.getXComponent(), relativeMouseY - location.getYComponent(), mouseButton);
             }
         }
 
-        for (IGUIComponent component : getLedgerManager().getRightLedgers().values()) {
-            if (component.requiresForcedMouseInput()) {
+        for (IGUIComponent component : getLedgerManager().getRightLedgers().values())
+        {
+            if (component.requiresForcedMouseInput())
+            {
                 Coordinate2D location = component.getLocalCoordinate();
                 component.handleMouseClickedOutside(relativeMouseX - location.getXComponent(), relativeMouseY - location.getYComponent(), mouseButton);
             }
         }
 
-        for (IGUIComponent component : tabs.getCurrentTab().getAllComponents().values()) {
-            if (component.requiresForcedMouseInput()) {
+        for (IGUIComponent component : tabs.getCurrentTab().getAllComponents().values())
+        {
+            if (component.requiresForcedMouseInput())
+            {
                 Coordinate2D location = component.getLocalCoordinate();
                 component.handleMouseClickedOutside(relativeMouseX - location.getXComponent(), relativeMouseY - location.getYComponent(), mouseButton);
             }
@@ -374,14 +394,20 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
     @Override
     public boolean handleKeyTyped(char key, int keyCode)
     {
-        for (IGUIComponent component : getLedgerManager().getLeftLedgers().values()) {
+        for (IGUIComponent component : getLedgerManager().getLeftLedgers().values())
+        {
             if (component.handleKeyTyped(key, keyCode))
+            {
                 return true;
+            }
         }
 
-        for (IGUIComponent component : getLedgerManager().getRightLedgers().values()) {
+        for (IGUIComponent component : getLedgerManager().getRightLedgers().values())
+        {
             if (component.handleKeyTyped(key, keyCode))
+            {
                 return true;
+            }
         }
 
         for (IGUIComponent component : tabs.getCurrentTab().getAllComponents().values())
@@ -563,7 +589,8 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
 
     @Nonnull
     @Override
-    public LinkedHashMap<String, IGUIComponent> getAllComponents () {
+    public LinkedHashMap<String, IGUIComponent> getAllComponents()
+    {
         LinkedHashMap<String, IGUIComponent> activeTabs = new LinkedHashMap<String, IGUIComponent>();
         activeTabs.put(tabs.getCurrentTab().getID(), tabs.getCurrentTab());
 
@@ -571,45 +598,64 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
     }
 
     @Nullable
-    public IGUIComponent getComponentByID (@Nonnull String uniqueUIID) {
+    public IGUIComponent getComponentByID(@Nonnull String uniqueUIID)
+    {
         if (getID().equals(uniqueUIID))
+        {
             return this;
+        }
 
         if (ledgers.getLeftLedgers().get(uniqueUIID) != null)
+        {
             return ledgers.getLeftLedgers().get(uniqueUIID);
+        }
 
         if (ledgers.getRightLedgers().get(uniqueUIID) != null)
+        {
             return ledgers.getRightLedgers().get(uniqueUIID);
+        }
 
         if (getAllComponents().get(uniqueUIID) != null)
+        {
             return getAllComponents().get(uniqueUIID);
+        }
 
         for (IGUIComponent ledgerLeftComponent : ledgers.getLeftLedgers().values())
         {
-            if (ledgerLeftComponent instanceof IGUIBasedComponentHost) {
-                IGUIComponent foundComponent = ( (IGUIBasedComponentHost) ledgerLeftComponent ).getComponentByID(uniqueUIID);
+            if (ledgerLeftComponent instanceof IGUIBasedComponentHost)
+            {
+                IGUIComponent foundComponent = ((IGUIBasedComponentHost) ledgerLeftComponent).getComponentByID(uniqueUIID);
 
                 if (foundComponent != null)
+                {
                     return foundComponent;
+                }
             }
         }
 
         for (IGUIComponent ledgerRightComponent : ledgers.getRightLedgers().values())
         {
-            if (ledgerRightComponent instanceof IGUIBasedComponentHost) {
-                IGUIComponent foundComponent = ( (IGUIBasedComponentHost) ledgerRightComponent ).getComponentByID(uniqueUIID);
+            if (ledgerRightComponent instanceof IGUIBasedComponentHost)
+            {
+                IGUIComponent foundComponent = ((IGUIBasedComponentHost) ledgerRightComponent).getComponentByID(uniqueUIID);
 
                 if (foundComponent != null)
+                {
                     return foundComponent;
+                }
             }
         }
 
-        for (IGUIComponent childComponent : getAllComponents().values()) {
-            if (childComponent instanceof IGUIBasedComponentHost) {
-                IGUIComponent foundComponent = ( (IGUIBasedComponentHost) childComponent ).getComponentByID(uniqueUIID);
+        for (IGUIComponent childComponent : getAllComponents().values())
+        {
+            if (childComponent instanceof IGUIBasedComponentHost)
+            {
+                IGUIComponent foundComponent = ((IGUIBasedComponentHost) childComponent).getComponentByID(uniqueUIID);
 
                 if (foundComponent != null)
+                {
                     return foundComponent;
+                }
             }
         }
 
@@ -622,12 +668,14 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
      * @return The currently used StandardRenderManager.
      */
     @Nonnull
-    public IRenderManager getRenderManager () {
+    public IRenderManager getRenderManager()
+    {
         return renderer;
     }
 
     @Override
-    public int getDefaultDisplayVerticalOffset() {
+    public int getDefaultDisplayVerticalOffset()
+    {
         return getTabManager().getDisplayAreaVerticalOffset();
     }
 }

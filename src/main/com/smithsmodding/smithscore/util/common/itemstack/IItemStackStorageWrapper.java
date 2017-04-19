@@ -7,12 +7,14 @@ import javax.annotation.Nonnull;
 /**
  * Created by marcf on 1/2/2017.
  */
-public interface IItemStackStorageWrapper<S> {
+public interface IItemStackStorageWrapper<S>
+{
     /**
      * Method to get a ItemStack stored on the given Index.
      *
      * @param index The index to get the Strack From.
      * @return The currently stored ItemStack on that Index. Or ItemStack.EMTPY if none is stored there.
+     *
      * @throws IndexOutOfBoundsException if index is not in the valid Range. Index smallter then 0 or Index bigger or equal size.
      */
     @Nonnull

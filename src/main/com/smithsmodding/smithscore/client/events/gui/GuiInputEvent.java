@@ -18,27 +18,32 @@ public class GuiInputEvent extends StandardNetworkableEvent
     String componentID;
     String input;
 
-    public GuiInputEvent (@Nonnull InputTypes types, @Nonnull String componentID, @Nonnull String input) {
+    public GuiInputEvent(@Nonnull InputTypes types, @Nonnull String componentID, @Nonnull String input)
+    {
         this.type = types;
         this.componentID = componentID;
         this.input = input;
     }
 
-    public GuiInputEvent () {
+    public GuiInputEvent()
+    {
     }
 
     @Nonnull
-    public InputTypes getTypes () {
+    public InputTypes getTypes()
+    {
         return type;
     }
 
     @Nonnull
-    public String getComponentID () {
+    public String getComponentID()
+    {
         return componentID;
     }
 
     @Nonnull
-    public String getInput () {
+    public String getInput()
+    {
         return input;
     }
 
@@ -49,7 +54,8 @@ public class GuiInputEvent extends StandardNetworkableEvent
      * @param pMessageBuffer The ByteBuffer from the IMessage used to Synchronize the implementing events.
      */
     @Override
-    public void readFromMessageBuffer (@Nonnull ByteBuf pMessageBuffer) {
+    public void readFromMessageBuffer(@Nonnull ByteBuf pMessageBuffer)
+    {
         type = InputTypes.values()[pMessageBuffer.readInt()];
         componentID = ByteBufUtils.readUTF8String(pMessageBuffer);
         input = ByteBufUtils.readUTF8String(pMessageBuffer);
@@ -62,13 +68,15 @@ public class GuiInputEvent extends StandardNetworkableEvent
      * @param pMessageBuffer The buffer from the IMessage
      */
     @Override
-    public void writeToMessageBuffer (@Nonnull ByteBuf pMessageBuffer) {
+    public void writeToMessageBuffer(@Nonnull ByteBuf pMessageBuffer)
+    {
         pMessageBuffer.writeInt(type.ordinal());
         ByteBufUtils.writeUTF8String(pMessageBuffer, componentID);
         ByteBufUtils.writeUTF8String(pMessageBuffer, input);
     }
 
-    public enum InputTypes {
+    public enum InputTypes
+    {
         TABCHANGED,
         BUTTONCLICKED,
         SCROLLED,

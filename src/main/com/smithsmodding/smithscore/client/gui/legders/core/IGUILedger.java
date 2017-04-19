@@ -19,7 +19,7 @@ public interface IGUILedger extends IGUIBasedComponentHost, IScissoredGuiCompone
      * @return This components host.
      */
     @Nonnull
-    IGUIBasedLedgerHost getLedgerHost ();
+    IGUIBasedLedgerHost getLedgerHost();
 
     /**
      * Method to get the primary rendered side of the Ledger.
@@ -27,7 +27,7 @@ public interface IGUILedger extends IGUIBasedComponentHost, IScissoredGuiCompone
      * @return Left when the Ledger is rendered on the left side, right when rendered on the right side.
      */
     @Nonnull
-    LedgerConnectionSide getPrimarySide ();
+    LedgerConnectionSide getPrimarySide();
 
     /**
      * Method used by the ToolTip system to dynamically get the ToolTip that is displayed when hovered over the Icon.

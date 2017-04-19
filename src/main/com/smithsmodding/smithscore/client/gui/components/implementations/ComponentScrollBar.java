@@ -38,7 +38,13 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
     private Coordinate2D            rootAnchorPixel;
     private int                     height;
 
-    public ComponentScrollBar (@Nonnull String uniqueID, @Nonnull ScrollBarComponentState state, @Nonnull IGUIBasedComponentHost parent, @Nonnull Coordinate2D rootAnchorPixel, int height) {
+    public ComponentScrollBar(
+                               @Nonnull String uniqueID,
+                               @Nonnull ScrollBarComponentState state,
+                               @Nonnull IGUIBasedComponentHost parent,
+                               @Nonnull Coordinate2D rootAnchorPixel,
+                               int height)
+    {
         this.uniqueID = uniqueID;
 
         this.parent = parent;
@@ -48,7 +54,7 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
         this.state = state;
         this.state.setComponent(this);
 
-        innerArea = new Plane(0,10,WIDTH,height - 20);
+        innerArea = new Plane(0, 10, WIDTH, height - 20);
 
         state.setCurrent(0F);
     }
@@ -59,10 +65,17 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      * @param host This ComponentHosts host. For the Root GUIObject a reference to itself will be passed in..
      */
     @Override
-    public void registerComponents (@Nonnull IGUIBasedComponentHost host) {
-        registerNewComponent(new ComponentButton(getID() + ".Buttons.Up", this, new Coordinate2D(0,0), WIDTH, 10, false, Textures.Gui.Basic.Components.Button.UPARROW));
+    public void registerComponents(@Nonnull IGUIBasedComponentHost host)
+    {
+        registerNewComponent(new ComponentButton(getID() + ".Buttons.Up", this, new Coordinate2D(0, 0), WIDTH, 10, false, Textures.Gui.Basic.Components.Button.UPARROW));
         registerNewComponent(new ComponentButton(getID() + ".Buttons.ScrollDrag", this, new Coordinate2D(0, 10), WIDTH, 10, true, Textures.Gui.Basic.Components.Button.SCROLLBAR));
-        registerNewComponent(new ComponentButton(getID() + ".Buttons.Down", this, new Coordinate2D(0, height - 10), WIDTH, 10, false, Textures.Gui.Basic.Components.Button.DOWNARROW));
+        registerNewComponent(new ComponentButton(getID() + ".Buttons.Down",
+                                                  this,
+                                                  new Coordinate2D(0, height - 10),
+                                                  WIDTH,
+                                                  10,
+                                                  false,
+                                                  Textures.Gui.Basic.Components.Button.DOWNARROW));
     }
 
     /**
@@ -71,11 +84,14 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      * @param component The new component.
      */
     @Override
-    public void registerNewComponent (@Nonnull IGUIComponent component) {
+    public void registerNewComponent(@Nonnull IGUIComponent component)
+    {
         componentHashMap.put(component.getID(), component);
 
         if (component instanceof IGUIBasedComponentHost)
-            ((IGUIBasedComponentHost) component ).registerComponents((IGUIBasedComponentHost) component);
+        {
+            ((IGUIBasedComponentHost) component).registerComponents((IGUIBasedComponentHost) component);
+        }
     }
 
     /**
@@ -85,7 +101,8 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      */
     @Override
     @Nonnull
-    public IGUIBasedComponentHost getRootGuiObject() {
+    public IGUIBasedComponentHost getRootGuiObject()
+    {
         return parent.getRootGuiObject();
     }
 
@@ -96,7 +113,8 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      */
     @Override
     @Nonnull
-    public IGUIManager getRootManager () {
+    public IGUIManager getRootManager()
+    {
         return parent.getRootManager();
     }
 
@@ -107,7 +125,8 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      */
     @Nonnull
     @Override
-    public LinkedHashMap<String, IGUIComponent> getAllComponents () {
+    public LinkedHashMap<String, IGUIComponent> getAllComponents()
+    {
         return componentHashMap;
     }
 
@@ -115,19 +134,25 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
     public IGUIComponent getComponentByID(@Nonnull String uniqueUIID)
     {
         if (getID().equals(uniqueUIID))
+        {
             return this;
+        }
 
         if (getAllComponents().get(uniqueUIID) != null)
+        {
             return getAllComponents().get(uniqueUIID);
+        }
 
-        for(IGUIComponent childComponent : getAllComponents().values())
+        for (IGUIComponent childComponent : getAllComponents().values())
         {
             if (childComponent instanceof IGUIBasedComponentHost)
             {
                 IGUIComponent foundComponent = ((IGUIBasedComponentHost) childComponent).getComponentByID(uniqueUIID);
 
                 if (foundComponent != null)
+                {
                     return foundComponent;
+                }
             }
         }
 
@@ -135,18 +160,21 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
     }
 
     @Override
-    public void drawHoveringText(List<String> textLines, int x, int y, FontRenderer font) {
+    public void drawHoveringText(List<String> textLines, int x, int y, FontRenderer font)
+    {
         getComponentHost().drawHoveringText(textLines, x, y, font);
     }
 
     @Override
     @Nonnull
-    public IRenderManager getRenderManager() {
+    public IRenderManager getRenderManager()
+    {
         return getComponentHost().getRenderManager();
     }
 
     @Override
-    public int getDefaultDisplayVerticalOffset() {
+    public int getDefaultDisplayVerticalOffset()
+    {
         return getComponentHost().getDefaultDisplayVerticalOffset();
     }
 
@@ -157,7 +185,8 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      */
     @Nonnull
     @Override
-    public String getID () {
+    public String getID()
+    {
         return uniqueID;
     }
 
@@ -170,7 +199,8 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      */
     @Nonnull
     @Override
-    public IGUIComponentState getState () {
+    public IGUIComponentState getState()
+    {
         return state;
     }
 
@@ -181,7 +211,8 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      */
     @Nonnull
     @Override
-    public IGUIBasedComponentHost getComponentHost () {
+    public IGUIBasedComponentHost getComponentHost()
+    {
         return parent;
     }
 
@@ -192,7 +223,8 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      */
     @Nonnull
     @Override
-    public Coordinate2D getGlobalCoordinate () {
+    public Coordinate2D getGlobalCoordinate()
+    {
         return parent.getGlobalCoordinate().getTranslatedCoordinate(rootAnchorPixel);
     }
 
@@ -203,7 +235,8 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      */
     @Nonnull
     @Override
-    public Coordinate2D getLocalCoordinate () {
+    public Coordinate2D getLocalCoordinate()
+    {
         return rootAnchorPixel;
     }
 
@@ -214,7 +247,8 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      */
     @Nonnull
     @Override
-    public Plane getAreaOccupiedByComponent () {
+    public Plane getAreaOccupiedByComponent()
+    {
         return new Plane(getGlobalCoordinate(), WIDTH, height);
     }
 
@@ -225,8 +259,9 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      */
     @Nonnull
     @Override
-    public Plane getSize () {
-        return new Plane(0,0,WIDTH, height);
+    public Plane getSize()
+    {
+        return new Plane(0, 0, WIDTH, height);
     }
 
     /**
@@ -237,7 +272,8 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      * @param partialTickTime The partial tick time, used to calculate fluent animations.
      */
     @Override
-    public void update (int mouseX, int mouseY, float partialTickTime) {
+    public void update(int mouseX, int mouseY, float partialTickTime)
+    {
 
     }
 
@@ -249,7 +285,8 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      * @param mouseY The current Y-Coordinate of the mouse
      */
     @Override
-    public void drawBackground (int mouseX, int mouseY) {
+    public void drawBackground(int mouseX, int mouseY)
+    {
         GlStateManager.pushMatrix();
         GuiHelper.drawColoredRect(innerArea, 0, new MinecraftColor(Colors.General.GRAY));
         GlStateManager.popMatrix();
@@ -264,7 +301,8 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      * @param mouseY The current Y-Coordinate of the mouse
      */
     @Override
-    public void drawForeground (int mouseX, int mouseY) {
+    public void drawForeground(int mouseX, int mouseY)
+    {
         //NOOP
     }
 
@@ -272,7 +310,7 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      * Function called when the mouse was clicked inside of this component. Either it should pass this function to its
      * SubComponents (making sure that it recalculates the location and checks if it is inside before hand, handle the
      * Click them self or both.
-     *
+     * <p>
      * When this Component or one of its SubComponents handles the Click it should return True.
      *
      * @param relativeMouseX The relative (to the Coordinate returned by @see #getLocalCoordinate) X-Coordinate of the
@@ -280,21 +318,25 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      * @param relativeMouseY The relative (to the Coordinate returned by @see #getLocalCoordinate) Y-Coordinate of the
      *                       mouseclick.
      * @param mouseButton    The 0-BasedIndex of the mouse button that was pressed.
-     *
      * @return True when the click has been handled, false when it did not.
      */
     @Override
-    public boolean handleMouseClickedInside (int relativeMouseX, int relativeMouseY, int mouseButton) {
-        for(IGUIComponent component : getAllComponents().values())
+    public boolean handleMouseClickedInside(int relativeMouseX, int relativeMouseY, int mouseButton)
+    {
+        for (IGUIComponent component : getAllComponents().values())
         {
             Coordinate2D location = component.getLocalCoordinate();
             Plane localOccupiedArea = component.getSize().Move(location.getXComponent(), location.getYComponent());
 
             if (!localOccupiedArea.ContainsCoordinate(relativeMouseX, relativeMouseY))
+            {
                 continue;
+            }
 
             if (component.handleMouseClickedInside(relativeMouseX - location.getXComponent(), relativeMouseY - location.getYComponent(), mouseButton))
+            {
                 return true;
+            }
         }
 
         if (innerArea.ContainsCoordinate(relativeMouseX, relativeMouseY))
@@ -311,7 +353,7 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      * Function called when the mouse was clicked outside of this component. It is only called when the function Either
      * it should pass this function to its SubComponents (making sure that it recalculates the location and checks if it
      * is inside before hand, handle the Click them self or both.
-     *
+     * <p>
      * When this Component or one of its SubComponents handles the Click it should return True.
      *
      * @param relativeMouseX The relative (to the Coordinate returned by @see #getLocalCoordinate) X-Coordinate of the
@@ -319,13 +361,15 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      * @param relativeMouseY The relative (to the Coordinate returned by @see #getLocalCoordinate) Y-Coordinate of the
      *                       mouseclick.
      * @param mouseButton    The 0-BasedIndex of the mouse button that was pressed.
-     *
      * @return True when the click has been handled, false when it did not.
      */
     @Override
-    public boolean handleMouseClickedOutside (int relativeMouseX, int relativeMouseY, int mouseButton) {
-        for (IGUIComponent component : getAllComponents().values()) {
-            if (component.requiresForcedMouseInput()) {
+    public boolean handleMouseClickedOutside(int relativeMouseX, int relativeMouseY, int mouseButton)
+    {
+        for (IGUIComponent component : getAllComponents().values())
+        {
+            if (component.requiresForcedMouseInput())
+            {
                 Coordinate2D location = component.getLocalCoordinate();
                 component.handleMouseClickedOutside(relativeMouseX - location.getXComponent(), relativeMouseY - location.getYComponent(), mouseButton);
             }
@@ -341,7 +385,8 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      * @return True when all the mouse clicks should be captured by this component.
      */
     @Override
-    public boolean requiresForcedMouseInput () {
+    public boolean requiresForcedMouseInput()
+    {
         return false;
     }
 
@@ -351,13 +396,15 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      * @param key The key that was typed.
      */
     @Override
-    public boolean handleKeyTyped(char key, int keyCode) {
+    public boolean handleKeyTyped(char key, int keyCode)
+    {
         return false;
     }
 
     @Nullable
     @Override
-    public ArrayList<String> getToolTipContent () {
+    public ArrayList<String> getToolTipContent()
+    {
         return null;
     }
 
@@ -368,7 +415,8 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      */
     @Override
     @Nonnull
-    public IGUIManager getManager () {
+    public IGUIManager getManager()
+    {
         return parent.getManager();
     }
 
@@ -378,14 +426,17 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      * @param newManager THe new IGUIManager.
      */
     @Override
-    public void setManager (@Nonnull IGUIManager newManager) {
+    public void setManager(@Nonnull IGUIManager newManager)
+    {
         parent.setManager(newManager);
     }
 
     public void onInternalButtonClick(IGUIComponent component)
     {
         if (!(component instanceof ComponentButton))
+        {
             throw new IllegalArgumentException("The given component is not a Button.");
+        }
 
         ScrollBarComponentState state = (ScrollBarComponentState) getState();
 
@@ -393,16 +444,14 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
         {
             state.onUpClick();
         }
-        else if(component.getID().endsWith(".Down"))
+        else if (component.getID().endsWith(".Down"))
         {
             state.onDownClick();
         }
-        else if(component.getID().endsWith(".ScrollDrag"))
+        else if (component.getID().endsWith(".ScrollDrag"))
         {
             state.onDragClick();
         }
-
-
     }
 
     /**
@@ -412,7 +461,8 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
      * @param partialTickTime The current partial tick time.
      */
     @Override
-    public void performAnimation (float partialTickTime) {
+    public void performAnimation(float partialTickTime)
+    {
         state.onAnimationClick(partialTickTime);
     }
 }

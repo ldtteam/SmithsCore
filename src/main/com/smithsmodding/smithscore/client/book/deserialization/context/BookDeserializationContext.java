@@ -9,17 +9,20 @@ import java.util.HashMap;
 /**
  * Created by marcf on 7/31/2016.
  */
-public final class BookDeserializationContext {
+public final class BookDeserializationContext
+{
 
     @Nonnull
     private final HashMap<ResourceLocation, IBookPage> pages = new HashMap<>();
 
     @Nonnull
-    public IBookPage getPage(@Nonnull ResourceLocation location) {
+    public IBookPage getPage(@Nonnull ResourceLocation location)
+    {
         return pages.get(location);
     }
 
-    public void registerPage(@Nonnull IBookPage page) {
+    public void registerPage(@Nonnull IBookPage page)
+    {
         pages.put(page.getPageLocation(), page);
     }
 }

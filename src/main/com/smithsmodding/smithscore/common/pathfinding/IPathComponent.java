@@ -11,10 +11,11 @@ import com.smithsmodding.smithscore.util.common.positioning.Coordinate3D;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 
-public interface IPathComponent {
+public interface IPathComponent
+{
     @Nonnull
-    Coordinate3D getLocation ();
+    Coordinate3D getLocation();
 
     @Nonnull
-    ArrayList<IPathComponent> getValidPathableNeighborComponents ();
+    ArrayList<IPathComponent> getValidPathableNeighborComponents();
 }

@@ -24,9 +24,10 @@ public class ScrollBarComponentState extends CoreComponentState
     int maximum = 100;
 
     float current = 0;
-    float target = current;
+    float target  = current;
 
-    public ScrollBarComponentState (int moveDelta, int minimum, int maximum) {
+    public ScrollBarComponentState(int moveDelta, int minimum, int maximum)
+    {
         super();
 
         this.moveDelta = moveDelta;
@@ -68,29 +69,35 @@ public class ScrollBarComponentState extends CoreComponentState
         dragButton.getLocalCoordinate().setYComponent(yOffset);
     }
 
-    public int getMinimum () {
+    public int getMinimum()
+    {
         return minimum;
     }
 
-    public void setMinimum (int minimum) {
+    public void setMinimum(int minimum)
+    {
         this.minimum = minimum;
         recalculateMoveDelta(totalStepCount);
     }
 
-    public int getMaximum () {
+    public int getMaximum()
+    {
         return maximum;
     }
 
-    public void setMaximum (int maximum) {
+    public void setMaximum(int maximum)
+    {
         this.maximum = maximum;
         recalculateMoveDelta(totalStepCount);
     }
 
-    public float getCurrent () {
+    public float getCurrent()
+    {
         return current;
     }
 
-    public void setCurrent (float current) {
+    public void setCurrent(float current)
+    {
 
         if (this.current == this.target)
         {
@@ -104,14 +111,17 @@ public class ScrollBarComponentState extends CoreComponentState
         updateDragButtonPosition();
     }
 
-    public void setTarget (float target) {
+    public void setTarget(float target)
+    {
         this.target = target;
     }
 
     public void onUpClick()
     {
         if (current == minimum)
+        {
             return;
+        }
 
         if (current - moveDelta <= minimum)
         {
@@ -132,7 +142,9 @@ public class ScrollBarComponentState extends CoreComponentState
     public void onDownClick()
     {
         if (current == maximum)
+        {
             return;
+        }
 
         if (current + moveDelta >= maximum)
         {
@@ -146,7 +158,8 @@ public class ScrollBarComponentState extends CoreComponentState
     }
 
     @Override
-    public void setComponent (@Nonnull IGUIComponent component) {
+    public void setComponent(@Nonnull IGUIComponent component)
+    {
         super.setComponent(component);
     }
 
@@ -158,12 +171,16 @@ public class ScrollBarComponentState extends CoreComponentState
         int totalScrollableHeight = host.getSize().getHeigth() - 20;
 
         if (totalScrollableHeight <= 0)
+        {
             throw new IllegalStateException("The ScrollDragButton should not be visible for such a small ScrollBar.");
+        }
 
         float pixelPerMove = totalScrollableHeight / (float) totalStepCount;
 
         if (pixelPerMove <= 0)
+        {
             throw new IllegalStateException("There are to many total steps in the ScrollBar to be able to move the drag button properly.");
+        }
 
         Coordinate2D mousePosition = ((ClientRegistry) SmithsCore.getRegistry()).getMouseManager().getLocation();
         Plane dragButtonPosition = dragButton.getAreaOccupiedByComponent();
@@ -180,7 +197,9 @@ public class ScrollBarComponentState extends CoreComponentState
         }
 
         if (delta == 0)
+        {
             return;
+        }
 
         if (delta > 0 && current + delta >= maximum)
         {
@@ -198,26 +217,34 @@ public class ScrollBarComponentState extends CoreComponentState
     public void onAnimationClick(float partialTickTime)
     {
         if (target == current)
+        {
             return;
+        }
 
         ComponentScrollBar host = (ComponentScrollBar) this.getComponent();
 
         int totalScrollableHeight = host.getSize().getHeigth() - 20;
 
         if (totalScrollableHeight <= 0)
+        {
             throw new IllegalStateException("The ScrollDragButton should not be visible for such a small ScrollBar.");
+        }
 
         float pixelPerMove = totalScrollableHeight / (float) totalStepCount;
 
         if (pixelPerMove <= 0)
+        {
             throw new IllegalStateException("There are to many total steps in the ScrollBar to be able to move the drag button properly.");
+        }
 
         if (target < current)
         {
-            float delta =  - 1 * (moveDelta / pixelPerMove);
+            float delta = -1 * (moveDelta / pixelPerMove);
 
             if (current + delta < target)
+            {
                 delta = (current - target) * -1;
+            }
 
             updateCurrent(delta);
         }
@@ -226,7 +253,9 @@ public class ScrollBarComponentState extends CoreComponentState
             float delta = (moveDelta / pixelPerMove);
 
             if (current + delta > target)
+            {
                 delta = (target - current);
+            }
 
             updateCurrent(delta);
         }

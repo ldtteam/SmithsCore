@@ -15,8 +15,8 @@ import net.minecraft.util.math.BlockPos;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-
-public class Coordinate3D {
+public class Coordinate3D
+{
     float xCoord;
     float yCoord;
     float zCoord;
@@ -26,23 +26,29 @@ public class Coordinate3D {
         this(pos.getX(), pos.getY(), pos.getZ());
     }
 
-    public Coordinate3D(float xCoord, float yCoord, float zCoord) {
+    public Coordinate3D(float xCoord, float yCoord, float zCoord)
+    {
         this.xCoord = xCoord;
         this.yCoord = yCoord;
         this.zCoord = zCoord;
     }
 
     @Nonnull
-    public static Coordinate3D fromNBT (@Nonnull NBTTagCompound compound) {
-        return new Coordinate3D(compound.getFloat(CoreReferences.NBT.Coordinates.X), compound.getFloat(CoreReferences.NBT.Coordinates.Y), compound.getFloat(CoreReferences.NBT.Coordinates.Z));
+    public static Coordinate3D fromNBT(@Nonnull NBTTagCompound compound)
+    {
+        return new Coordinate3D(compound.getFloat(CoreReferences.NBT.Coordinates.X),
+                                 compound.getFloat(CoreReferences.NBT.Coordinates.Y),
+                                 compound.getFloat(CoreReferences.NBT.Coordinates.Z));
     }
 
     @Nonnull
-    public static Coordinate3D fromBytes (@Nonnull ByteBuf pData) {
+    public static Coordinate3D fromBytes(@Nonnull ByteBuf pData)
+    {
         return new Coordinate3D(pData.readFloat(), pData.readFloat(), pData.readFloat());
     }
 
-    public void toBytes (@Nonnull ByteBuf pDataOut) {
+    public void toBytes(@Nonnull ByteBuf pDataOut)
+    {
         pDataOut.writeFloat(getXComponent());
         pDataOut.writeFloat(getYComponent());
         pDataOut.writeFloat(getZComponent());
@@ -64,7 +70,8 @@ public class Coordinate3D {
     }
 
     @Nonnull
-    public NBTTagCompound toCompound () {
+    public NBTTagCompound toCompound()
+    {
         NBTTagCompound compound = new NBTTagCompound();
 
         compound.setFloat(CoreReferences.NBT.Coordinates.X, xCoord);
@@ -81,16 +88,28 @@ public class Coordinate3D {
     }
 
     @Override
-    public boolean equals (@Nullable Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(@Nullable Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
 
         Coordinate3D that = (Coordinate3D) o;
 
-        if (xCoord != that.xCoord) return false;
-        if (yCoord != that.yCoord) return false;
+        if (xCoord != that.xCoord)
+        {
+            return false;
+        }
+        if (yCoord != that.yCoord)
+        {
+            return false;
+        }
         return zCoord == that.zCoord;
-
     }
 
     @Nonnull
@@ -105,7 +124,8 @@ public class Coordinate3D {
     }
 
     @Nonnull
-    public Coordinate3D moveCoordinate(@Nonnull EnumFacing direction, int distance) {
+    public Coordinate3D moveCoordinate(@Nonnull EnumFacing direction, int distance)
+    {
         return new Coordinate3D(toBlockPos().offset(direction, distance));
     }
 
@@ -115,7 +135,9 @@ public class Coordinate3D {
         return new BlockPos(getXComponent(), getYComponent(), getZComponent());
     }
 
-    public float getDistanceTo (@Nonnull Coordinate3D pCoordinate) {
-        return (float) Math.sqrt(Math.pow(getXComponent() - pCoordinate.getXComponent(), 2) + Math.pow(getYComponent() - pCoordinate.getYComponent(), 2) + Math.pow(getZComponent() - pCoordinate.getZComponent(), 2));
+    public float getDistanceTo(@Nonnull Coordinate3D pCoordinate)
+    {
+        return (float) Math.sqrt(Math.pow(getXComponent() - pCoordinate.getXComponent(), 2) + Math.pow(getYComponent() - pCoordinate.getYComponent(), 2) + Math.pow(
+          getZComponent() - pCoordinate.getZComponent(), 2));
     }
 }

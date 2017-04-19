@@ -13,19 +13,23 @@ package com.smithsmodding.smithscore.util.client;
 
 import javax.annotation.Nonnull;
 
-public class TextureAddressHelper {
+public class TextureAddressHelper
+{
     @Nonnull
-    public static String getTextureAddress(@Nonnull String pModID, @Nonnull String pAddress) {
+    public static String getTextureAddress(@Nonnull String pModID, @Nonnull String pAddress)
+    {
         return getTextureAddressWithModID(pModID, pAddress);
     }
 
     @Nonnull
-    public static String getTextureAddressWithModID(@Nonnull String pModID, @Nonnull String pAdress) {
+    public static String getTextureAddressWithModID(@Nonnull String pModID, @Nonnull String pAdress)
+    {
         return getTextureAddressWithModIDAndExtension(pModID, pAdress, "");
     }
 
     @Nonnull
-    public static String getTextureAddressWithModIDAndExtension(@Nonnull String pModID, @Nonnull String pAdress, @Nonnull String pExtension) {
+    public static String getTextureAddressWithModIDAndExtension(@Nonnull String pModID, @Nonnull String pAdress, @Nonnull String pExtension)
+    {
         return pModID.toLowerCase() + ":" + pAdress + pExtension;
     }
 

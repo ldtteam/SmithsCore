@@ -7,7 +7,8 @@ import javax.annotation.Nonnull;
 /**
  * Author Orion (Created on: 25.06.2016)
  */
-public interface IStructureFactory<S extends IStructure, P extends IStructurePart> {
+public interface IStructureFactory<S extends IStructure, P extends IStructurePart>
+{
 
     @Nonnull
     S generateNewStructure(@Nonnull P initialPart);

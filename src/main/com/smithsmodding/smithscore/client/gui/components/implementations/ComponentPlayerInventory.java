@@ -24,10 +24,11 @@ import java.util.List;
 /**
  * Created by Marc on 22.12.2015.
  */
-public class ComponentPlayerInventory implements IGUIBasedComponentHost {
+public class ComponentPlayerInventory implements IGUIBasedComponentHost
+{
 
-    public static int WIDTH = ContainerSmithsCore.PLAYER_INVENTORY_COLUMNS * 18 + 2 * 7;
-    public static int HEIGHT = ( ContainerSmithsCore.PLAYER_INVENTORY_ROWS + 1 ) * 18 + 5 + 2 * 7;
+    public static int WIDTH  = ContainerSmithsCore.PLAYER_INVENTORY_COLUMNS * 18 + 2 * 7;
+    public static int HEIGHT = (ContainerSmithsCore.PLAYER_INVENTORY_ROWS + 1) * 18 + 5 + 2 * 7;
 
     private String uniqueID;
     @Nonnull
@@ -38,8 +39,8 @@ public class ComponentPlayerInventory implements IGUIBasedComponentHost {
     private CoreComponentState state = new CoreComponentState(this);
 
     private Coordinate2D rootAnchorPixel;
-    private int width;
-    private int height;
+    private int          width;
+    private int          height;
 
     private MinecraftColor color;
 
@@ -47,7 +48,14 @@ public class ComponentPlayerInventory implements IGUIBasedComponentHost {
 
     private ComponentConnectionType connectionType;
 
-    public ComponentPlayerInventory (@Nonnull String uniqueID, @Nonnull IGUIBasedComponentHost parent, @Nonnull Coordinate2D rootAnchorPixel, @Nonnull MinecraftColor color, @Nonnull IInventory playerInventory, ComponentConnectionType connectionType) {
+    public ComponentPlayerInventory(
+                                     @Nonnull String uniqueID,
+                                     @Nonnull IGUIBasedComponentHost parent,
+                                     @Nonnull Coordinate2D rootAnchorPixel,
+                                     @Nonnull MinecraftColor color,
+                                     @Nonnull IInventory playerInventory,
+                                     ComponentConnectionType connectionType)
+    {
         this.uniqueID = uniqueID;
         this.parent = parent;
         this.rootAnchorPixel = rootAnchorPixel;
@@ -61,14 +69,16 @@ public class ComponentPlayerInventory implements IGUIBasedComponentHost {
     }
 
     @Override
-    public void registerComponents (IGUIBasedComponentHost host) {
+    public void registerComponents(IGUIBasedComponentHost host)
+    {
 
         ComponentBorder.CornerTypes topLeft = ComponentBorder.CornerTypes.Inwards;
         ComponentBorder.CornerTypes topRight = ComponentBorder.CornerTypes.Inwards;
         ComponentBorder.CornerTypes lowerRight = ComponentBorder.CornerTypes.Inwards;
         ComponentBorder.CornerTypes lowerLeft = ComponentBorder.CornerTypes.Inwards;
 
-        switch (connectionType) {
+        switch (connectionType)
+        {
             case BELOWDIRECTCONNECT:
                 topLeft = ComponentBorder.CornerTypes.StraightVertical;
                 topRight = ComponentBorder.CornerTypes.StraightVertical;
@@ -121,57 +131,83 @@ public class ComponentPlayerInventory implements IGUIBasedComponentHost {
 
         registerNewComponent(new ComponentBorder(uniqueID + ".Background", this, new Coordinate2D(0, 0), width, height, color, topLeft, topRight, lowerRight, lowerLeft));
 
-        for (int r = 0; r < ContainerSmithsCore.PLAYER_INVENTORY_ROWS; r++) {
-            for (int c = 0; c < ContainerSmithsCore.PLAYER_INVENTORY_COLUMNS; c++) {
-                registerNewComponent(new ComponentSlot(uniqueID + ".Slot.inventory." + ( r * 9 + c ), new SlotComponentState(null, ( r * 9 + c ), playerInventory, null), this, new Coordinate2D(c * 18 + 7, r * 18 + 7), color));
+        for (int r = 0; r < ContainerSmithsCore.PLAYER_INVENTORY_ROWS; r++)
+        {
+            for (int c = 0; c < ContainerSmithsCore.PLAYER_INVENTORY_COLUMNS; c++)
+            {
+                registerNewComponent(new ComponentSlot(uniqueID + ".Slot.inventory." + (r * 9 + c),
+                                                        new SlotComponentState(null, (r * 9 + c), playerInventory, null),
+                                                        this,
+                                                        new Coordinate2D(c * 18 + 7, r * 18 + 7),
+                                                        color));
             }
         }
 
-        for (int c = 0; c < ContainerSmithsCore.PLAYER_INVENTORY_COLUMNS; c++) {
-            registerNewComponent(new ComponentSlot(uniqueID + ".Slot.Hotbar." + ( c ), new SlotComponentState(null, ( 3 * 9 + c ), playerInventory, null), this, new Coordinate2D(c * 18 + 7, 3 * 18 + 5 + 7), color));
+        for (int c = 0; c < ContainerSmithsCore.PLAYER_INVENTORY_COLUMNS; c++)
+        {
+            registerNewComponent(new ComponentSlot(uniqueID + ".Slot.Hotbar." + (c),
+                                                    new SlotComponentState(null, (3 * 9 + c), playerInventory, null),
+                                                    this,
+                                                    new Coordinate2D(c * 18 + 7, 3 * 18 + 5 + 7),
+                                                    color));
         }
     }
 
     @Override
-    public void registerNewComponent (@Nonnull IGUIComponent component) {
+    public void registerNewComponent(@Nonnull IGUIComponent component)
+    {
         if (component instanceof IGUIBasedComponentHost)
-            ( (IGUIBasedComponentHost) component ).registerNewComponent(component);
+        {
+            ((IGUIBasedComponentHost) component).registerNewComponent(component);
+        }
 
         componentHashMap.put(component.getID(), component);
     }
 
     @Override
     @Nonnull
-    public IGUIBasedComponentHost getRootGuiObject() {
+    public IGUIBasedComponentHost getRootGuiObject()
+    {
         return parent.getRootGuiObject();
     }
 
     @Override
     @Nonnull
-    public IGUIManager getRootManager () {
+    public IGUIManager getRootManager()
+    {
         return parent.getManager();
     }
 
     @Nonnull
     @Override
-    public LinkedHashMap<String, IGUIComponent> getAllComponents () {
+    public LinkedHashMap<String, IGUIComponent> getAllComponents()
+    {
         return componentHashMap;
     }
 
     @Nullable
-    public IGUIComponent getComponentByID (@Nonnull String uniqueUIID) {
+    public IGUIComponent getComponentByID(@Nonnull String uniqueUIID)
+    {
         if (getID().equals(uniqueUIID))
+        {
             return this;
+        }
 
         if (getAllComponents().get(uniqueUIID) != null)
+        {
             return getAllComponents().get(uniqueUIID);
+        }
 
-        for (IGUIComponent childComponent : getAllComponents().values()) {
-            if (childComponent instanceof IGUIBasedComponentHost) {
-                IGUIComponent foundComponent = ( (IGUIBasedComponentHost) childComponent ).getComponentByID(uniqueUIID);
+        for (IGUIComponent childComponent : getAllComponents().values())
+        {
+            if (childComponent instanceof IGUIBasedComponentHost)
+            {
+                IGUIComponent foundComponent = ((IGUIBasedComponentHost) childComponent).getComponentByID(uniqueUIID);
 
                 if (foundComponent != null)
+                {
                     return foundComponent;
+                }
             }
         }
 
@@ -179,61 +215,70 @@ public class ComponentPlayerInventory implements IGUIBasedComponentHost {
     }
 
     @Override
-    public void drawHoveringText(@Nullable List<String> textLines, int x, int y, @Nonnull  FontRenderer font) {
+    public void drawHoveringText(@Nullable List<String> textLines, int x, int y, @Nonnull FontRenderer font)
+    {
         getComponentHost().drawHoveringText(textLines, x, y, font);
     }
 
     @Override
     @Nonnull
-    public IRenderManager getRenderManager() {
+    public IRenderManager getRenderManager()
+    {
         return getComponentHost().getRenderManager();
     }
 
     @Override
-    public int getDefaultDisplayVerticalOffset() {
+    public int getDefaultDisplayVerticalOffset()
+    {
         return getComponentHost().getDefaultDisplayVerticalOffset();
     }
 
-
     @Nonnull
     @Override
-    public String getID () {
+    public String getID()
+    {
         return uniqueID;
     }
 
     @Nonnull
     @Override
-    public IGUIComponentState getState () {
+    public IGUIComponentState getState()
+    {
         return state;
     }
 
     @Nonnull
     @Override
-    public IGUIBasedComponentHost getComponentHost() {
+    public IGUIBasedComponentHost getComponentHost()
+    {
         return parent.getComponentHost();
     }
 
     @Nonnull
     @Override
-    public Coordinate2D getGlobalCoordinate () {
+    public Coordinate2D getGlobalCoordinate()
+    {
         return parent.getGlobalCoordinate().getTranslatedCoordinate(getLocalCoordinate());
     }
 
     @Nonnull
     @Override
-    public Coordinate2D getLocalCoordinate () {
+    public Coordinate2D getLocalCoordinate()
+    {
         return rootAnchorPixel;
     }
 
     @Nonnull
     @Override
-    public Plane getAreaOccupiedByComponent () {
+    public Plane getAreaOccupiedByComponent()
+    {
         return new Plane(getGlobalCoordinate(), width, height);
     }
 
     @Nonnull
     @Override
-    public Plane getSize () {
+    public Plane getSize()
+    {
         return new Plane(0, 0, width, height);
     }
 
@@ -245,54 +290,64 @@ public class ComponentPlayerInventory implements IGUIBasedComponentHost {
      * @param partialTickTime The partial tick time, used to calculate fluent animations.
      */
     @Override
-    public void update(int mouseX, int mouseY, float partialTickTime) {
+    public void update(int mouseX, int mouseY, float partialTickTime)
+    {
         //NOOP
     }
 
     @Override
-    public void drawBackground (int mouseX, int mouseY) {
+    public void drawBackground(int mouseX, int mouseY)
+    {
         // Under normal use this method is not called as the rendermanager takes care of SubComponents and their rendering
     }
 
     @Override
-    public void drawForeground (int mouseX, int mouseY) {
+    public void drawForeground(int mouseX, int mouseY)
+    {
         // Under normal use this method is not called as the rendermanager takes care of SubComponents and their rendering
     }
 
     @Override
-    public boolean handleMouseClickedInside (int relativeMouseX, int relativeMouseY, int mouseButton) {
+    public boolean handleMouseClickedInside(int relativeMouseX, int relativeMouseY, int mouseButton)
+    {
         return false;
     }
 
     @Override
-    public boolean handleMouseClickedOutside (int relativeMouseX, int relativeMouseY, int mouseButton) {
+    public boolean handleMouseClickedOutside(int relativeMouseX, int relativeMouseY, int mouseButton)
+    {
         return false;
     }
 
     @Override
-    public boolean requiresForcedMouseInput () {
+    public boolean requiresForcedMouseInput()
+    {
         return false;
     }
 
     @Override
-    public boolean handleKeyTyped(char key, int keyCode) {
+    public boolean handleKeyTyped(char key, int keyCode)
+    {
         return false;
     }
 
     @Nonnull
     @Override
-    public ArrayList<String> getToolTipContent () {
+    public ArrayList<String> getToolTipContent()
+    {
         return new ArrayList<String>();
     }
 
     @Override
     @Nonnull
-    public IGUIManager getManager () {
+    public IGUIManager getManager()
+    {
         return parent.getManager();
     }
 
     @Override
-    public void setManager (@Nonnull IGUIManager newManager) {
+    public void setManager(@Nonnull IGUIManager newManager)
+    {
         parent.setManager(newManager);
     }
 }

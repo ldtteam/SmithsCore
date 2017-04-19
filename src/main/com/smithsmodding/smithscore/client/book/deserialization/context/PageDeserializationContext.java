@@ -10,7 +10,8 @@ import java.util.HashMap;
 /**
  * Created by marcf on 7/31/2016.
  */
-public final class PageDeserializationContext {
+public final class PageDeserializationContext
+{
 
     private final GuiBookSmithsCore gui;
     private final IBookPage         page;
@@ -18,32 +19,38 @@ public final class PageDeserializationContext {
 
     private int componentIndex = 0;
 
-    public PageDeserializationContext(@Nonnull GuiBookSmithsCore gui,@Nonnull IBookPage page) {
+    public PageDeserializationContext(@Nonnull GuiBookSmithsCore gui, @Nonnull IBookPage page)
+    {
         this.gui = gui;
         this.page = page;
     }
 
     @Nonnull
-    public GuiBookSmithsCore getGui() {
+    public GuiBookSmithsCore getGui()
+    {
         return gui;
     }
 
     @Nonnull
-    public IBookPage getPage() {
+    public IBookPage getPage()
+    {
         return page;
     }
 
     @Nonnull
-    public Object getContextData(@Nonnull ResourceLocation key) {
+    public Object getContextData(@Nonnull ResourceLocation key)
+    {
         return contextData.get(key);
     }
 
-    public void registerContextData(ResourceLocation key, Object obj) {
+    public void registerContextData(ResourceLocation key, Object obj)
+    {
         contextData.put(key, obj);
     }
 
     @Nonnull
-    public int getNextComponentIndex() {
+    public int getNextComponentIndex()
+    {
         return componentIndex++;
     }
 }

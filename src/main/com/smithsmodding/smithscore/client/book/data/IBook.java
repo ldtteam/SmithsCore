@@ -8,7 +8,8 @@ import java.util.HashMap;
 /**
  * Created by marcf on 7/30/2016.
  */
-public interface IBook {
+public interface IBook
+{
 
     @Nonnull
     ResourceLocation getBookLocation();

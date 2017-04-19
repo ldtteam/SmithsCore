@@ -19,25 +19,37 @@ import javax.annotation.Nonnull;
 /**
  * Created by Marc on 08.02.2016.
  */
-public class ComponentButton extends CoreComponent{
+public class ComponentButton extends CoreComponent
+{
 
     Object contents;
 
     boolean triggeredLastUpdate;
     boolean continuesTriggering;
 
-    public ComponentButton (@Nonnull String uniqueID, @Nonnull IGUIBasedComponentHost parent, @Nonnull Coordinate2D rootAnchorPixel, int width, int height, boolean continuesTriggering, @Nonnull Object contents) {
+    public ComponentButton(
+                            @Nonnull String uniqueID,
+                            @Nonnull IGUIBasedComponentHost parent,
+                            @Nonnull Coordinate2D rootAnchorPixel,
+                            int width,
+                            int height,
+                            boolean continuesTriggering,
+                            @Nonnull Object contents)
+    {
         super(uniqueID, parent, new ButtonComponentState(), rootAnchorPixel, width, height);
 
         this.contents = contents;
         this.continuesTriggering = continuesTriggering;
 
         if (!(contents instanceof String) && !(contents instanceof CustomResource) && !(contents instanceof ItemStack))
+        {
             throw new IllegalArgumentException("The given Contents are not Supported, either pass a String for text, a CustomResource for Icons, or an ItemStack for stacks.");
+        }
     }
 
     @Override
-    public void update (int mouseX, int mouseY, float partialTickTime) {
+    public void update(int mouseX, int mouseY, float partialTickTime)
+    {
         if (((ButtonComponentState) getState()).isClicked())
         {
             if (org.lwjgl.input.Mouse.isButtonDown(0))
@@ -64,11 +76,14 @@ public class ComponentButton extends CoreComponent{
     }
 
     @Override
-    public void drawBackground (int mouseX, int mouseY) {
-        if (((ButtonComponentState) getState()).isClicked()) {
-            GuiHelper.drawRectangleStretched(Textures.Gui.Basic.Components.Button.Clicked.TEXTURE, width, height, new Coordinate2D(0,0));
+    public void drawBackground(int mouseX, int mouseY)
+    {
+        if (((ButtonComponentState) getState()).isClicked())
+        {
+            GuiHelper.drawRectangleStretched(Textures.Gui.Basic.Components.Button.Clicked.TEXTURE, width, height, new Coordinate2D(0, 0));
         }
-        else if (!getState().isEnabled()){
+        else if (!getState().isEnabled())
+        {
             StandardRenderManager.popColorFromRenderStack();
             GlStateManager.disableAlpha();
             GlStateManager.disableBlend();
@@ -79,8 +94,9 @@ public class ComponentButton extends CoreComponent{
             GlStateManager.enableAlpha();
             StandardRenderManager.pushColorOnRenderStack(new MinecraftColor(MinecraftColor.darkGray));
         }
-        else {
-            GuiHelper.drawRectangleStretched(Textures.Gui.Basic.Components.Button.Standard.TEXTURE, width, height, new Coordinate2D(0,0));
+        else
+        {
+            GuiHelper.drawRectangleStretched(Textures.Gui.Basic.Components.Button.Standard.TEXTURE, width, height, new Coordinate2D(0, 0));
         }
 
         drawContents();
@@ -95,14 +111,14 @@ public class ComponentButton extends CoreComponent{
 
             GuiHelper.drawResource((CustomResource) contents, contentX, contentY);
         }
-        else if(contents instanceof String)
+        else if (contents instanceof String)
         {
             int contentX = (this.width - Minecraft.getMinecraft().fontRendererObj.getStringWidth((String) contents)) / 2;
             int contentY = (this.height - Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT) / 2;
 
             Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow((String) contents, contentX, contentY, (new MinecraftColor(MinecraftColor.WHITE)).getRGB());
         }
-        else if(contents instanceof ItemStack)
+        else if (contents instanceof ItemStack)
         {
             int contentX = (this.width - 16) / 2;
             int contentY = (this.height - 16) / 2;
@@ -118,9 +134,12 @@ public class ComponentButton extends CoreComponent{
     }
 
     @Override
-    public boolean handleMouseClickedInside (int relativeMouseX, int relativeMouseY, int mouseButton) {
+    public boolean handleMouseClickedInside(int relativeMouseX, int relativeMouseY, int mouseButton)
+    {
         if (!state.isEnabled() || !state.isVisible() || mouseButton != 0)
+        {
             return false;
+        }
 
         ((ButtonComponentState) getState()).setClicked(true);
 

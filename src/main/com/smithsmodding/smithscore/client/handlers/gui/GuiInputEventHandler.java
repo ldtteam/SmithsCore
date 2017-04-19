@@ -10,17 +10,22 @@ import javax.annotation.Nonnull;
 /**
  * Created by Marc on 26.01.2016.
  */
-public class GuiInputEventHandler {
+public class GuiInputEventHandler
+{
 
     @SubscribeEvent
-    public void onInputOnClient (@Nonnull GuiInputEvent event) {
-        if (!( event.getPlayer().openContainer instanceof ContainerSmithsCore )) {
-            SmithsCore.getLogger().error("Cannot process input as the open container on player: " + event.getPlayer().getDisplayName().toString() + " is not a SmithsCore compatible Container!");
+    public void onInputOnClient(@Nonnull GuiInputEvent event)
+    {
+        if (!(event.getPlayer().openContainer instanceof ContainerSmithsCore))
+        {
+            SmithsCore.getLogger()
+              .error("Cannot process input as the open container on player: " + event.getPlayer().getDisplayName().toString() + " is not a SmithsCore compatible Container!");
             return;
         }
 
-        if (event.getTypes() == GuiInputEvent.InputTypes.TABCHANGED) {
-            ( (ContainerSmithsCore) event.getPlayer().openContainer ).onTabChanged(event.getInput());
+        if (event.getTypes() == GuiInputEvent.InputTypes.TABCHANGED)
+        {
+            ((ContainerSmithsCore) event.getPlayer().openContainer).onTabChanged(event.getInput());
             return;
         }
 

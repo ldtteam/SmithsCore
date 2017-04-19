@@ -7,14 +7,17 @@ import javax.vecmath.Vector3f;
  * Author Orion (Created on: 17.07.2016)
  * Replacement version of the old OBJ System in MC Forge used until the ModelGroup hiding works.
  */
-public class SmithsCoreOBJTextureCoordinate {
+public class SmithsCoreOBJTextureCoordinate
+{
     public float u, v, w;
 
-    public SmithsCoreOBJTextureCoordinate() {
+    public SmithsCoreOBJTextureCoordinate()
+    {
         this(0.0f, 0.0f, 1.0f);
     }
 
-    public SmithsCoreOBJTextureCoordinate(float u, float v, float w) {
+    public SmithsCoreOBJTextureCoordinate(float u, float v, float w)
+    {
         this.u = u;
         this.v = v;
         this.w = w;
@@ -31,7 +34,8 @@ public class SmithsCoreOBJTextureCoordinate {
     }
 
     @Nonnull
-    public static SmithsCoreOBJTextureCoordinate[] getDefaultUVs() {
+    public static SmithsCoreOBJTextureCoordinate[] getDefaultUVs()
+    {
         SmithsCoreOBJTextureCoordinate[] texCoords = new SmithsCoreOBJTextureCoordinate[4];
         texCoords[0] = new SmithsCoreOBJTextureCoordinate(0.0f, 0.0f, 1.0f);
         texCoords[1] = new SmithsCoreOBJTextureCoordinate(1.0f, 0.0f, 1.0f);
@@ -41,7 +45,8 @@ public class SmithsCoreOBJTextureCoordinate {
     }
 
     @Nonnull
-    public Vector3f getData() {
+    public Vector3f getData()
+    {
         return new Vector3f(this.u, this.v, this.w);
     }
 }

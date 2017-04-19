@@ -26,13 +26,19 @@ import java.util.List;
 /**
  * Author Marc (Created on: 29.05.2016)
  */
-public class BakedMultiComponentModel implements IPerspectiveAwareModel {
-    final TextureAtlasSprite particleTexture;
-    final ItemCameraTransforms cameraTransforms;
-    final ItemOverrideList overrides;
+public class BakedMultiComponentModel implements IPerspectiveAwareModel
+{
+    final TextureAtlasSprite                                                   particleTexture;
+    final ItemCameraTransforms                                                 cameraTransforms;
+    final ItemOverrideList                                                     overrides;
     final ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> trsrTransforms;
 
-    public BakedMultiComponentModel(@Nonnull TextureAtlasSprite particleTexture, @Nonnull ItemCameraTransforms transforms, @Nonnull ItemOverrideList overrides, @Nonnull ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> trsrTransforms) {
+    public BakedMultiComponentModel(
+                                     @Nonnull TextureAtlasSprite particleTexture,
+                                     @Nonnull ItemCameraTransforms transforms,
+                                     @Nonnull ItemOverrideList overrides,
+                                     @Nonnull ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> trsrTransforms)
+    {
         this.particleTexture = particleTexture;
         this.cameraTransforms = transforms;
         this.overrides = overrides;
@@ -41,46 +47,54 @@ public class BakedMultiComponentModel implements IPerspectiveAwareModel {
 
     @Nonnull
     @Override
-    public List<BakedQuad> getQuads(@Nonnull IBlockState state, @Nonnull EnumFacing side, long rand) {
+    public List<BakedQuad> getQuads(@Nonnull IBlockState state, @Nonnull EnumFacing side, long rand)
+    {
         return DummyModel.BAKED_MODEL.getQuads(state, side, rand);
     }
 
     @Override
-    public boolean isAmbientOcclusion() {
+    public boolean isAmbientOcclusion()
+    {
         return false;
     }
 
     @Override
-    public boolean isGui3d() {
+    public boolean isGui3d()
+    {
         return false;
     }
 
     @Override
-    public boolean isBuiltInRenderer() {
+    public boolean isBuiltInRenderer()
+    {
         return false;
     }
 
     @Override
     @Nonnull
-    public TextureAtlasSprite getParticleTexture() {
+    public TextureAtlasSprite getParticleTexture()
+    {
         return particleTexture;
     }
 
     @Override
     @Nonnull
-    public ItemCameraTransforms getItemCameraTransforms() {
+    public ItemCameraTransforms getItemCameraTransforms()
+    {
         return cameraTransforms;
     }
 
     @Override
     @Nonnull
-    public ItemOverrideList getOverrides() {
+    public ItemOverrideList getOverrides()
+    {
         return overrides;
     }
 
     @Nonnull
     @Override
-    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(@Nonnull ItemCameraTransforms.TransformType cameraTransformType) {
+    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(@Nonnull ItemCameraTransforms.TransformType cameraTransformType)
+    {
         return IPerspectiveAwareModel.MapWrapper.handlePerspective(this, trsrTransforms, cameraTransformType);
     }
 
@@ -88,15 +102,19 @@ public class BakedMultiComponentModel implements IPerspectiveAwareModel {
     {
         final String modelType;
 
-        public BakedComponentModelItemOverride(@Nonnull IBakedModel model, @Nonnull String modelType) {
+        public BakedComponentModelItemOverride(@Nonnull IBakedModel model, @Nonnull String modelType)
+        {
             super(model);
             this.modelType = modelType;
         }
 
         @Override
-        public boolean matchedItemStack(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull EntityLivingBase entity) {
+        public boolean matchedItemStack(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull EntityLivingBase entity)
+        {
             if (!stack.hasTagCompound())
+            {
                 stack.setTagCompound(new NBTTagCompound());
+            }
 
             stack.getTagCompound().setString(CoreReferences.NBT.IItemProperties.TARGET, modelType);
 
