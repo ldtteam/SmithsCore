@@ -90,7 +90,6 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
         if (SmithsCore.isInDevenvironment())
         {
             //Running only in test environment
-
             SmithsCore.getLogger().warn("Serializing gui.");
             BufferedWriter writer = null;
             try
