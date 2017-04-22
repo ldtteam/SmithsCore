@@ -5,6 +5,7 @@ import com.smithsmodding.smithscore.common.player.management.PlayerManager;
 import com.smithsmodding.smithscore.common.proxy.CoreCommonProxy;
 import com.smithsmodding.smithscore.common.registry.CommonRegistry;
 import com.smithsmodding.smithscore.util.CoreReferences;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -36,6 +37,8 @@ public class SmithsCore {
 
     private static boolean isInDevEnvironment = Boolean.parseBoolean(System.getProperties().getProperty("SmithsCore.Dev", "false"));
 
+    private static boolean isInObfuscatedEnvironment = !(boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+
     // Private variable for the Sided registry
     @SidedProxy(clientSide = "com.smithsmodding.smithscore.client.registry.ClientRegistry", serverSide = "com.smithsmodding.smithscore.common.registry.CommonRegistry")
     private static CommonRegistry iRegistry;
@@ -58,7 +61,8 @@ public class SmithsCore {
     public void preInit(FMLPreInitializationEvent event) {
         Stopwatch watch = Stopwatch.createStarted();
 
-        if (isInDevenvironment()){
+        if (isInDevEnvironment())
+        {
             getLogger().warn(CoreReferences.LogMarkers.PREINIT, "");
             getLogger().warn(CoreReferences.LogMarkers.PREINIT, "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             getLogger().warn(CoreReferences.LogMarkers.PREINIT, "SmithsCore starting in Dev mode. Current active Features:");
@@ -83,9 +87,24 @@ public class SmithsCore {
         getLogger().info(CoreReferences.LogMarkers.PREINIT, "SmithsCore Pre-Init completed after: " + milliseconds + " mS.");
     }
 
-    public static final boolean isInDevenvironment() {return isInDevEnvironment; }
+    /**
+     * Method to check if SmithsCore should execute highly unstable features or log additional data.
+     *
+     * @return True when the Development flag is set, false when not.
+     */
+    public static final boolean isInDevEnvironment() {return isInDevEnvironment || isIsInObfuscatedEnvironment(); }
 
     public static final Logger getLogger() { return iLogger; }
+
+    /**
+     * Method to check if SmithsCore is running in a deobfuscated environment
+     *
+     * @return True when SmithsCore is running in a deobfuscated environment.
+     */
+    public static final boolean isIsInObfuscatedEnvironment()
+    {
+        return isInObfuscatedEnvironment;
+    }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {

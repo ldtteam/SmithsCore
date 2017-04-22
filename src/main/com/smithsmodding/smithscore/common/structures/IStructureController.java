@@ -173,7 +173,7 @@ public interface IStructureController<S extends IStructure, P extends IStructure
 
     static boolean checkIfComponentStillConnected(@Nonnull IStructure structure, @Nonnull IStructurePart target, @Nonnull IStructurePart splitter)
     {
-        if (SmithsCore.isInDevenvironment())
+        if (SmithsCore.isInDevEnvironment())
         {
             SmithsCore.getLogger().info("Starting connection search between: " + structure.getMasterLocation().toString() + " to " + target.getLocation().toString());
         }

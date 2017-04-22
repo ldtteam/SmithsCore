@@ -110,7 +110,7 @@ public final class StructureRegistry {
             structures.put(dimensionId, new LinkedHashMap<>());
 
         try {
-            if (SmithsCore.isInDevenvironment())
+            if (SmithsCore.isInDevEnvironment())
                 SmithsCore.getLogger().info("Loading structures from: " + dimensionFile.getName());
 
             FileInputStream inputStream = new FileInputStream(dimensionFile);
