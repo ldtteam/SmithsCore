@@ -224,6 +224,12 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
         return this;
     }
 
+    @Override
+    public void setComponentHost(@Nonnull final IGUIBasedComponentHost host)
+    {
+        //NOOP, This is the root of the component tree.
+    }
+
     @Nonnull
     @Override
     public Coordinate2D getGlobalCoordinate()

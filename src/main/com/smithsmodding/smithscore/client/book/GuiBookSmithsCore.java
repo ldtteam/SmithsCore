@@ -240,6 +240,12 @@ public class GuiBookSmithsCore extends GuiScreen implements IGUIBasedComponentHo
     }
 
     @Override
+    public void setComponentHost(@Nonnull final IGUIBasedComponentHost host)
+    {
+        //NOOP, This is the root of the component tree.
+    }
+
+    @Override
     @Nonnull
     public Coordinate2D getGlobalCoordinate()
     {
