@@ -71,7 +71,7 @@ public class InformationLedger extends CoreLedger
     /**
      * Method used by the rendering and animation system to determine the max size of the Ledger.
      *
-     * @return An int bigger then 16 plus the icon width that describes the maximum width of the Ledger when expanded.
+     * @return An int bigger then 16 plus the icon componentWidth that describes the maximum componentWidth of the Ledger when expanded.
      */
     @Override
     public int getMaxWidth()
@@ -82,7 +82,7 @@ public class InformationLedger extends CoreLedger
     /**
      * Method used by the rendering and animation system to determine the max size of the Ledger.
      *
-     * @return An int bigger then 16 plus the icon width that describes the maximum height of the Ledger when expanded.
+     * @return An int bigger then 16 plus the icon componentWidth that describes the maximum componentHeight of the Ledger when expanded.
      */
     @Override
     public int getMaxHeight()

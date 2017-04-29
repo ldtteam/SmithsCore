@@ -87,15 +87,17 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
 
         Keyboard.enableRepeatEvents(true);
 
-        if (SmithsCore.isInDevenvironment())
+        if (SmithsCore.isInDevEnvironment())
         {
             //Running only in test environment
 
             SmithsCore.getLogger().warn("Serializing gui.");
+            FileWriter file = null;
             BufferedWriter writer = null;
             try
             {
-                writer = new BufferedWriter(new FileWriter("./" + getID() + ".json"));
+                file = new FileWriter("./" + getID() + ".json");
+                writer = new BufferedWriter(file);
                 writer.write((new Gson()).toJson(tabs));
             }
             catch (IOException e)
@@ -113,6 +115,11 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
                     if (writer != null)
                     {
                         writer.close();
+                    }
+
+                    if (file != null)
+                    {
+                        file.close();
                     }
                 }
                 catch (IOException e)

@@ -125,7 +125,7 @@ public class CustomResource
      * @param pIconLocation The Texturelocation for the first resource. Usually this is the location of the IIcon, but in this case it would be the gui parts texture location
      * @param pLeft         The U Index inside the texture file
      * @param pTop          The V Index inside the texture file
-     * @param pWidth        The width of the Resource
+     * @param pWidth        The componentWidth of the Resource
      * @param pHeight       The Height of the Resource
      */
     public CustomResource(@Nonnull String pInternalName, @Nonnull String pIconLocation, int pLeft, int pTop, int pWidth, int pHeight)
@@ -142,7 +142,7 @@ public class CustomResource
      * @param pColor        The MinecraftColor instance used as color.
      * @param pLeft         The U Index inside the texture file
      * @param pTop          The V Index inside the texture file
-     * @param pWidth        The width of the Resource
+     * @param pWidth        The componentWidth of the Resource
      * @param pHeight       The Height of the Resource
      */
     public CustomResource(@Nonnull String pInternalName, @Nonnull String pIconLocation, @Nonnull MinecraftColor pColor, int pLeft, int pTop, int pWidth, int pHeight)
@@ -234,9 +234,9 @@ public class CustomResource
     }
 
     /**
-     * Function to get the width of the primary resource that this CustomResource represents.
+     * Function to get the componentWidth of the primary resource that this CustomResource represents.
      *
-     * @return The width of the resource in the source.
+     * @return The componentWidth of the resource in the source.
      */
     public int getWidth()
     {
@@ -244,9 +244,9 @@ public class CustomResource
     }
 
     /**
-     * Function to get the height of the primary resource that this CustomResource represents.
+     * Function to get the componentHeight of the primary resource that this CustomResource represents.
      *
-     * @return The height of the resource in the source.
+     * @return The componentHeight of the resource in the source.
      */
     public int getHeight()
     {

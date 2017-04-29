@@ -30,11 +30,11 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
     private String uniqueID;
     @Nonnull
     private LinkedHashMap<String, IGUIComponent> componentHashMap = new LinkedHashMap<String, IGUIComponent>();
-    private IGUIBasedComponentHost parent;
-    private IGUIComponentState     state;
-    private Coordinate2D           rootAnchorPixel;
-    private int                    height;
-    private int                    width;
+    private transient IGUIBasedComponentHost parent;
+    private           IGUIComponentState     state;
+    private           Coordinate2D           rootAnchorPixel;
+    private           int                    height;
+    private           int                    width;
 
     public ComponentScrollableArea(
                                     @Nonnull String uniqueID,
@@ -94,6 +94,12 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
     public IGUIBasedComponentHost getComponentHost()
     {
         return parent;
+    }
+
+    @Override
+    public void setComponentHost(@Nonnull final IGUIBasedComponentHost host)
+    {
+        this.parent = host;
     }
 
     /**

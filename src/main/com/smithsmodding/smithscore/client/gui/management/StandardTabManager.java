@@ -159,9 +159,9 @@ public class StandardTabManager implements ITabManager
     }
 
     /**
-     * Method to get the width of a Tab Selector
+     * Method to get the componentWidth of a Tab Selector
      *
-     * @return The width of a Tab Selector. Vanilla standard is 28.
+     * @return The componentWidth of a Tab Selector. Vanilla standard is 28.
      */
     @Override
     public int getTabSelectorWidth()
@@ -170,9 +170,9 @@ public class StandardTabManager implements ITabManager
     }
 
     /**
-     * Method to get the height of a Tab Selector.
+     * Method to get the componentHeight of a Tab Selector.
      *
-     * @return The height of a Tab Selector. Vanilla standard is 30. Due to border mechanics default is 33.
+     * @return The componentHeight of a Tab Selector. Vanilla standard is 30. Due to border mechanics default is 33.
      */
     @Override
     public int getTabSelectorHeight()

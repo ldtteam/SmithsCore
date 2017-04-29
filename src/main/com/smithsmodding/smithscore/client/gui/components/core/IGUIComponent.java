@@ -47,6 +47,13 @@ public interface IGUIComponent
     IGUIBasedComponentHost getComponentHost();
 
     /**
+     * Method used to set the component host of this component.
+     *
+     * @param host The new host.
+     */
+    void setComponentHost(@Nonnull IGUIBasedComponentHost host);
+
+    /**
      * Method to get the rootAnchorPixel location as seen globally by the render system of OpenGL.
      *
      * @return The location of the top left pixel of this component

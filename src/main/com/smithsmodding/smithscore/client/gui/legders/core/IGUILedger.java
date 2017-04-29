@@ -21,6 +21,8 @@ public interface IGUILedger extends IGUIBasedComponentHost, IScissoredGuiCompone
     @Nonnull
     IGUIBasedLedgerHost getLedgerHost();
 
+    void setLedgerHost(@Nonnull IGUIBasedLedgerHost host);
+
     /**
      * Method to get the primary rendered side of the Ledger.
      *
