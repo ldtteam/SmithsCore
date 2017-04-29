@@ -15,11 +15,13 @@ import java.util.ArrayList;
 /**
  * Author Marc (Created on: 04.06.2016)
  */
-public class PreBakedComponentOverrideList extends ItemOverrideList {
+public class PreBakedComponentOverrideList extends ItemOverrideList
+{
 
     private final ImmutableList<PreBakedItemOverride> overrides;
 
-    public PreBakedComponentOverrideList(@Nonnull ImmutableList<PreBakedItemOverride> overrides) {
+    public PreBakedComponentOverrideList(@Nonnull ImmutableList<PreBakedItemOverride> overrides)
+    {
         super(new ArrayList<>());
 
         this.overrides = overrides;
@@ -27,10 +29,15 @@ public class PreBakedComponentOverrideList extends ItemOverrideList {
 
     @Override
     @Nonnull
-    public IBakedModel handleItemState(@Nonnull IBakedModel originalModel, @Nonnull ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity) {
+    public IBakedModel handleItemState(@Nonnull IBakedModel originalModel, @Nonnull ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity)
+    {
         for (PreBakedItemOverride override : overrides)
+        {
             if (override.matchedItemStack(stack, world, entity))
+            {
                 return override.getModel();
+            }
+        }
 
         return originalModel;
     }

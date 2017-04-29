@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
  * Created by Orion
  * Created on 02.12.2015
  * 10:59
- *
+ * <p>
  * Copyrighted according to Project specific license
  */
 public interface IGUIComponentState
@@ -17,7 +17,7 @@ public interface IGUIComponentState
     @Nonnull
     IGUIComponent getComponent();
 
-    void setComponent (@Nonnull IGUIComponent component);
+    void setComponent(@Nonnull IGUIComponent component);
 
     /**
      * Method to retrieve the enabled state of the component, when the component is disabked it will be rendered darker

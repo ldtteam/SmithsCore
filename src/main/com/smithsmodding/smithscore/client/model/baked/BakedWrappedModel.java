@@ -19,69 +19,82 @@ import java.util.List;
 /**
  * Author Marc (Created on: 09.06.2016)
  */
-public class BakedWrappedModel implements IBakedModel {
+public class BakedWrappedModel implements IBakedModel
+{
     private final IBakedModel parentModel;
 
-    public BakedWrappedModel(@Nonnull IBakedModel parentModel) {
+    public BakedWrappedModel(@Nonnull IBakedModel parentModel)
+    {
         this.parentModel = parentModel;
     }
 
     @Nonnull
     @Override
-    public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
+    public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
+    {
         return parentModel.getQuads(state, side, rand);
     }
 
     @Override
-    public boolean isAmbientOcclusion() {
+    public boolean isAmbientOcclusion()
+    {
         return parentModel.isAmbientOcclusion();
     }
 
     @Override
-    public boolean isGui3d() {
+    public boolean isGui3d()
+    {
         return parentModel.isGui3d();
     }
 
     @Override
-    public boolean isBuiltInRenderer() {
+    public boolean isBuiltInRenderer()
+    {
         return parentModel.isBuiltInRenderer();
     }
 
     @Nonnull
     @Override
-    public TextureAtlasSprite getParticleTexture() {
+    public TextureAtlasSprite getParticleTexture()
+    {
         return parentModel.getParticleTexture();
     }
 
     @Nonnull
     @Override
-    public ItemCameraTransforms getItemCameraTransforms() {
+    public ItemCameraTransforms getItemCameraTransforms()
+    {
         return parentModel.getItemCameraTransforms();
     }
 
     @Nonnull
     @Override
-    public ItemOverrideList getOverrides() {
+    public ItemOverrideList getOverrides()
+    {
         return parentModel.getOverrides();
     }
 
     @Nonnull
-    public IBakedModel getParentModel() {
+    public IBakedModel getParentModel()
+    {
         return parentModel;
     }
 
-    public static class PerspectiveAware extends BakedWrappedModel implements IPerspectiveAwareModel {
+    public static class PerspectiveAware extends BakedWrappedModel implements IPerspectiveAwareModel
+    {
 
         private final ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transformations;
 
-        public PerspectiveAware(@Nonnull IBakedModel parentModel, @Nonnull ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transformations) {
+        public PerspectiveAware(@Nonnull IBakedModel parentModel, @Nonnull ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transformations)
+        {
             super(parentModel);
             this.transformations = transformations;
         }
 
         @Nonnull
         @Override
-        public Pair<? extends IBakedModel, Matrix4f> handlePerspective(@Nonnull ItemCameraTransforms.TransformType cameraTransformType) {
+        public Pair<? extends IBakedModel, Matrix4f> handlePerspective(@Nonnull ItemCameraTransforms.TransformType cameraTransformType)
+        {
             return IPerspectiveAwareModel.MapWrapper.handlePerspective(getParentModel(), transformations, cameraTransformType);
         }
     }

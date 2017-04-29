@@ -11,12 +11,21 @@ import javax.annotation.Nonnull;
 /**
  * Created by marcf on 12/28/2015.
  */
-public class ComponentLabel extends CoreComponent {
+public class ComponentLabel extends CoreComponent
+{
     protected String         displayedText;
     protected MinecraftColor color;
     private   FontRenderer   renderer;
 
-    public ComponentLabel(@Nonnull String uniqueID, @Nonnull IGUIBasedComponentHost root, @Nonnull IGUIComponentState state, @Nonnull Coordinate2D localCoordinate, @Nonnull MinecraftColor color, @Nonnull FontRenderer renderer, @Nonnull String displayedText) {
+    public ComponentLabel(
+                           @Nonnull String uniqueID,
+                           @Nonnull IGUIBasedComponentHost root,
+                           @Nonnull IGUIComponentState state,
+                           @Nonnull Coordinate2D localCoordinate,
+                           @Nonnull MinecraftColor color,
+                           @Nonnull FontRenderer renderer,
+                           @Nonnull String displayedText)
+    {
         super(uniqueID, root, state, localCoordinate, renderer.getStringWidth(displayedText), renderer.FONT_HEIGHT);
 
         this.displayedText = displayedText;
@@ -32,7 +41,8 @@ public class ComponentLabel extends CoreComponent {
      * @param partialTickTime The partial tick time, used to calculate fluent animations.
      */
     @Override
-    public void update(int mouseX, int mouseY, float partialTickTime) {
+    public void update(int mouseX, int mouseY, float partialTickTime)
+    {
         //NOOP
     }
 
@@ -46,8 +56,9 @@ public class ComponentLabel extends CoreComponent {
      * @param mouseY The current Y-Coordinate of the mouse
      */
     @Override
-    public void drawBackground(int mouseX, int mouseY) {
-        renderer.drawStringWithShadow(displayedText, 0,0, color.getRGB());
+    public void drawBackground(int mouseX, int mouseY)
+    {
+        renderer.drawStringWithShadow(displayedText, 0, 0, color.getRGB());
     }
 
     /**
@@ -60,7 +71,8 @@ public class ComponentLabel extends CoreComponent {
      * @param mouseY The current Y-Coordinate of the mouse
      */
     @Override
-    public void drawForeground(int mouseX, int mouseY) {
+    public void drawForeground(int mouseX, int mouseY)
+    {
         //NOOP
     }
 }

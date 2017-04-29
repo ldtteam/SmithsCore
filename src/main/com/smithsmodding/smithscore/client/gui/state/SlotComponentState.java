@@ -11,13 +11,15 @@ import javax.annotation.Nonnull;
 /**
  * Created by Marc on 22.12.2015.
  */
-public class SlotComponentState extends CoreComponentState {
+public class SlotComponentState extends CoreComponentState
+{
 
-    private int slotIndex;
-    private IInventory relevantInventory;
+    private int                slotIndex;
+    private IInventory         relevantInventory;
     private TextureAtlasSprite sprite;
 
-    public SlotComponentState(@Nonnull ComponentSlot component, @Nonnull Slot slot, @Nonnull IItemStorage inventory, TextureAtlasSprite sprite) {
+    public SlotComponentState(@Nonnull ComponentSlot component, @Nonnull Slot slot, @Nonnull IItemStorage inventory, TextureAtlasSprite sprite)
+    {
         this(component, slot.getSlotIndex(), inventory, sprite);
     }
 
@@ -26,7 +28,8 @@ public class SlotComponentState extends CoreComponentState {
         this(component, slotIndex, new IItemStorage.IInventoryWrapper(inventory), sprite);
     }
 
-    public SlotComponentState (@Nonnull ComponentSlot component, int slotIndex, IInventory inventory, TextureAtlasSprite sprite) {
+    public SlotComponentState(@Nonnull ComponentSlot component, int slotIndex, IInventory inventory, TextureAtlasSprite sprite)
+    {
         super(component);
 
         this.slotIndex = slotIndex;
@@ -34,7 +37,8 @@ public class SlotComponentState extends CoreComponentState {
         this.sprite = sprite;
     }
 
-    public SlotComponentState(@Nonnull ComponentSlot component, @Nonnull Slot slot, IInventory inventory, TextureAtlasSprite sprite) {
+    public SlotComponentState(@Nonnull ComponentSlot component, @Nonnull Slot slot, IInventory inventory, TextureAtlasSprite sprite)
+    {
         this(component, slot.getSlotIndex(), inventory, sprite);
     }
 
@@ -43,7 +47,8 @@ public class SlotComponentState extends CoreComponentState {
      *
      * @return True when the SlotComponent should render the holo sprite.
      */
-    public boolean requiresHoloRendering () {
+    public boolean requiresHoloRendering()
+    {
         return relevantInventory.getStackInSlot(slotIndex) == null;
     }
 
@@ -53,7 +58,8 @@ public class SlotComponentState extends CoreComponentState {
      * @return Null when no sprite should be rendered, or a sprite that should be rendered when requiresHoloRendering()
      * is true.
      */
-    public TextureAtlasSprite getHolographicSprite () {
+    public TextureAtlasSprite getHolographicSprite()
+    {
         return sprite;
     }
 }

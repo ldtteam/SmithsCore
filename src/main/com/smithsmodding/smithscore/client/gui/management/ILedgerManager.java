@@ -17,7 +17,6 @@ public interface ILedgerManager
     @Nonnull
     IGUIBasedLedgerHost getHost();
 
-
     void registerLedgerRightSide(@Nonnull IGUILedger ledger);
 
     void registerLedgerLeftSide(@Nonnull IGUILedger ledger);
@@ -36,13 +35,12 @@ public interface ILedgerManager
     /**
      * Method returns the Global coorindate of the RootAnchor pixel of the given Ledger (if it exists on the given side
      * else null)
-     *
+     * <p>
      * For a Ledger on the left side of the gui it will return the top most right pixel that is visible.
      * For a Ledher on the right side of the gui it will return the top most left pixel that is visible.
      *
-     * @param side The side you want a Ledger coordinate for.
+     * @param side     The side you want a Ledger coordinate for.
      * @param uniqueID The unique ID of the ledger.
-     *
      * @return See method description.
      */
     @Nonnull
@@ -54,5 +52,5 @@ public interface ILedgerManager
      * @param ledger The ledger in which was clicked, either to indicate that this one should be opened (and a other one
      *               closed) or this one should be closed.
      */
-    void onLedgerClickedInside (@Nonnull IGUILedger ledger);
+    void onLedgerClickedInside(@Nonnull IGUILedger ledger);
 }

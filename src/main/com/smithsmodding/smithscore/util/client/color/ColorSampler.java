@@ -11,35 +11,44 @@ import java.util.HashMap;
 /**
  * color Sampler to retrieve Colors from a ItemStack as well as converting a color to the Minecraft Chat
  * equivalent.
- *
+ * <p>
  * Created by Orion
  * Created on 14.06.2015
  * 11:27
- *
+ * <p>
  * Copyrighted according to Project specific license
  */
-public class ColorSampler {
+public class ColorSampler
+{
 
     //Cache of the Relative MinecraftColors to TextFormatting.
     private static HashMap<MinecraftColor, TextFormatting> iMappedColors;
 
     /**
      * Generates a MinecraftColor based on the ItemStack given.
-     *
+     * <p>
      * It registers a PlaceHolder as IIcon by calling the the registerIcons method on the Item in the ItemStack.
      * Then it will check if the newly registered IIcon is a IconPlaceHolder, if so it will attempt to calculate an
      * Average color based on the pixels in the Image.
-     *
+     * <p>
      * If the process fails for some reason it will return White
      *
      * @param stack The Stack to analyze.
      * @return A color based on the Pixels in the IIcon of the ItemStack or White if the process fails.
      */
     @Nonnull
-    public static MinecraftColor getColorSampleFromItemStack(@Nonnull ItemStack stack) {
-        try {
-            return calculateAverageMinecraftColor(Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, null, null).getParticleTexture().getFrameTextureData(0));
-        } catch (Exception e) {
+    public static MinecraftColor getColorSampleFromItemStack(@Nonnull ItemStack stack)
+    {
+        try
+        {
+            return calculateAverageMinecraftColor(Minecraft.getMinecraft()
+                                                    .getRenderItem()
+                                                    .getItemModelWithOverrides(stack, null, null)
+                                                    .getParticleTexture()
+                                                    .getFrameTextureData(0));
+        }
+        catch (Exception e)
+        {
             return new MinecraftColor(16777215);
         }
     }
@@ -53,21 +62,27 @@ public class ColorSampler {
      * @return A Minecraft color that is the average RGB value of the Pixels in the Image with its Alpha value being 255
      */
     @Nonnull
-    public static MinecraftColor calculateAverageMinecraftColor(@Nonnull int[][] pixelData) {
+    public static MinecraftColor calculateAverageMinecraftColor(@Nonnull int[][] pixelData)
+    {
         long tSumR = 0, tSumG = 0, tSumB = 0;
 
         int tCountedPixels = 0;
 
-        for (int tXPos = 0; tXPos < pixelData.length; tXPos++) {
+        for (int tXPos = 0; tXPos < pixelData.length; tXPos++)
+        {
             if (pixelData[tXPos] == null)
+            {
                 continue;
+            }
 
-            for (int tYPos = 0; tYPos < pixelData[tXPos].length; tYPos++) {
+            for (int tYPos = 0; tYPos < pixelData[tXPos].length; tYPos++)
+            {
                 int tRGB = pixelData[tXPos][tYPos];
 
                 MinecraftColor tPixel = new MinecraftColor(tRGB);
 
-                if (tPixel.getAlpha() > 0) {
+                if (tPixel.getAlpha() > 0)
+                {
                     tSumR += tPixel.getRed();
                     tSumG += tPixel.getGreen();
                     tSumB += tPixel.getBlue();
@@ -77,7 +92,8 @@ public class ColorSampler {
             }
         }
 
-        if (tCountedPixels == 0) {
+        if (tCountedPixels == 0)
+        {
             SmithsCore.getLogger().info("No pixels counted!");
             return new MinecraftColor(255, 255, 255);
         }
@@ -94,18 +110,25 @@ public class ColorSampler {
      * @return The Converted TextFormatting
      */
     @Nonnull
-    public static TextFormatting getChatMinecraftColorSample(@Nonnull MinecraftColor pSource) {
+    public static TextFormatting getChatMinecraftColorSample(@Nonnull MinecraftColor pSource)
+    {
         if (iMappedColors == null)
+        {
             initializeEnumChatFromattingMinecraftColors();
+        }
 
         double tCurrentDistance = -1D;
         TextFormatting tCurrentFormatting = null;
 
-        for (MinecraftColor tMinecraftColor : iMappedColors.keySet()) {
-            if (MinecraftColorDistance(pSource, tMinecraftColor) < tCurrentDistance) {
+        for (MinecraftColor tMinecraftColor : iMappedColors.keySet())
+        {
+            if (MinecraftColorDistance(pSource, tMinecraftColor) < tCurrentDistance)
+            {
                 tCurrentDistance = MinecraftColorDistance(pSource, tMinecraftColor);
                 tCurrentFormatting = iMappedColors.get(tMinecraftColor);
-            } else if (tCurrentDistance < 0) {
+            }
+            else if (tCurrentDistance < 0)
+            {
                 tCurrentDistance = MinecraftColorDistance(pSource, tMinecraftColor);
                 tCurrentFormatting = iMappedColors.get(tMinecraftColor);
             }
@@ -115,7 +138,7 @@ public class ColorSampler {
 
     /**
      * Function used to initialize the color to formatting cache.
-     *
+     * <p>
      * It leaves black out, cause all conversions will else return Black.
      */
     private static void initializeEnumChatFromattingMinecraftColors()
@@ -144,10 +167,10 @@ public class ColorSampler {
 
     /**
      * Calculates the distance between two Colors.
-     *
+     * <p>
      * It determines which of the RGB Channels is by far the strongest in the First color and then creates and abstract
      * numerical distance between the two Colors.
-     *
+     * <p>
      * I once knew why this works, but not anymore. Yet it works for the conversion from MinecraftColor to EnumChat-
      * Formatting so i am keeping it. :D
      *
@@ -155,24 +178,34 @@ public class ColorSampler {
      * @param pMinecraftColor2 color 2
      * @return The Distance in Double that describes the distance between two colors.
      */
-    private static double MinecraftColorDistance(@Nonnull MinecraftColor pMinecraftColor1, @Nonnull MinecraftColor pMinecraftColor2) {
-        if ((pMinecraftColor1.getRed() > pMinecraftColor1.getBlue() * 2) && (pMinecraftColor1.getRed() > pMinecraftColor1.getGreen() * 2)) {
+    private static double MinecraftColorDistance(@Nonnull MinecraftColor pMinecraftColor1, @Nonnull MinecraftColor pMinecraftColor2)
+    {
+        if ((pMinecraftColor1.getRed() > pMinecraftColor1.getBlue() * 2) && (pMinecraftColor1.getRed() > pMinecraftColor1.getGreen() * 2))
+        {
             if ((pMinecraftColor1.getRed() > pMinecraftColor2.getRed()))
+            {
                 return pMinecraftColor1.getRed() - pMinecraftColor2.getRed();
+            }
 
             return pMinecraftColor2.getRed() - pMinecraftColor1.getRed();
         }
 
-        if ((pMinecraftColor1.getBlue() > pMinecraftColor1.getRed() * 2) && (pMinecraftColor1.getBlue() > pMinecraftColor1.getGreen() * 2)) {
+        if ((pMinecraftColor1.getBlue() > pMinecraftColor1.getRed() * 2) && (pMinecraftColor1.getBlue() > pMinecraftColor1.getGreen() * 2))
+        {
             if ((pMinecraftColor1.getBlue() > pMinecraftColor2.getBlue()))
+            {
                 return pMinecraftColor1.getBlue() - pMinecraftColor2.getBlue();
+            }
 
             return pMinecraftColor2.getBlue() - pMinecraftColor1.getBlue();
         }
 
-        if ((pMinecraftColor1.getGreen() > pMinecraftColor1.getBlue() * 2) && (pMinecraftColor1.getGreen() > pMinecraftColor1.getRed() * 2)) {
+        if ((pMinecraftColor1.getGreen() > pMinecraftColor1.getBlue() * 2) && (pMinecraftColor1.getGreen() > pMinecraftColor1.getRed() * 2))
+        {
             if ((pMinecraftColor1.getGreen() > pMinecraftColor2.getGreen()))
+            {
                 return pMinecraftColor1.getGreen() - pMinecraftColor2.getGreen();
+            }
 
             return pMinecraftColor2.getGreen() - pMinecraftColor1.getGreen();
         }

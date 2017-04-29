@@ -9,7 +9,8 @@ import javax.annotation.Nonnull;
 /**
  * Created by Marc on 03.01.2016.
  */
-public interface ICustomDebugInformationBlock {
+public interface ICustomDebugInformationBlock
+{
     /**
      * Method to handle displaying or removing of additional information on the F3 Screen.
      *
@@ -17,5 +18,5 @@ public interface ICustomDebugInformationBlock {
      * @param worldIn The world
      * @param pos     Position of the block the player is looking at.
      */
-    void handleDebugInformation (@Nonnull RenderGameOverlayEvent.Text event, @Nonnull World worldIn, @Nonnull BlockPos pos);
+    void handleDebugInformation(@Nonnull RenderGameOverlayEvent.Text event, @Nonnull World worldIn, @Nonnull BlockPos pos);
 }

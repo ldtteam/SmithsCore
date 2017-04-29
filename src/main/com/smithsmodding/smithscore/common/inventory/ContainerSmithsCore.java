@@ -19,12 +19,13 @@ import javax.annotation.Nonnull;
  * Created by Orion
  * Created on 22.11.2015
  * 22:46
- *
+ * <p>
  * Copyrighted according to Project specific license
  */
-public abstract class ContainerSmithsCore extends Container implements IContainerHost {
+public abstract class ContainerSmithsCore extends Container implements IContainerHost
+{
 
-    public static final int PLAYER_INVENTORY_ROWS = 3;
+    public static final int PLAYER_INVENTORY_ROWS    = 3;
     public static final int PLAYER_INVENTORY_COLUMNS = 9;
 
     private IGUIManager    manager;
@@ -33,9 +34,10 @@ public abstract class ContainerSmithsCore extends Container implements IContaine
     private String containerID;
 
     private IItemStorage containerInventory;
-    private IInventory playerInventory;
+    private IInventory   playerInventory;
 
-    public ContainerSmithsCore(@Nonnull String containerID, @Nonnull IContainerHost host, @Nonnull IItemStorage containerInventory, @Nonnull EntityPlayer playerMP) {
+    public ContainerSmithsCore(@Nonnull String containerID, @Nonnull IContainerHost host, @Nonnull IItemStorage containerInventory, @Nonnull EntityPlayer playerMP)
+    {
         this.containerID = containerID;
         this.host = host;
         this.manager = new RelayBasedGUIManager(host, this);
@@ -45,7 +47,9 @@ public abstract class ContainerSmithsCore extends Container implements IContaine
         this.manager.onGuiOpened(playerMP.getUniqueID());
 
         if (this.host.isRemote())
+        {
             return;
+        }
 
         SmithsCore.getRegistry().getCommonBus().post(new ContainerGuiOpenedEvent(playerMP, this));
     }
@@ -60,27 +64,33 @@ public abstract class ContainerSmithsCore extends Container implements IContaine
      */
     @Override
     @Nonnull
-    public String getContainerID() {
+    public String getContainerID()
+    {
         return containerID;
     }
 
     @Override
-    public boolean isRemote() {
+    public boolean isRemote()
+    {
         return host.isRemote();
     }
 
     @Nonnull
-    public IItemStorage getContainerInventory() {
+    public IItemStorage getContainerInventory()
+    {
         return containerInventory;
     }
 
     @Nonnull
-    public IInventory getPlayerInventory() {
+    public IInventory getPlayerInventory()
+    {
         return playerInventory;
     }
 
-    public void onInput(GuiInputEvent.InputTypes types, @Nonnull String componentID, @Nonnull String input) {
-        if (types == GuiInputEvent.InputTypes.TABCHANGED) {
+    public void onInput(GuiInputEvent.InputTypes types, @Nonnull String componentID, @Nonnull String input)
+    {
+        if (types == GuiInputEvent.InputTypes.TABCHANGED)
+        {
             this.onTabChanged(input);
             return;
         }
@@ -116,22 +126,31 @@ public abstract class ContainerSmithsCore extends Container implements IContaine
     }
 
     @Override
-    public ItemStack transferStackInSlot(@Nonnull EntityPlayer entityPlayer, int slotIndex) {
+    public ItemStack transferStackInSlot(@Nonnull EntityPlayer entityPlayer, int slotIndex)
+    {
         ItemStack newItemStack = ItemStack.EMPTY;
         Slot slot = inventorySlots.get(slotIndex);
-        if (slot != null && slot.getHasStack()) {
+        if (slot != null && slot.getHasStack())
+        {
             ItemStack itemStack = slot.getStack();
             newItemStack = itemStack.copy();
-            if (slotIndex < containerInventory.getSizeInventory()) {
-                if (!this.mergeItemStack(itemStack, containerInventory.getSizeInventory(), inventorySlots.size(), false)) {
+            if (slotIndex < containerInventory.getSizeInventory())
+            {
+                if (!this.mergeItemStack(itemStack, containerInventory.getSizeInventory(), inventorySlots.size(), false))
+                {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.mergeItemStack(itemStack, 0, containerInventory.getSizeInventory(), false)) {
+            }
+            else if (!this.mergeItemStack(itemStack, 0, containerInventory.getSizeInventory(), false))
+            {
                 return ItemStack.EMPTY;
             }
-            if (itemStack.getCount() == 0 || itemStack.isEmpty()) {
+            if (itemStack.getCount() == 0 || itemStack.isEmpty())
+            {
                 slot.putStack(ItemStack.EMPTY);
-            } else {
+            }
+            else
+            {
                 slot.onSlotChanged();
             }
         }
@@ -165,24 +184,31 @@ public abstract class ContainerSmithsCore extends Container implements IContaine
     }
 
     @Override
-    protected boolean mergeItemStack(@Nonnull ItemStack itemStack, int slotMin, int slotMax, boolean ascending) {
+    protected boolean mergeItemStack(@Nonnull ItemStack itemStack, int slotMin, int slotMax, boolean ascending)
+    {
         boolean slotFound = false;
         int currentSlotIndex = ascending ? slotMax - 1 : slotMin;
         Slot slot;
         ItemStack stackInSlot;
-        if (itemStack.isStackable()) {
-            while (itemStack.getCount() > 0 && (!ascending && currentSlotIndex < slotMax || ascending && currentSlotIndex >= slotMin)) {
+        if (itemStack.isStackable())
+        {
+            while (itemStack.getCount() > 0 && (!ascending && currentSlotIndex < slotMax || ascending && currentSlotIndex >= slotMin))
+            {
                 slot = this.inventorySlots.get(currentSlotIndex);
                 stackInSlot = slot.getStack();
-                if (slot.isItemValid(itemStack) && ItemStackHelper.equalsIgnoreStackSize(itemStack, stackInSlot)) {
+                if (slot.isItemValid(itemStack) && ItemStackHelper.equalsIgnoreStackSize(itemStack, stackInSlot))
+                {
                     int combinedStackSize = stackInSlot.getCount() + itemStack.getCount();
                     int slotStackSizeLimit = Math.min(stackInSlot.getMaxStackSize(), slot.getSlotStackLimit());
-                    if (combinedStackSize <= slotStackSizeLimit) {
+                    if (combinedStackSize <= slotStackSizeLimit)
+                    {
                         itemStack.setCount(0);
                         stackInSlot.setCount(combinedStackSize);
                         slot.onSlotChanged();
                         slotFound = true;
-                    } else if (stackInSlot.getCount() < slotStackSizeLimit) {
+                    }
+                    else if (stackInSlot.getCount() < slotStackSizeLimit)
+                    {
                         itemStack.shrink(slotStackSizeLimit - stackInSlot.getCount());
                         stackInSlot.setCount(slotStackSizeLimit);
                         slot.onSlotChanged();
@@ -192,15 +218,19 @@ public abstract class ContainerSmithsCore extends Container implements IContaine
                 currentSlotIndex += ascending ? -1 : 1;
             }
         }
-        if (itemStack.getCount() > 0) {
+        if (itemStack.getCount() > 0)
+        {
             currentSlotIndex = ascending ? slotMax - 1 : slotMin;
-            while (!ascending && currentSlotIndex < slotMax || ascending && currentSlotIndex >= slotMin) {
+            while (!ascending && currentSlotIndex < slotMax || ascending && currentSlotIndex >= slotMin)
+            {
                 slot = this.inventorySlots.get(currentSlotIndex);
                 stackInSlot = slot.getStack();
-                if (slot.isItemValid(itemStack) && stackInSlot.isEmpty()) {
+                if (slot.isItemValid(itemStack) && stackInSlot.isEmpty())
+                {
                     slot.putStack(ItemStackHelper.cloneItemStack(itemStack, Math.min(itemStack.getCount(), slot.getSlotStackLimit())));
                     slot.onSlotChanged();
-                    if (!slot.getStack().isEmpty()) {
+                    if (!slot.getStack().isEmpty())
+                    {
                         itemStack.shrink(slot.getStack().getCount());
                         slotFound = true;
                     }

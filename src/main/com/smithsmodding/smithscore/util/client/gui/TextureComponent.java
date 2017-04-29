@@ -15,11 +15,12 @@ import javax.annotation.Nonnull;
 /**
  * A Part of a Texture.
  */
-public class TextureComponent {
+public class TextureComponent
+{
 
-    public int iU = 0;
-    public int iV = 0;
-    public int iWidth = 0;
+    public int iU      = 0;
+    public int iV      = 0;
+    public int iWidth  = 0;
     public int iHeight = 0;
 
     //The Translation that has to be done after the Rotation.
@@ -42,7 +43,8 @@ public class TextureComponent {
      * @param pRotation            The UIRotation that has to be done to this Component fit.
      * @param pRelativeTranslation The Translation that has to be done before the Render but after the rotation to make this Component fit.
      */
-    public TextureComponent(@Nonnull String pAddress, int pU, int pV, int pWidth, int pHeight, @Nonnull UIRotation pRotation, @Nonnull Coordinate2D pRelativeTranslation) {
+    public TextureComponent(@Nonnull String pAddress, int pU, int pV, int pWidth, int pHeight, @Nonnull UIRotation pRotation, @Nonnull Coordinate2D pRelativeTranslation)
+    {
         iAddress = pAddress;
         iU = pU;
         iV = pV;
@@ -65,11 +67,12 @@ public class TextureComponent {
     /**
      * Standard constructor for a TextureComponent
      *
-     * @param pResource CustomResource describing this Component.
-     * @param pRotation The UIRotation that has to be done to this Component fit.
+     * @param pResource            CustomResource describing this Component.
+     * @param pRotation            The UIRotation that has to be done to this Component fit.
      * @param pRelativeTranslation The Translation that has to be done before the Render but after the rotation to make this Component fit.
      */
-    public TextureComponent(@Nonnull CustomResource pResource, @Nonnull UIRotation pRotation, @Nonnull Coordinate2D pRelativeTranslation) {
+    public TextureComponent(@Nonnull CustomResource pResource, @Nonnull UIRotation pRotation, @Nonnull Coordinate2D pRelativeTranslation)
+    {
         iAddress = pResource.getPrimaryLocation();
         iU = pResource.getU();
         iV = pResource.getV();

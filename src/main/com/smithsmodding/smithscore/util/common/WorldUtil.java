@@ -10,16 +10,20 @@ import javax.annotation.Nonnull;
 /**
  * Author Orion (Created on: 04.07.2016)
  */
-public class WorldUtil {
+public class WorldUtil
+{
 
     @Nonnull
-    public static IBlockState getBlockStateForSideAndFacing(@Nonnull World world, @Nonnull BlockPos blockPos, @Nonnull EnumFacing hitFacing, @Nonnull EnumFacing direction) {
+    public static IBlockState getBlockStateForSideAndFacing(@Nonnull World world, @Nonnull BlockPos blockPos, @Nonnull EnumFacing hitFacing, @Nonnull EnumFacing direction)
+    {
         return world.getBlockState(getBlockPosForPerspective(blockPos, hitFacing, direction));
     }
 
     @Nonnull
-    public static BlockPos getBlockPosForPerspective(@Nonnull BlockPos pos, @Nonnull EnumFacing hitFacing, @Nonnull EnumFacing direction) {
-        switch (hitFacing) {
+    public static BlockPos getBlockPosForPerspective(@Nonnull BlockPos pos, @Nonnull EnumFacing hitFacing, @Nonnull EnumFacing direction)
+    {
+        switch (hitFacing)
+        {
             case NORTH:
                 return getBlockPosForNorthHit(pos, direction);
             case SOUTH:
@@ -34,8 +38,10 @@ public class WorldUtil {
     }
 
     @Nonnull
-    private static BlockPos getBlockPosForNorthHit(@Nonnull BlockPos pos, @Nonnull EnumFacing direction) {
-        switch (direction) {
+    private static BlockPos getBlockPosForNorthHit(@Nonnull BlockPos pos, @Nonnull EnumFacing direction)
+    {
+        switch (direction)
+        {
             case NORTH:
                 return pos.offset(EnumFacing.SOUTH, 1);
             case SOUTH:
@@ -50,14 +56,16 @@ public class WorldUtil {
     }
 
     @Nonnull
-    private static BlockPos getBlockPosForSouthHit(@Nonnull BlockPos pos, @Nonnull EnumFacing direction) {
+    private static BlockPos getBlockPosForSouthHit(@Nonnull BlockPos pos, @Nonnull EnumFacing direction)
+    {
         return pos.offset(direction, 1);
     }
 
     @Nonnull
     private static BlockPos getBlockPosForWestHit(@Nonnull BlockPos pos, @Nonnull EnumFacing direction)
     {
-        switch (direction) {
+        switch (direction)
+        {
             case NORTH:
                 return pos.offset(EnumFacing.EAST, 1);
             case SOUTH:
@@ -74,7 +82,8 @@ public class WorldUtil {
     @Nonnull
     private static BlockPos getBlockPosForEastHit(@Nonnull BlockPos pos, @Nonnull EnumFacing direction)
     {
-        switch (direction) {
+        switch (direction)
+        {
             case NORTH:
                 return pos.offset(EnumFacing.WEST, 1);
             case SOUTH:

@@ -14,10 +14,11 @@ import java.util.UUID;
  * Created by Orion
  * Created on 01.12.2015
  * 18:13
- *
+ * <p>
  * Copyrighted according to Project specific license
  */
-public class RelayBasedGUIManager implements IGUIManager {
+public class RelayBasedGUIManager implements IGUIManager
+{
 
     IGUIManagerProvider host;
     ContainerSmithsCore containerSmithsCore;
@@ -34,7 +35,8 @@ public class RelayBasedGUIManager implements IGUIManager {
      * @param playerId The unique ID of the player that opens the UI.
      */
     @Override
-    public void onGuiOpened(@Nonnull UUID playerId) {
+    public void onGuiOpened(@Nonnull UUID playerId)
+    {
         host.getManager().onGuiOpened(playerId);
     }
 
@@ -44,7 +46,8 @@ public class RelayBasedGUIManager implements IGUIManager {
      * @param playerID The unique ID of the player that closed the UI.
      */
     @Override
-    public void onGUIClosed(@Nonnull UUID playerID) {
+    public void onGUIClosed(@Nonnull UUID playerID)
+    {
         host.getManager().onGUIClosed(playerID);
     }
 
@@ -52,12 +55,12 @@ public class RelayBasedGUIManager implements IGUIManager {
      * Method used by components that support overriding tooltips to grab the new tooltip string.
      *
      * @param component The component requesting the override.
-     *
      * @return A string displayed as tooltip for the IGUIComponent during rendering.
      */
     @Override
     @Nonnull
-    public String getCustomToolTipDisplayString (@Nonnull IGUIComponent component) {
+    public String getCustomToolTipDisplayString(@Nonnull IGUIComponent component)
+    {
         return host.getManager().getCustomToolTipDisplayString(component);
     }
 
@@ -65,11 +68,11 @@ public class RelayBasedGUIManager implements IGUIManager {
      * Method to get the value for a progressbar. RAnged between 0 and 1.
      *
      * @param component The component to get the value for
-     *
      * @return A float between 0 and 1 with 0 meaning no progress on the specific bar and 1 meaning full.
      */
     @Override
-    public float getProgressBarValue (@Nonnull IGUIComponent component) {
+    public float getProgressBarValue(@Nonnull IGUIComponent component)
+    {
         return host.getManager().getProgressBarValue(component);
     }
 
@@ -77,23 +80,25 @@ public class RelayBasedGUIManager implements IGUIManager {
      * Method used by the rendering system to dynamically update a Label.
      *
      * @param component The component requesting the content.
-     *
      * @return THe string that should be displayed.
      */
     @Override
     @Nullable
-    public String getLabelContents (@Nonnull IGUIComponent component) {
+    public String getLabelContents(@Nonnull IGUIComponent component)
+    {
         return host.getManager().getLabelContents(component);
     }
 
     @Override
     @Nullable
-    public ArrayList<FluidStack> getTankContents (@Nonnull IGUIComponent component) {
+    public ArrayList<FluidStack> getTankContents(@Nonnull IGUIComponent component)
+    {
         return host.getManager().getTankContents(component);
     }
 
     @Override
-    public int getTotalTankContents (@Nonnull IGUIComponent component) {
+    public int getTotalTankContents(@Nonnull IGUIComponent component)
+    {
         return host.getManager().getTotalTankContents(component);
     }
 
@@ -103,12 +108,14 @@ public class RelayBasedGUIManager implements IGUIManager {
      * @param newActiveTabId The new active Tabs ID.
      */
     @Override
-    public void onTabChanged (@Nonnull String newActiveTabId) {
+    public void onTabChanged(@Nonnull String newActiveTabId)
+    {
         containerSmithsCore.onTabChanged(newActiveTabId);
     }
 
     @Override
-    public void onInput(GuiInputEvent.InputTypes types, @Nonnull String componentId, @Nonnull String input) {
+    public void onInput(GuiInputEvent.InputTypes types, @Nonnull String componentId, @Nonnull String input)
+    {
         host.getManager().onInput(types, componentId, input);
     }
 }

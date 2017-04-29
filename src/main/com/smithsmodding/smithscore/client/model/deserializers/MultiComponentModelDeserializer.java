@@ -15,14 +15,17 @@ import java.util.Map;
 /**
  * Author Marc (Created on: 28.05.2016)
  */
-public class MultiComponentModelDeserializer implements JsonDeserializer<Map<String, ResourceLocation>> {
+public class MultiComponentModelDeserializer implements JsonDeserializer<Map<String, ResourceLocation>>
+{
     public static final MultiComponentModelDeserializer instance = new MultiComponentModelDeserializer();
 
-    private static final Type mapType = new TypeToken<HashMap<String, ResourceLocation>>() {
+    private static final Type mapType = new TypeToken<HashMap<String, ResourceLocation>>()
+    {
     }.getType();
-    private static final Gson gson = new GsonBuilder().registerTypeAdapter(mapType, instance).create();
+    private static final Gson gson    = new GsonBuilder().registerTypeAdapter(mapType, instance).create();
 
-    private MultiComponentModelDeserializer() {
+    private MultiComponentModelDeserializer()
+    {
     }
 
     /**
@@ -31,22 +34,26 @@ public class MultiComponentModelDeserializer implements JsonDeserializer<Map<Str
      *
      * @param modelLocation The location to load the Definition From.
      * @return A ModelDefinition for a MultiComponentModel.
+     *
      * @throws IOException Thrown when the given ModelLocation points to nothing or not to a ModelFile.
      */
     @Nonnull
-    public MultiComponentModelDefinition deserialize(@Nonnull ResourceLocation modelLocation) throws IOException {
+    public MultiComponentModelDefinition deserialize(@Nonnull ResourceLocation modelLocation) throws IOException
+    {
         return new MultiComponentModelDefinition(gson.fromJson(ModelHelper.getReaderForResource(modelLocation), mapType), ModelHelper.loadTransformFromJson(modelLocation));
     }
 
     @Nonnull
     @Override
-    public Map<String, ResourceLocation> deserialize(@Nonnull JsonElement json, @Nonnull Type typeOfT, @Nonnull JsonDeserializationContext context) throws JsonParseException {
+    public Map<String, ResourceLocation> deserialize(@Nonnull JsonElement json, @Nonnull Type typeOfT, @Nonnull JsonDeserializationContext context) throws JsonParseException
+    {
         JsonObject jsonObject = json.getAsJsonObject();
         JsonObject textureObject = jsonObject.get("components").getAsJsonObject();
 
         HashMap<String, ResourceLocation> textureLocations = new HashMap<>();
 
-        for (Map.Entry<String, JsonElement> entry : textureObject.entrySet()) {
+        for (Map.Entry<String, JsonElement> entry : textureObject.entrySet())
+        {
             textureLocations.put(entry.getKey(), new ResourceLocation(entry.getValue().getAsString()));
         }
 

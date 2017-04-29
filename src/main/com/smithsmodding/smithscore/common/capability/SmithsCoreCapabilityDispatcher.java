@@ -22,13 +22,15 @@ import java.util.function.BiConsumer;
 /**
  * Created by marcf on 1/9/2017.
  */
-public final class SmithsCoreCapabilityDispatcher implements ICapabilitySerializable<NBTTagCompound> {
+public final class SmithsCoreCapabilityDispatcher implements ICapabilitySerializable<NBTTagCompound>
+{
 
     @CapabilityInject(IInstanceCap.class)
     public static Capability<IInstanceCap> INSTANCE_CAPABILITY;
     private HashMap<Capability<?>, Object> capInstanceMap = new HashMap<>();
 
-    public SmithsCoreCapabilityDispatcher() {
+    public SmithsCoreCapabilityDispatcher()
+    {
         this.registerCapability(INSTANCE_CAPABILITY, new IInstanceCap.Impl(this));
     }
 
@@ -44,14 +46,18 @@ public final class SmithsCoreCapabilityDispatcher implements ICapabilitySerializ
         this.capInstanceMap.put(cap, instance);
     }
 
-    public static void initialize() {
+    public static void initialize()
+    {
         MinecraftForge.EVENT_BUS.register(RegistrationController.getInstance());
         CapabilityManager.INSTANCE.register(IInstanceCap.class, new NullStorage<>(), new NullFactory<>());
     }
 
-    public static void attach(AttachCapabilitiesEvent event) {
+    public static void attach(AttachCapabilitiesEvent event)
+    {
         if (!event.getCapabilities().containsKey(new ResourceLocation(CoreReferences.General.MOD_ID.toLowerCase(), CoreReferences.CapabilityManager.DEFAULT)))
+        {
             event.addCapability(new ResourceLocation(CoreReferences.General.MOD_ID.toLowerCase(), CoreReferences.CapabilityManager.DEFAULT), new SmithsCoreCapabilityDispatcher());
+        }
     }
 
     /**
@@ -60,7 +66,8 @@ public final class SmithsCoreCapabilityDispatcher implements ICapabilitySerializ
      * @param cap The capability to register it.
      * @param <T> The type of capability to register.
      */
-    public <T> void registerNewInstance(@Nonnull Capability<T> cap) {
+    public <T> void registerNewInstance(@Nonnull Capability<T> cap)
+    {
         this.registerCapability(cap, cap.getDefaultInstance());
     }
 
@@ -72,7 +79,8 @@ public final class SmithsCoreCapabilityDispatcher implements ICapabilitySerializ
      * @return The instance of the capability that was registered if any. Null if none was registered or was stored under that key.
      */
     @Nullable
-    public <T> T removeCapability(Capability<T> cap) {
+    public <T> T removeCapability(Capability<T> cap)
+    {
         return (T) capInstanceMap.remove(cap);
     }
 
@@ -92,7 +100,8 @@ public final class SmithsCoreCapabilityDispatcher implements ICapabilitySerializ
      * @return True if this object supports the capability.
      */
     @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
+    {
         return capInstanceMap.containsKey(capability);
     }
 
@@ -108,12 +117,14 @@ public final class SmithsCoreCapabilityDispatcher implements ICapabilitySerializ
      */
     @Nullable
     @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
+    {
         return (T) capInstanceMap.get(capability);
     }
 
     @Override
-    public NBTTagCompound serializeNBT() {
+    public NBTTagCompound serializeNBT()
+    {
         NBTTagCompound managerCompound = new NBTTagCompound();
 
         capInstanceMap.forEach(new SerializationBiConsumer(managerCompound));
@@ -122,11 +133,13 @@ public final class SmithsCoreCapabilityDispatcher implements ICapabilitySerializ
     }
 
     @Override
-    public void deserializeNBT(NBTTagCompound nbt) {
+    public void deserializeNBT(NBTTagCompound nbt)
+    {
         capInstanceMap.forEach(new DeSerializationBiConsumer(nbt));
     }
 
-    public interface IInstanceCap {
+    public interface IInstanceCap
+    {
 
         /**
          * Method to get the Dispatcher to register and remove Capabilities.
@@ -135,11 +148,13 @@ public final class SmithsCoreCapabilityDispatcher implements ICapabilitySerializ
          */
         SmithsCoreCapabilityDispatcher getDispatcher();
 
-        class Impl implements IInstanceCap {
+        class Impl implements IInstanceCap
+        {
 
             private final SmithsCoreCapabilityDispatcher dispatcher;
 
-            public Impl(SmithsCoreCapabilityDispatcher dispatcher) {
+            public Impl(SmithsCoreCapabilityDispatcher dispatcher)
+            {
                 this.dispatcher = dispatcher;
             }
 
@@ -149,34 +164,41 @@ public final class SmithsCoreCapabilityDispatcher implements ICapabilitySerializ
              * @return The dispatcher.
              */
             @Override
-            public SmithsCoreCapabilityDispatcher getDispatcher() {
+            public SmithsCoreCapabilityDispatcher getDispatcher()
+            {
                 return dispatcher;
             }
         }
     }
 
-    public static class RegistrationController {
+    public static class RegistrationController
+    {
 
         private static final RegistrationController INSTANCE = new RegistrationController();
 
-        private RegistrationController() {
+        private RegistrationController()
+        {
         }
 
-        public static RegistrationController getInstance() {
+        public static RegistrationController getInstance()
+        {
             return INSTANCE;
         }
 
         @SubscribeEvent
-        public void handle(AttachCapabilitiesEvent.Item event) {
+        public void handle(AttachCapabilitiesEvent.Item event)
+        {
             SmithsCoreCapabilityDispatcher.attach(event);
         }
     }
 
-    private class SerializationBiConsumer<T> implements BiConsumer<Capability<T>, T> {
+    private class SerializationBiConsumer<T> implements BiConsumer<Capability<T>, T>
+    {
 
         private final NBTTagCompound managerCompound;
 
-        public SerializationBiConsumer(NBTTagCompound managerCompound) {
+        public SerializationBiConsumer(NBTTagCompound managerCompound)
+        {
             this.managerCompound = managerCompound;
         }
 
@@ -187,16 +209,19 @@ public final class SmithsCoreCapabilityDispatcher implements ICapabilitySerializ
          * @param t           the first input argument
          */
         @Override
-        public void accept(Capability<T> tCapability, T t) {
+        public void accept(Capability<T> tCapability, T t)
+        {
             managerCompound.setTag(tCapability.getName(), tCapability.writeNBT(t, null));
         }
     }
 
-    private class DeSerializationBiConsumer<T> implements BiConsumer<Capability<T>, T> {
+    private class DeSerializationBiConsumer<T> implements BiConsumer<Capability<T>, T>
+    {
 
         private final NBTTagCompound managerCompound;
 
-        public DeSerializationBiConsumer(NBTTagCompound managerCompound) {
+        public DeSerializationBiConsumer(NBTTagCompound managerCompound)
+        {
             this.managerCompound = managerCompound;
         }
 
@@ -207,8 +232,10 @@ public final class SmithsCoreCapabilityDispatcher implements ICapabilitySerializ
          * @param t           the first input argument
          */
         @Override
-        public void accept(Capability<T> tCapability, T t) {
-            if (managerCompound.hasKey(tCapability.getName())) {
+        public void accept(Capability<T> tCapability, T t)
+        {
+            if (managerCompound.hasKey(tCapability.getName()))
+            {
                 tCapability.readNBT(t, null, managerCompound.getTag(tCapability.getName()));
             }
         }

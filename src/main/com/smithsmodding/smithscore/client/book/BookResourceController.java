@@ -8,10 +8,12 @@ import javax.annotation.Nonnull;
 /**
  * Created by marcf on 7/30/2016.
  */
-public class BookResourceController implements IResourceManagerReloadListener {
+public class BookResourceController implements IResourceManagerReloadListener
+{
 
     @Override
-    public void onResourceManagerReload(@Nonnull IResourceManager resourceManager) {
+    public void onResourceManagerReload(@Nonnull IResourceManager resourceManager)
+    {
 
     }
 }

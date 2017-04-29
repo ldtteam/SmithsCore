@@ -7,7 +7,8 @@ import javax.annotation.Nonnull;
 /**
  * Created by marcf on 12/28/2015.
  */
-public class LedgerComponentState implements IGUIComponentState {
+public class LedgerComponentState implements IGUIComponentState
+{
 
     private IGUIComponent component;
 
@@ -15,7 +16,7 @@ public class LedgerComponentState implements IGUIComponentState {
     private boolean visible = true;
 
     private boolean openState;
-    private float openProgress;
+    private float   openProgress;
 
     public LedgerComponentState()
     {
@@ -24,12 +25,14 @@ public class LedgerComponentState implements IGUIComponentState {
 
     @Nonnull
     @Override
-    public IGUIComponent getComponent() {
+    public IGUIComponent getComponent()
+    {
         return component;
     }
 
     @Override
-    public void setComponent(@Nonnull IGUIComponent component) {
+    public void setComponent(@Nonnull IGUIComponent component)
+    {
         this.component = component;
     }
 
@@ -41,7 +44,8 @@ public class LedgerComponentState implements IGUIComponentState {
      * @return True whem enabled, False ehn not.
      */
     @Override
-    public boolean isEnabled() {
+    public boolean isEnabled()
+    {
         return this.enabled;
     }
 
@@ -51,7 +55,8 @@ public class LedgerComponentState implements IGUIComponentState {
      * @param state The new enabled state.
      */
     @Override
-    public void setEnabledState(boolean state) {
+    public void setEnabledState(boolean state)
+    {
         this.enabled = state;
     }
 
@@ -63,7 +68,8 @@ public class LedgerComponentState implements IGUIComponentState {
      * @return True when visible, false when not.
      */
     @Override
-    public boolean isVisible() {
+    public boolean isVisible()
+    {
         return this.visible;
     }
 
@@ -73,7 +79,8 @@ public class LedgerComponentState implements IGUIComponentState {
      * @param state Then new visibilitys state of a component.
      */
     @Override
-    public void setVisibleState(boolean state) {
+    public void setVisibleState(boolean state)
+    {
         this.visible = state;
     }
 
@@ -94,7 +101,8 @@ public class LedgerComponentState implements IGUIComponentState {
      *
      * @return True if open or opening, False if closed or closing
      */
-    public boolean getOpenState () {
+    public boolean getOpenState()
+    {
         return this.openState;
     }
 
@@ -104,7 +112,8 @@ public class LedgerComponentState implements IGUIComponentState {
      * @param state True when the ledger should start opening (or continue opening), false when the ledger should (stop
      *              opening and should) start closing, or stay closed.
      */
-    public void setOpenState (boolean state) {
+    public void setOpenState(boolean state)
+    {
         this.openState = state;
     }
 
@@ -113,7 +122,8 @@ public class LedgerComponentState implements IGUIComponentState {
      *
      * @return A value between 1 and 0, with 0 meaning closed and 1 meaning open.
      */
-    public float getOpenProgress () {
+    public float getOpenProgress()
+    {
         return this.openProgress;
     }
 
@@ -122,7 +132,8 @@ public class LedgerComponentState implements IGUIComponentState {
      *
      * @param progress A value between 1 and 0, with 0 meaning closed and 1 meaning open.
      */
-    public void setOpenProgress (float progress) {
+    public void setOpenProgress(float progress)
+    {
         this.openProgress = progress;
     }
 }

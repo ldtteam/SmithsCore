@@ -17,29 +17,34 @@ import java.lang.reflect.Type;
 /**
  * Created by marcf on 8/3/2016.
  */
-public class SerializationHelper {
+public class SerializationHelper
+{
 
-    private static final Type ITEMSTACKTYPE = new TypeToken<ItemStack>() {}.getType();
-    private static final Type ITEMSTACKARRAYTYPE = new TypeToken<ItemStack[]>(){}.getType();
+    private static final Type ITEMSTACKTYPE      = new TypeToken<ItemStack>() {}.getType();
+    private static final Type ITEMSTACKARRAYTYPE = new TypeToken<ItemStack[]>() {}.getType();
 
     private static final Gson GSON = new GsonBuilder()
-            .registerTypeAdapter(ITEMSTACKTYPE, new ItemStackDeserializer())
-            .registerTypeAdapter(ITEMSTACKARRAYTYPE, new ItemStackArrayDeserializer())
-            .create();
+                                       .registerTypeAdapter(ITEMSTACKTYPE, new ItemStackDeserializer())
+                                       .registerTypeAdapter(ITEMSTACKARRAYTYPE, new ItemStackArrayDeserializer())
+                                       .create();
 
-    public static ItemStack deserializeItemStack(JsonElement element) {
+    public static ItemStack deserializeItemStack(JsonElement element)
+    {
         return GSON.fromJson(element, ITEMSTACKTYPE);
     }
 
-    public static ItemStack[] deserializeItemStackArray(JsonElement element) {
+    public static ItemStack[] deserializeItemStackArray(JsonElement element)
+    {
         return GSON.fromJson(element, ITEMSTACKARRAYTYPE);
     }
 
-    private static class ItemStackDeserializer implements JsonDeserializer<ItemStack> {
+    private static class ItemStackDeserializer implements JsonDeserializer<ItemStack>
+    {
 
         @Nonnull
         @Override
-        public ItemStack deserialize(@Nonnull JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        public ItemStack deserialize(@Nonnull JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
+        {
             JsonObject stackData = json.getAsJsonObject();
 
             Item item = Item.REGISTRY.getObject(new ResourceLocation(stackData.get("item").getAsString()));
@@ -47,9 +52,12 @@ public class SerializationHelper {
             int count = stackData.get("count").getAsInt();
 
             NBTTagCompound compound;
-            try {
+            try
+            {
                 compound = JsonToNBT.getTagFromJson(stackData.get("data").getAsString());
-            } catch (NBTException e) {
+            }
+            catch (NBTException e)
+            {
                 SmithsCore.getLogger().error(CoreReferences.LogMarkers.SERIALIZATION, (Object) new Exception("Failed to deserialize the NBTTag from JSON", e));
                 compound = new NBTTagCompound();
             }
@@ -58,15 +66,18 @@ public class SerializationHelper {
         }
     }
 
-    private static class ItemStackArrayDeserializer implements JsonDeserializer<ItemStack[]> {
+    private static class ItemStackArrayDeserializer implements JsonDeserializer<ItemStack[]>
+    {
 
         @Nonnull
         @Override
-        public ItemStack[] deserialize(@Nonnull JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        public ItemStack[] deserialize(@Nonnull JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
+        {
             JsonArray stackArray = json.getAsJsonArray();
             ItemStack[] deserializedArray = new ItemStack[stackArray.size()];
 
-            for (int i = 0; i < stackArray.size(); i++) {
+            for (int i = 0; i < stackArray.size(); i++)
+            {
                 JsonElement stackElement = stackArray.get(i);
 
                 deserializedArray[i] = GSON.fromJson(stackElement, ITEMSTACKTYPE);
@@ -75,6 +86,5 @@ public class SerializationHelper {
             return deserializedArray;
         }
     }
-
 }
 

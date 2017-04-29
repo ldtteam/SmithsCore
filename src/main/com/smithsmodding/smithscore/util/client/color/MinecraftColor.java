@@ -11,16 +11,17 @@ import java.awt.image.ColorModel;
 
 /**
  * A standard MinecraftColor class for smithsmodding.
- *
+ * <p>
  * Extends the Standard Java color class with some functions.
- *
+ * <p>
  * Created by Orion
  * Created on 27.10.2015
  * 17:19
- *
+ * <p>
  * Copyrighted according to Project specific license
  */
-public class MinecraftColor extends Color {
+public class MinecraftColor extends Color
+{
 
     /**
      * Creates an opaque sRGB color with the specified red, green,
@@ -41,7 +42,8 @@ public class MinecraftColor extends Color {
      * @see #getBlue
      * @see #getRGB
      */
-    public MinecraftColor(int r, int g, int b) {
+    public MinecraftColor(int r, int g, int b)
+    {
         super(r, g, b);
     }
 
@@ -62,7 +64,8 @@ public class MinecraftColor extends Color {
      * @see #getAlpha
      * @see #getRGB
      */
-    public MinecraftColor(int r, int g, int b, int a) {
+    public MinecraftColor(int r, int g, int b, int a)
+    {
         super(r, g, b, a);
     }
 
@@ -81,7 +84,8 @@ public class MinecraftColor extends Color {
      * @see #getBlue
      * @see #getRGB
      */
-    public MinecraftColor(int rgb) {
+    public MinecraftColor(int rgb)
+    {
         super(rgb);
     }
 
@@ -102,7 +106,8 @@ public class MinecraftColor extends Color {
      * @see #getAlpha
      * @see #getRGB
      */
-    public MinecraftColor(int rgba, boolean hasalpha) {
+    public MinecraftColor(int rgba, boolean hasalpha)
+    {
         super(rgba, hasalpha);
     }
 
@@ -124,7 +129,8 @@ public class MinecraftColor extends Color {
      * @see #getBlue
      * @see #getRGB
      */
-    public MinecraftColor(float r, float g, float b) {
+    public MinecraftColor(float r, float g, float b)
+    {
         super(r, g, b);
     }
 
@@ -147,7 +153,8 @@ public class MinecraftColor extends Color {
      * @see #getAlpha
      * @see #getRGB
      */
-    public MinecraftColor(float r, float g, float b, float a) {
+    public MinecraftColor(float r, float g, float b, float a)
+    {
         super(r, g, b, a);
     }
 
@@ -170,7 +177,8 @@ public class MinecraftColor extends Color {
      * @see #getComponents
      * @see #getColorComponents
      */
-    public MinecraftColor(@Nonnull ColorSpace cspace, float[] components, float alpha) {
+    public MinecraftColor(@Nonnull ColorSpace cspace, float[] components, float alpha)
+    {
         super(cspace, components, alpha);
     }
 
@@ -179,22 +187,25 @@ public class MinecraftColor extends Color {
      *
      * @param original The standard color.
      */
-    public MinecraftColor (@Nonnull Color original) {
+    public MinecraftColor(@Nonnull Color original)
+    {
         super(original.getRed(), original.getGreen(), original.getBlue(), original.getAlpha());
     }
 
     /**
      * Convenient function to reset the color in the GL Buffer to the Default.
      */
-    public static final void resetOpenGLColoring () {
+    public static final void resetOpenGLColoring()
+    {
         GlStateManager.color(1F, 1F, 1F, 1F);
     }
 
-    public String encodeColor() {
+    public String encodeColor()
+    {
         return String.format("%c%c%c",
-                ((char) (MultiColoredFontRenderer.MARKER + (getRed() & 0xFF))),
-                ((char) (MultiColoredFontRenderer.MARKER + (getGreen() & 0xFF))),
-                ((char) (MultiColoredFontRenderer.MARKER + (getBlue() & 0xFF))));
+          ((char) (MultiColoredFontRenderer.MARKER + (getRed() & 0xFF))),
+          ((char) (MultiColoredFontRenderer.MARKER + (getGreen() & 0xFF))),
+          ((char) (MultiColoredFontRenderer.MARKER + (getBlue() & 0xFF))));
     }
 
     /**
@@ -202,7 +213,7 @@ public class MinecraftColor extends Color {
      *
      * @return A Float between 0 and 1.0 indicating the state of the Red Channel in this color
      */
-    public float getRedFloat ()
+    public float getRedFloat()
     {
         return getRed() / 255F;
     }
@@ -212,7 +223,7 @@ public class MinecraftColor extends Color {
      *
      * @return A Float between 0 and 1.0 indicating the state of the Green Channel in this color
      */
-    public float getGreenFloat ()
+    public float getGreenFloat()
     {
         return getGreen() / 255F;
     }
@@ -222,7 +233,7 @@ public class MinecraftColor extends Color {
      *
      * @return A Float between 0 and 1.0 indicating the state of the Blue Channel in this color
      */
-    public float getBlueFloat ()
+    public float getBlueFloat()
     {
         return getBlue() / 255F;
     }
@@ -232,14 +243,16 @@ public class MinecraftColor extends Color {
      *
      * @return A Float between 0 and 1.0 indicating the state of the Alpha Channel in this color
      */
-    public float getAlphaFloat () {
+    public float getAlphaFloat()
+    {
         return getAlpha() / 255F;
     }
 
     /**
      * Convenient Function to perform Coloring of the GL buffer in this color.
      */
-    public void performOpenGLColoring() {
+    public void performOpenGLColoring()
+    {
         GlStateManager.color(getRed() / 255F, getGreen() / 255F, getBlue() / 255F, getAlpha() / 255F);
     }
 
@@ -248,34 +261,46 @@ public class MinecraftColor extends Color {
      *
      * @return A Angle in 360 Degrees describing the color on the Adobe color wheel.
      */
-    public double getAngleInDegrees() {
+    public double getAngleInDegrees()
+    {
         Vector2d tRedVec = new Vector2d(getRed() * Math.cos(Math.toRadians(0)), getRed() * Math.sin(Math.toRadians(0)));
         Vector2d tGreenVec = new Vector2d(getGreen() * Math.cos(Math.toRadians(120)), getGreen() * Math.sin(Math.toRadians(120)));
         Vector2d tBlueVec = new Vector2d(getBlue() * Math.cos(Math.toRadians(240)), getBlue() * Math.sin(Math.toRadians(240)));
 
         Vector2d tColorVec = new Vector2d(tRedVec.x + tBlueVec.x + tGreenVec.x, tRedVec.y + tBlueVec.y + tGreenVec.y);
 
-        if (tColorVec.y == 0) {
-            if (tColorVec.x < -10) {
+        if (tColorVec.y == 0)
+        {
+            if (tColorVec.x < -10)
+            {
                 return 90;
-            } else if (tColorVec.x > 10) {
+            }
+            else if (tColorVec.x > 10)
+            {
                 return 270;
-            } else {
+            }
+            else
+            {
                 return 0;
             }
         }
 
-        if (tColorVec.x == 0) {
-            if (tColorVec.y < -10) {
+        if (tColorVec.x == 0)
+        {
+            if (tColorVec.y < -10)
+            {
                 return 180;
-            } else if (tColorVec.y > 10) {
+            }
+            else if (tColorVec.y > 10)
+            {
                 return 0;
-            } else {
+            }
+            else
+            {
                 return 0;
             }
         }
 
         return 360 - (Math.atan((((float) tColorVec.x) / ((float) tColorVec.y))) * (180 / Math.PI));
     }
-
 }

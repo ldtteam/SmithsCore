@@ -39,5 +39,5 @@ public interface IGUIBasedTabHost extends IGUIBasedComponentHost
      *
      * @param newActiveTabID The ID of the new active tab.
      */
-    void onTabChanged (@Nonnull String newActiveTabID);
+    void onTabChanged(@Nonnull String newActiveTabID);
 }

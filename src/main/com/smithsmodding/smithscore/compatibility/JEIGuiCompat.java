@@ -21,56 +21,69 @@ import java.util.List;
  * Author Orion (Created on: 21.06.2016)
  */
 @JEIPlugin
-public class JEIGuiCompat implements IModPlugin {
+public class JEIGuiCompat implements IModPlugin
+{
 
     @Override
-    public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
+    public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry)
+    {
         //TODO: Implemented HeatedItem SubType.
     }
 
     @Override
-    public void registerIngredients(IModIngredientRegistration registry) {
+    public void registerIngredients(IModIngredientRegistration registry)
+    {
 
     }
 
     @Override
-    public void register(@Nonnull IModRegistry registry) {
-        registry.addAdvancedGuiHandlers(new IAdvancedGuiHandler<GuiContainerSmithsCore>() {
+    public void register(@Nonnull IModRegistry registry)
+    {
+        registry.addAdvancedGuiHandlers(new IAdvancedGuiHandler<GuiContainerSmithsCore>()
+        {
             @Nonnull
             @Override
-            public Class<GuiContainerSmithsCore> getGuiContainerClass() {
+            public Class<GuiContainerSmithsCore> getGuiContainerClass()
+            {
                 return GuiContainerSmithsCore.class;
             }
 
             @Nullable
             @Override
-            public List<Rectangle> getGuiExtraAreas(@Nonnull GuiContainerSmithsCore guiContainer) {
+            public List<Rectangle> getGuiExtraAreas(@Nonnull GuiContainerSmithsCore guiContainer)
+            {
                 return ImmutableList.copyOf(getComponentAreas(guiContainer).values());
             }
 
             @Nullable
             @Override
-            public Object getIngredientUnderMouse(GuiContainerSmithsCore guiContainer, int mouseX, int mouseY) {
+            public Object getIngredientUnderMouse(GuiContainerSmithsCore guiContainer, int mouseX, int mouseY)
+            {
                 return null;
             }
         });
     }
 
     @Nonnull
-    public HashMap<String, Rectangle> getComponentAreas(IGUIBasedComponentHost host) {
+    public HashMap<String, Rectangle> getComponentAreas(IGUIBasedComponentHost host)
+    {
         LinkedHashMap<String, Rectangle> components = new LinkedHashMap<>();
 
-        if (host instanceof IGUIBasedLedgerHost) {
-            for (IGUILedger ledger : ((IGUIBasedLedgerHost) host).getLedgerManager().getLeftLedgers().values()) {
+        if (host instanceof IGUIBasedLedgerHost)
+        {
+            for (IGUILedger ledger : ((IGUIBasedLedgerHost) host).getLedgerManager().getLeftLedgers().values())
+            {
                 components.put(ledger.getID(), ledger.getAreaOccupiedByComponent().toRectangle());
             }
 
-            for (IGUILedger ledger : ((IGUIBasedLedgerHost) host).getLedgerManager().getRightLedgers().values()) {
+            for (IGUILedger ledger : ((IGUIBasedLedgerHost) host).getLedgerManager().getRightLedgers().values())
+            {
                 components.put(ledger.getID(), ledger.getAreaOccupiedByComponent().toRectangle());
             }
         }
 
-        for (IGUIComponent component : host.getAllComponents().values()) {
+        for (IGUIComponent component : host.getAllComponents().values())
+        {
             components.put(component.getID(), component.getAreaOccupiedByComponent().toRectangle());
         }
 
@@ -78,6 +91,7 @@ public class JEIGuiCompat implements IModPlugin {
     }
 
     @Override
-    public void onRuntimeAvailable(@Nonnull IJeiRuntime jeiRuntime) {
+    public void onRuntimeAvailable(@Nonnull IJeiRuntime jeiRuntime)
+    {
     }
 }

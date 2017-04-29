@@ -22,20 +22,50 @@ import java.util.Collections;
 /**
  * Created by Marc on 12.01.2016.
  */
-public class InformationLedger extends CoreLedger {
+public class InformationLedger extends CoreLedger
+{
 
     @Nonnull
     ArrayList<String> translatedDisplayedStrings = new ArrayList<String>();
 
-    public InformationLedger (@Nonnull String uniqueID, @Nonnull IGUIBasedLedgerHost root, LedgerConnectionSide side, @Nonnull String translatedGuiOwner, @Nonnull MinecraftColor color, @Nonnull ArrayList<String> translatedDisplayedStrings) {
+    public InformationLedger(
+                              @Nonnull String uniqueID,
+                              @Nonnull IGUIBasedLedgerHost root,
+                              LedgerConnectionSide side,
+                              @Nonnull String translatedGuiOwner,
+                              @Nonnull MinecraftColor color,
+                              @Nonnull ArrayList<String> translatedDisplayedStrings)
+    {
         super(uniqueID, new LedgerComponentState(), root, side, Textures.Gui.Basic.INFOICON, translatedGuiOwner, color);
 
-        for (String line : translatedDisplayedStrings) {
-            Collections.addAll(this.translatedDisplayedStrings, StringUtils.SplitString(line, closedLedgerWidth + Minecraft.getMinecraft().fontRendererObj.getStringWidth(translatedGuiOwner) - 15));
+        for (String line : translatedDisplayedStrings)
+        {
+            Collections.addAll(this.translatedDisplayedStrings,
+              StringUtils.SplitString(line, closedLedgerWidth + Minecraft.getMinecraft().fontRendererObj.getStringWidth(translatedGuiOwner) - 15));
 
             if (translatedDisplayedStrings.indexOf(line) != translatedDisplayedStrings.size() - 1)
+            {
                 this.translatedDisplayedStrings.add("");
+            }
         }
+    }
+
+    /**
+     * Function used to register the sub components of this ComponentHost
+     *
+     * @param host This ComponentHosts host. For the Root GUIObject a reference to itself will be passed in..
+     */
+    @Override
+    public void registerComponents(@Nonnull IGUIBasedComponentHost host)
+    {
+        super.registerComponents(host);
+
+        registerNewComponent(new Contents(getID() + ".Contents",
+                                           this,
+                                           new CoreComponentState(),
+                                           new Coordinate2D(8, closedLedgerHeight),
+                                           closedLedgerWidth + Minecraft.getMinecraft().fontRendererObj.getStringWidth(this.translatedLedgerHeader) - 8,
+                                           87));
     }
 
     /**
@@ -44,7 +74,8 @@ public class InformationLedger extends CoreLedger {
      * @return An int bigger then 16 plus the icon width that describes the maximum width of the Ledger when expanded.
      */
     @Override
-    public int getMaxWidth () {
+    public int getMaxWidth()
+    {
         return closedLedgerWidth + Minecraft.getMinecraft().fontRendererObj.getStringWidth(translatedLedgerHeader) + 8;
     }
 
@@ -54,35 +85,38 @@ public class InformationLedger extends CoreLedger {
      * @return An int bigger then 16 plus the icon width that describes the maximum height of the Ledger when expanded.
      */
     @Override
-    public int getMaxHeight () {
+    public int getMaxHeight()
+    {
         return 121;
-    }
-
-
-    /**
-     * Function used to register the sub components of this ComponentHost
-     *
-     * @param host This ComponentHosts host. For the Root GUIObject a reference to itself will be passed in..
-     */
-    @Override
-    public void registerComponents (@Nonnull IGUIBasedComponentHost host) {
-        super.registerComponents(host);
-
-        registerNewComponent(new Contents(getID() + ".Contents", this, new CoreComponentState(), new Coordinate2D(8, closedLedgerHeight), closedLedgerWidth + Minecraft.getMinecraft().fontRendererObj.getStringWidth(this.translatedLedgerHeader) - 8, 87));
     }
 
     public class Contents extends ComponentScrollableArea
     {
-        public Contents (@Nonnull String uniqueID, @Nonnull IGUIBasedComponentHost parent, @Nonnull IGUIComponentState state, @Nonnull Coordinate2D rootAnchorPixel, int width, int height) {
+        public Contents(
+                         @Nonnull String uniqueID,
+                         @Nonnull IGUIBasedComponentHost parent,
+                         @Nonnull IGUIComponentState state,
+                         @Nonnull Coordinate2D rootAnchorPixel,
+                         int width,
+                         int height)
+        {
             super(uniqueID, parent, state, rootAnchorPixel, width, height);
         }
 
         @Override
-        public void registerContentComponents (@Nonnull ComponentContentArea host) {
-            for (int i = 0; i < translatedDisplayedStrings.size(); i++) {
+        public void registerContentComponents(@Nonnull ComponentContentArea host)
+        {
+            for (int i = 0; i < translatedDisplayedStrings.size(); i++)
+            {
                 String line = translatedDisplayedStrings.get(i);
 
-                host.registerNewComponent(new ComponentLabel(getID() + ".line." + i, host, new CoreComponentState(null), new Coordinate2D(0, i * ( Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT + 3 )), new MinecraftColor(MinecraftColor.WHITE), Minecraft.getMinecraft().fontRendererObj, line));
+                host.registerNewComponent(new ComponentLabel(getID() + ".line." + i,
+                                                              host,
+                                                              new CoreComponentState(null),
+                                                              new Coordinate2D(0, i * (Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT + 3)),
+                                                              new MinecraftColor(MinecraftColor.WHITE),
+                                                              Minecraft.getMinecraft().fontRendererObj,
+                                                              line));
             }
         }
     }

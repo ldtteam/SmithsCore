@@ -12,14 +12,18 @@ import javax.annotation.Nonnull;
 /**
  * Created by Marc on 30.12.2015.
  */
-public class BlockModelUpdateEventHandler {
+public class BlockModelUpdateEventHandler
+{
 
     @SubscribeEvent
-    public void handleUpdataEvent (@Nonnull BlockModelUpdateEvent event) {
+    public void handleUpdataEvent(@Nonnull BlockModelUpdateEvent event)
+    {
         TileEntity entity = FMLClientHandler.instance().getClientPlayerEntity().world.getTileEntity(event.getBlockPosition().toBlockPos());
 
         if (!(entity instanceof IBlockModelUpdatingTileEntity))
+        {
             return;
+        }
 
         IBlockState state = entity.getWorld().getBlockState(event.getBlockPosition().toBlockPos());
 

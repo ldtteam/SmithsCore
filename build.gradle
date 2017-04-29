@@ -151,7 +151,7 @@ artifacts {
 }
 
 curseforge {
-    if (System.getenv().CURSEAPIKEY != null || System.getenv().CURSERELEASETYPE != null)
+    if (System.getenv().CURSEAPIKEY != null && release != null)
     {
         apiKey = System.getenv().CURSEAPIKEY
 

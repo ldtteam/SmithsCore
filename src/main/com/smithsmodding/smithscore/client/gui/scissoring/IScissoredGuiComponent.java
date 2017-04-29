@@ -11,9 +11,9 @@ import javax.annotation.Nonnull;
 public interface IScissoredGuiComponent extends IGUIBasedComponentHost
 {
 
-    boolean shouldScissor ();
+    boolean shouldScissor();
 
     @Nonnull
-    Plane getGlobalScissorLocation ();
+    Plane getGlobalScissorLocation();
 }
 

@@ -17,7 +17,8 @@ import java.util.LinkedHashMap;
 /**
  * Created by Marc on 09.01.2016.
  */
-public class StandardLedgerManager implements ILedgerManager {
+public class StandardLedgerManager implements ILedgerManager
+{
 
     private IGUIBasedLedgerHost host;
     @Nonnull
@@ -25,19 +26,21 @@ public class StandardLedgerManager implements ILedgerManager {
     @Nonnull
     private LinkedHashMap<String, IGUILedger> ledgersRight = new LinkedHashMap<String, IGUILedger>();
 
-
-    public StandardLedgerManager (IGUIBasedLedgerHost host) {
+    public StandardLedgerManager(IGUIBasedLedgerHost host)
+    {
         this.host = host;
     }
 
     @Nonnull
     @Override
-    public IGUIBasedLedgerHost getHost () {
+    public IGUIBasedLedgerHost getHost()
+    {
         return host;
     }
 
     @Override
-    public void registerLedgerRightSide (@Nonnull IGUILedger ledger) {
+    public void registerLedgerRightSide(@Nonnull IGUILedger ledger)
+    {
         ledger.getAllComponents().clear();
         ledger.registerComponents(ledger);
 
@@ -45,7 +48,8 @@ public class StandardLedgerManager implements ILedgerManager {
     }
 
     @Override
-    public void registerLedgerLeftSide (@Nonnull IGUILedger ledger) {
+    public void registerLedgerLeftSide(@Nonnull IGUILedger ledger)
+    {
         ledger.getAllComponents().clear();
         ledger.registerComponents(ledger);
 
@@ -53,35 +57,45 @@ public class StandardLedgerManager implements ILedgerManager {
     }
 
     @Override
-    public int getLedgerIndex (LedgerConnectionSide side, String uniqueID) {
-        if (side == LedgerConnectionSide.LEFT) {
-            return ( ( new ArrayList<String>(ledgersLeft.keySet()) ) ).indexOf(uniqueID);
-        } else {
-            return ( ( new ArrayList<String>(ledgersRight.keySet()) ) ).indexOf(uniqueID);
+    public int getLedgerIndex(LedgerConnectionSide side, String uniqueID)
+    {
+        if (side == LedgerConnectionSide.LEFT)
+        {
+            return ((new ArrayList<String>(ledgersLeft.keySet()))).indexOf(uniqueID);
+        }
+        else
+        {
+            return ((new ArrayList<String>(ledgersRight.keySet()))).indexOf(uniqueID);
         }
     }
 
     @Nonnull
     @Override
-    public LinkedHashMap<String, IGUILedger> getRightLedgers () {
+    public LinkedHashMap<String, IGUILedger> getRightLedgers()
+    {
         return ledgersRight;
     }
 
     @Nonnull
     @Override
-    public LinkedHashMap<String, IGUILedger> getLeftLedgers () {
+    public LinkedHashMap<String, IGUILedger> getLeftLedgers()
+    {
         return ledgersLeft;
     }
 
     @Nonnull
     @Override
-    public Coordinate2D getLedgerLocalCoordinate (LedgerConnectionSide side, String uniqueID) {
+    public Coordinate2D getLedgerLocalCoordinate(LedgerConnectionSide side, String uniqueID)
+    {
         LinkedHashMap<String, IGUILedger> ledgers;
         int horizontalOffset;
-        if (side == LedgerConnectionSide.LEFT) {
+        if (side == LedgerConnectionSide.LEFT)
+        {
             ledgers = ledgersLeft;
             horizontalOffset = getHost().getLeftLedgerOffSet();
-        } else {
+        }
+        else
+        {
             ledgers = ledgersRight;
             horizontalOffset = getHost().getRightLedgerOffSet();
         }
@@ -94,14 +108,18 @@ public class StandardLedgerManager implements ILedgerManager {
         key = "";
         last = "";
 
-        while (iterator.hasNext()) {
+        while (iterator.hasNext())
+        {
             last = key;
             key = iterator.next();
 
             if (last != "")
+            {
                 root = root.getTranslatedCoordinate(new Coordinate2D(0, ledgers.get(last).getSize().getHeigth()));
+            }
 
-            if (key.equals(uniqueID)) {
+            if (key.equals(uniqueID))
+            {
                 return root;
             }
         }
@@ -112,21 +130,22 @@ public class StandardLedgerManager implements ILedgerManager {
     /**
      * Method returns the Global coorindate of the RootAnchor pixel of the given Ledger (if it exists on the given side
      * else null)
-     *
+     * <p>
      * For a Ledger on the left side of the gui it will return the top most right pixel that is visible. For a Ledher on
      * the right side of the gui it will return the top most left pixel that is visible.
      *
      * @param side     The side you want a Ledger coordinate for.
      * @param uniqueID The unique ID of the ledger.
-     *
      * @return See method description.
      */
     @Nonnull
     @Override
-    public Coordinate2D getLedgerGlobalCoordinate (LedgerConnectionSide side, String uniqueID) {
+    public Coordinate2D getLedgerGlobalCoordinate(LedgerConnectionSide side, String uniqueID)
+    {
         IGUILedger ledger;
 
-        if (side == LedgerConnectionSide.LEFT) {
+        if (side == LedgerConnectionSide.LEFT)
+        {
             ledger = ledgersLeft.get(uniqueID);
         }
         else
@@ -144,39 +163,50 @@ public class StandardLedgerManager implements ILedgerManager {
      *               closed) or this one should be closed.
      */
     @Override
-    public void onLedgerClickedInside (@Nonnull IGUILedger ledger) {
+    public void onLedgerClickedInside(@Nonnull IGUILedger ledger)
+    {
         String openLedgerID = (String) InstanceVariableManager.getVariable(this.getHost().getID() + ".LastOpenLedger");
 
         if (openLedgerID == null)
+        {
             openLedgerID = "";
+        }
 
-        if (openLedgerID != "" && openLedgerID != ledger.getID()) {
+        if (openLedgerID != "" && openLedgerID != ledger.getID())
+        {
             //Closing the old Ledger
             int i = getLedgerIndex(LedgerConnectionSide.LEFT, openLedgerID);
-            if (i > -1) {
+            if (i > -1)
+            {
                 //Closing a left ledger
                 IGUILedger ledger1 = getLeftLedgers().get(openLedgerID);
-                ( (LedgerComponentState) ledger1.getState() ).toggleOpenState();
-            } else {
+                ((LedgerComponentState) ledger1.getState()).toggleOpenState();
+            }
+            else
+            {
                 i = getLedgerIndex(LedgerConnectionSide.RIGHT, openLedgerID);
-                if (i > -1) {
+                if (i > -1)
+                {
                     //Closing a right ledger
                     IGUILedger ledger1 = getRightLedgers().get(openLedgerID);
-                    ( (LedgerComponentState) ledger1.getState() ).toggleOpenState();
-                } else {
+                    ((LedgerComponentState) ledger1.getState()).toggleOpenState();
+                }
+                else
+                {
                     SmithsCore.getLogger().error(CoreReferences.LogMarkers.RENDER, "A saved ledger cannot be found!");
                 }
             }
         }
 
-        ( (LedgerComponentState) ledger.getState() ).toggleOpenState();
+        ((LedgerComponentState) ledger.getState()).toggleOpenState();
 
-        if (!((LedgerComponentState) ledger.getState()).getOpenState()) {
+        if (!((LedgerComponentState) ledger.getState()).getOpenState())
+        {
             InstanceVariableManager.setVariable(this.getHost().getID() + ".LastOpenLedger", "");
         }
-        else {
+        else
+        {
             InstanceVariableManager.setVariable(this.getHost().getID() + ".LastOpenLedger", ledger.getID());
         }
-
     }
 }

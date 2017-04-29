@@ -12,7 +12,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nonnull;
 
-public class PlayersConnectedUpdatedEventHandler {
+public class PlayersConnectedUpdatedEventHandler
+{
 
     /**
      * Method for handling the network event when it arrives on the client side.
@@ -20,7 +21,8 @@ public class PlayersConnectedUpdatedEventHandler {
      * @param event The Event indicating that the ConnectedPlayers updated.
      */
     @SubscribeEvent
-    public void onPlayersConnectedUpdated(@Nonnull PlayersConnectedUpdatedEvent event) {
+    public void onPlayersConnectedUpdated(@Nonnull PlayersConnectedUpdatedEvent event)
+    {
         PlayerManager.getInstance().setCommonSidedJoinedMap(event.getCommonSidedJoinedMap());
     }
 }

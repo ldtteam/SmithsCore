@@ -17,14 +17,27 @@ import javax.annotation.Nonnull;
 /**
  * Created by Marc on 22.12.2015.
  */
-public class ComponentSlot extends CoreComponent {
+public class ComponentSlot extends CoreComponent
+{
     private MinecraftColor color;
 
-    public ComponentSlot (@Nonnull String uniqueID, @Nonnull SlotComponentState state, @Nonnull IGUIBasedComponentHost parent, @Nonnull Slot connectedSlot, @Nonnull MinecraftColor color) {
+    public ComponentSlot(
+                          @Nonnull String uniqueID,
+                          @Nonnull SlotComponentState state,
+                          @Nonnull IGUIBasedComponentHost parent,
+                          @Nonnull Slot connectedSlot,
+                          @Nonnull MinecraftColor color)
+    {
         this(uniqueID, state, parent, new Coordinate2D(connectedSlot.xPos - 1, connectedSlot.yPos - 1 - parent.getRootGuiObject().getDefaultDisplayVerticalOffset()), color);
     }
 
-    public ComponentSlot (@Nonnull String uniqueID, @Nonnull SlotComponentState state, @Nonnull IGUIBasedComponentHost parent, @Nonnull Coordinate2D rootAnchorPixel, @Nonnull MinecraftColor color) {
+    public ComponentSlot(
+                          @Nonnull String uniqueID,
+                          @Nonnull SlotComponentState state,
+                          @Nonnull IGUIBasedComponentHost parent,
+                          @Nonnull Coordinate2D rootAnchorPixel,
+                          @Nonnull MinecraftColor color)
+    {
         super(uniqueID, parent, state, rootAnchorPixel, 18, 18);
 
         this.color = color;
@@ -38,21 +51,28 @@ public class ComponentSlot extends CoreComponent {
      * @param partialTickTime The partial tick time, used to calculate fluent animations.
      */
     @Override
-    public void update(int mouseX, int mouseY, float partialTickTime) {
+    public void update(int mouseX, int mouseY, float partialTickTime)
+    {
         //NOOP
     }
 
     @Override
-    public void drawBackground (int mouseX, int mouseY) {
+    public void drawBackground(int mouseX, int mouseY)
+    {
         GlStateManager.pushMatrix();
 
         StandardRenderManager.pushColorOnRenderStack(color);
 
-        GuiHelper.drawRectangleStretched(new MultiComponentTexture(Textures.Gui.Basic.Slots.DEFAULT, Textures.Gui.Basic.Slots.DEFAULT.getWidth(), Textures.Gui.Basic.Slots.DEFAULT.getHeight(), 1, 1), 18, 18, new Coordinate2D(0, 0));
+        GuiHelper.drawRectangleStretched(new MultiComponentTexture(Textures.Gui.Basic.Slots.DEFAULT,
+                                                                    Textures.Gui.Basic.Slots.DEFAULT.getWidth(),
+                                                                    Textures.Gui.Basic.Slots.DEFAULT.getHeight(),
+                                                                    1,
+                                                                    1), 18, 18, new Coordinate2D(0, 0));
 
         SlotComponentState state = (SlotComponentState) getState();
 
-        if (state.requiresHoloRendering() && state.getHolographicSprite() != null) {
+        if (state.requiresHoloRendering() && state.getHolographicSprite() != null)
+        {
             GuiHelper.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             GuiHelper.drawTexturedModelRectFromIcon(1, 1, 0, state.getHolographicSprite(), 16, 16);
         }
@@ -63,7 +83,8 @@ public class ComponentSlot extends CoreComponent {
     }
 
     @Override
-    public void drawForeground (int mouseX, int mouseY) {
+    public void drawForeground(int mouseX, int mouseY)
+    {
         //NOOP
     }
 }

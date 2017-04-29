@@ -9,7 +9,8 @@ import javax.annotation.Nonnull;
 /**
  * Created by marcf on 7/31/2016.
  */
-public interface IPageComponentDeserializer<C extends IGUIComponent> {
+public interface IPageComponentDeserializer<C extends IGUIComponent>
+{
     @Nonnull
     C deserialize(@Nonnull JsonElement element, @Nonnull PageDeserializationContext context);
 }

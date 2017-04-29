@@ -6,10 +6,12 @@ import java.util.concurrent.Callable;
 /**
  * Author Orion (Created on: 09.10.2016)
  */
-public class NullFactory<T extends Object> implements Callable<T> {
+public class NullFactory<T extends Object> implements Callable<T>
+{
     @Nullable
     @Override
-    public T call() throws Exception {
+    public T call() throws Exception
+    {
         return null;
     }
 }

@@ -7,14 +7,17 @@ import javax.vecmath.Vector3f;
  * Author Orion (Created on: 17.07.2016)
  * Replacement version of the old OBJ System in MC Forge used until the ModelGroup hiding works.
  */
-public class SmithsCoreOBJNormal {
+public class SmithsCoreOBJNormal
+{
     public float x, y, z;
 
-    public SmithsCoreOBJNormal() {
+    public SmithsCoreOBJNormal()
+    {
         this(0.0f, 0.0f, 0.0f);
     }
 
-    public SmithsCoreOBJNormal(float x, float y, float z) {
+    public SmithsCoreOBJNormal(float x, float y, float z)
+    {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -31,7 +34,8 @@ public class SmithsCoreOBJNormal {
     }
 
     @Nonnull
-    public Vector3f getData() {
+    public Vector3f getData()
+    {
         return new Vector3f(this.x, this.y, this.z);
     }
 }

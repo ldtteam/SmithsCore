@@ -16,7 +16,8 @@ import net.minecraft.client.gui.FontRenderer;
 
 import javax.annotation.Nonnull;
 
-public class StringUtils {
+public class StringUtils
+{
 
     /**
      * Calculates the minimum width needed to display the elements of the given Array vertically (under each other)
@@ -25,13 +26,16 @@ public class StringUtils {
      * @param pCurrentFont The fontrenderer used to calculate the width of each string.
      * @return A int telling you the minimal width in pixels needed to render all the strings properly
      */
-    public static int GetMininumWidth(@Nonnull String[] pStrings, @Nonnull FontRenderer pCurrentFont) {
+    public static int GetMininumWidth(@Nonnull String[] pStrings, @Nonnull FontRenderer pCurrentFont)
+    {
         int tCurrentMaximum = 0;
 
-        for (int tRule = 0; tRule < pStrings.length; tRule++) {
+        for (int tRule = 0; tRule < pStrings.length; tRule++)
+        {
             String tCurrentLine = pStrings[tRule];
 
-            if (pCurrentFont.getStringWidth(tCurrentLine) > tCurrentMaximum) {
+            if (pCurrentFont.getStringWidth(tCurrentLine) > tCurrentMaximum)
+            {
                 tCurrentMaximum = pCurrentFont.getStringWidth(tCurrentLine);
             }
         }
@@ -45,11 +49,12 @@ public class StringUtils {
      * @param pToSplit  String to split.
      * @param pMaxWidth Maxwidth of each part of the string.
      * @return An Array containing the splitted string. Uses the default fontrenderer to calculate.
-     *
+     * <p>
      * TODO: Update to use custom fontrenderer.
      */
     @Nonnull
-    public static String[] SplitString(@Nonnull String pToSplit, int pMaxWidth) {
+    public static String[] SplitString(@Nonnull String pToSplit, int pMaxWidth)
+    {
         return (String[]) Minecraft.getMinecraft().fontRendererObj.listFormattedStringToWidth(pToSplit, pMaxWidth).toArray();
     }
 }

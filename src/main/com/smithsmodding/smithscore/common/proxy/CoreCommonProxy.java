@@ -21,21 +21,23 @@ import java.io.File;
  * Common class used to manage code that runs on both sides of Minecraft.
  * It is the common point of entry after the Modclass receives notice of a Init-state update, on the dedicated server side,
  * through one of his eventhandlers.
- *
+ * <p>
  * Created by Orion
  * Created on 26.10.2015
  * 12:48
- *
+ * <p>
  * Copyrighted according to Project specific license
  */
-public class CoreCommonProxy {
+public class CoreCommonProxy
+{
 
     /**
      * Function used to prepare mods and plugins for the Init-Phase
-     *
+     * <p>
      * The configuration handler is initialized by a different function.
      */
-    public void preInit() {
+    public void preInit()
+    {
         SmithsCore.getLogger().info(CoreReferences.LogMarkers.PREINIT, "Initializing event handlers.");
         registerEventHandlers();
         initializeNetwork();
@@ -68,14 +70,16 @@ public class CoreCommonProxy {
      * It sets parameters used in most of its functions as common mod for smithsmodding mods.
      * Also initializes most of the network code for the Server.
      */
-    public void Init() {
+    public void Init()
+    {
 
     }
 
     /**
      * Function used to change behaviour of this mod based on loaded mods.
      */
-    public void postInit() {
+    public void postInit()
+    {
 
     }
 
@@ -87,7 +91,8 @@ public class CoreCommonProxy {
      * @see File
      * @see net.minecraftforge.fml.common.event.FMLPreInitializationEvent
      */
-    public void configInit(@Nonnull File pSuggestedConfigFile) {
+    public void configInit(@Nonnull File pSuggestedConfigFile)
+    {
 
     }
 
@@ -95,19 +100,23 @@ public class CoreCommonProxy {
      * Function used to get the effective running side.
      * Basically indicates if elements marked with SideOnly(Side.client) or SideOnly(Side.SERVER) are available to the JVM
      * As the client side of this proxy inherits from this common one it overrides this function and returns Side.client instead of value returned from here.
-     *
-     * The value returned here does not indicate if the user is running a dedicated or a internal server. It only indicated that the instance of minecraft has gui-Capabilities or not.
+     * <p>
+     * The value returned here does not indicate if the user is running a dedicated or a internal server. It only indicated that the instance of minecraft has gui-Capabilities or
+     * not.
      *
      * @return The effective running Side of this proxy
+     *
      * @see net.minecraftforge.fml.relauncher.SideOnly
      * @see CoreClientProxy
      */
     @Nonnull
-    public Side getEffectiveSide() {
+    public Side getEffectiveSide()
+    {
         return Side.SERVER;
     }
 
-    public EntityPlayer getPlayerForSide(@Nonnull MessageContext context) {
+    public EntityPlayer getPlayerForSide(@Nonnull MessageContext context)
+    {
         return context.getServerHandler().playerEntity;
     }
 }

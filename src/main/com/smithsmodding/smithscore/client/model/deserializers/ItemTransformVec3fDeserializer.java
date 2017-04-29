@@ -16,19 +16,21 @@ import java.lang.reflect.Type;
  * 1:1 copy of net.minecraft.client.renderer.block.model.ItemTransformVec3f.Deserializer
  */
 @SideOnly(Side.CLIENT)
-public class ItemTransformVec3fDeserializer implements JsonDeserializer<ItemTransformVec3f> {
+public class ItemTransformVec3fDeserializer implements JsonDeserializer<ItemTransformVec3f>
+{
 
     public static final ItemTransformVec3fDeserializer INSTANCE = new ItemTransformVec3fDeserializer();
 
-    private static final Vector3f ROTATION_DEFAULT = new Vector3f(0.0F, 0.0F, 0.0F);
+    private static final Vector3f ROTATION_DEFAULT    = new Vector3f(0.0F, 0.0F, 0.0F);
     private static final Vector3f TRANSLATION_DEFAULT = new Vector3f(0.0F, 0.0F, 0.0F);
-    private static final Vector3f SCALE_DEFAULT = new Vector3f(1.0F, 1.0F, 1.0F);
+    private static final Vector3f SCALE_DEFAULT       = new Vector3f(1.0F, 1.0F, 1.0F);
 
     @Nonnull
     @Override
     public ItemTransformVec3f deserialize(@Nonnull JsonElement p_deserialize_1_, @Nonnull Type p_deserialize_2_, @Nonnull JsonDeserializationContext p_deserialize_3_)
-            throws
-            JsonParseException {
+      throws
+      JsonParseException
+    {
         JsonObject jsonobject = p_deserialize_1_.getAsJsonObject();
         Vector3f vector3f = this.parseVector3f(jsonobject, "rotation", ROTATION_DEFAULT);
         Vector3f vector3f1 = this.parseVector3f(jsonobject, "translation", TRANSLATION_DEFAULT);
@@ -43,18 +45,26 @@ public class ItemTransformVec3fDeserializer implements JsonDeserializer<ItemTran
         return new ItemTransformVec3f(vector3f, vector3f1, vector3f2);
     }
 
-    private Vector3f parseVector3f(@Nonnull JsonObject jsonObject, String key, Vector3f defaultValue) {
-        if (!jsonObject.has(key)) {
+    private Vector3f parseVector3f(@Nonnull JsonObject jsonObject, String key, Vector3f defaultValue)
+    {
+        if (!jsonObject.has(key))
+        {
             return defaultValue;
-        } else {
+        }
+        else
+        {
             JsonArray jsonarray = JsonUtils.getJsonArray(jsonObject, key);
 
-            if (jsonarray.size() != 3) {
+            if (jsonarray.size() != 3)
+            {
                 throw new JsonParseException("Expected 3 " + key + " values, found: " + jsonarray.size());
-            } else {
+            }
+            else
+            {
                 float[] afloat = new float[3];
 
-                for (int i = 0; i < afloat.length; ++i) {
+                for (int i = 0; i < afloat.length; ++i)
+                {
                     afloat[i] = JsonUtils.getFloat(jsonarray.get(i), key + "[" + i + "]");
                 }
 

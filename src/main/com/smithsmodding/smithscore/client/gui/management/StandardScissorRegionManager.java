@@ -9,13 +9,15 @@ import java.util.ArrayList;
 /**
  * Created by Marc on 12.02.2016.
  */
-public class StandardScissorRegionManager implements IScissorRegionManager {
+public class StandardScissorRegionManager implements IScissorRegionManager
+{
 
     @Nonnull
     private ArrayList<Plane> scissorRegionStack = new ArrayList<Plane>();
 
     @Override
-    public boolean setScissorRegionTo (@Nonnull Plane scissorRegion) {
+    public boolean setScissorRegionTo(@Nonnull Plane scissorRegion)
+    {
         if (scissorRegionStack.size() == 0)
         {
             GuiHelper.enableScissor(scissorRegion);
@@ -27,7 +29,9 @@ public class StandardScissorRegionManager implements IScissorRegionManager {
         Plane intersectionRegion = scissorRegionStack.get(0).getInstersection(scissorRegion);
 
         if (intersectionRegion == null || intersectionRegion.Contents() == 0)
+        {
             return false;
+        }
 
         GuiHelper.disableScissor();
 
@@ -38,14 +42,18 @@ public class StandardScissorRegionManager implements IScissorRegionManager {
     }
 
     @Override
-    public void popCurrentScissorRegion () {
+    public void popCurrentScissorRegion()
+    {
         if (scissorRegionStack.size() == 0)
+        {
             return;
+        }
 
         scissorRegionStack.remove(0);
         GuiHelper.disableScissor();
 
-        if (scissorRegionStack.size() == 0) {
+        if (scissorRegionStack.size() == 0)
+        {
             return;
         }
 

@@ -22,7 +22,14 @@ public abstract class CoreComponent implements IGUIComponent
     protected int                    width;
     protected int                    height;
 
-    public CoreComponent (@Nonnull String uniqueID, @Nonnull IGUIBasedComponentHost parent, @Nonnull IGUIComponentState state, @Nonnull Coordinate2D rootAnchorPixel, @Nonnull int width, @Nonnull int height) {
+    public CoreComponent(
+                          @Nonnull String uniqueID,
+                          @Nonnull IGUIBasedComponentHost parent,
+                          @Nonnull IGUIComponentState state,
+                          @Nonnull Coordinate2D rootAnchorPixel,
+                          @Nonnull int width,
+                          @Nonnull int height)
+    {
         this.rootAnchorPixel = rootAnchorPixel;
         this.height = height;
         this.uniqueID = uniqueID;
@@ -35,43 +42,50 @@ public abstract class CoreComponent implements IGUIComponent
 
     @Nonnull
     @Override
-    public String getID () {
+    public String getID()
+    {
         return uniqueID;
     }
 
     @Nonnull
     @Override
-    public IGUIComponentState getState () {
+    public IGUIComponentState getState()
+    {
         return state;
     }
 
     @Nonnull
     @Override
-    public IGUIBasedComponentHost getComponentHost() {
+    public IGUIBasedComponentHost getComponentHost()
+    {
         return parent;
     }
 
     @Nonnull
     @Override
-    public Coordinate2D getGlobalCoordinate () {
+    public Coordinate2D getGlobalCoordinate()
+    {
         return parent.getGlobalCoordinate().getTranslatedCoordinate(getLocalCoordinate());
     }
 
     @Nonnull
     @Override
-    public Coordinate2D getLocalCoordinate () {
+    public Coordinate2D getLocalCoordinate()
+    {
         return rootAnchorPixel;
     }
 
     @Nonnull
     @Override
-    public Plane getAreaOccupiedByComponent () {
+    public Plane getAreaOccupiedByComponent()
+    {
         return new Plane(getGlobalCoordinate(), width, height);
     }
 
     @Nonnull
     @Override
-    public Plane getSize () {
+    public Plane getSize()
+    {
         return new Plane(0, 0, width, height);
     }
 
@@ -86,31 +100,36 @@ public abstract class CoreComponent implements IGUIComponent
 
     @Override
     @Nonnull
-    public boolean handleMouseClickedInside (@Nonnull int relativeMouseX, @Nonnull int relativeMouseY, @Nonnull int mouseButton) {
+    public boolean handleMouseClickedInside(@Nonnull int relativeMouseX, @Nonnull int relativeMouseY, @Nonnull int mouseButton)
+    {
         return false;
     }
 
     @Override
     @Nonnull
-    public boolean handleMouseClickedOutside (@Nonnull int relativeMouseX, @Nonnull int relativeMouseY, @Nonnull int mouseButton) {
+    public boolean handleMouseClickedOutside(@Nonnull int relativeMouseX, @Nonnull int relativeMouseY, @Nonnull int mouseButton)
+    {
         return false;
     }
 
     @Override
     @Nonnull
-    public boolean requiresForcedMouseInput () {
+    public boolean requiresForcedMouseInput()
+    {
         return false;
     }
 
     @Override
     @Nonnull
-    public boolean handleKeyTyped(@Nonnull char key, @Nonnull int keyCode) {
+    public boolean handleKeyTyped(@Nonnull char key, @Nonnull int keyCode)
+    {
         return false;
     }
 
     @Nullable
     @Override
-    public ArrayList<String> getToolTipContent () {
+    public ArrayList<String> getToolTipContent()
+    {
         return new ArrayList<String>();
     }
 }

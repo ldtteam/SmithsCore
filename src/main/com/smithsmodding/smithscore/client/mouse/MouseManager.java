@@ -8,7 +8,6 @@ import org.lwjgl.input.Mouse;
 
 import javax.annotation.Nonnull;
 
-
 /**
  * Created by marcf on 12/3/2015.
  */
@@ -23,7 +22,8 @@ public class MouseManager
      * @return The last known location of the mouse.
      */
     @Nonnull
-    public Coordinate2D getLocation() {
+    public Coordinate2D getLocation()
+    {
         return location;
     }
 
@@ -37,7 +37,9 @@ public class MouseManager
     public void onClientTickEvent(@Nonnull TickEvent.ClientTickEvent event)
     {
         if (GuiHelper.GUISCALE == 0)
+        {
             GuiHelper.calcScaleFactor();
+        }
 
         location = new Coordinate2D(org.lwjgl.input.Mouse.getEventX() / GuiHelper.GUISCALE, GuiHelper.DISPLAYHEIGHT - (Mouse.getEventY() / GuiHelper.GUISCALE));
     }

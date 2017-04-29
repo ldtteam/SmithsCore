@@ -15,10 +15,13 @@ import net.minecraft.util.EnumFacing;
 
 import javax.annotation.Nonnull;
 
-public class EnumFacingHelper {
+public class EnumFacingHelper
+{
     //{DOWN, UP, NORTH, SOUTH, WEST, EAST}
-    public static int ConvertToInt(@Nonnull EnumFacing pDirection) {
-        switch (pDirection) {
+    public static int ConvertToInt(@Nonnull EnumFacing pDirection)
+    {
+        switch (pDirection)
+        {
             case DOWN:
                 return 0;
             case UP:

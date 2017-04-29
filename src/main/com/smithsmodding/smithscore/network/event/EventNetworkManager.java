@@ -17,7 +17,8 @@ import net.minecraftforge.fml.relauncher.Side;
 /**
  * The NetworkManager that is used to manage the Synchronising of the events in the Busses.
  */
-public class EventNetworkManager {
+public class EventNetworkManager
+{
     //Private instance of the NetworkManager
     private static SimpleNetworkWrapper INSTANCE;
 
@@ -26,7 +27,8 @@ public class EventNetworkManager {
      *
      * @return A instance of the SimpleNetworkWrapper that describes the Channel that is used to Synchronize events.
      */
-    public static SimpleNetworkWrapper getInstance() {
+    public static SimpleNetworkWrapper getInstance()
+    {
         return INSTANCE;
     }
 
@@ -34,7 +36,8 @@ public class EventNetworkManager {
      * Function used to initialize the Channel.
      * Can also be used to reset the System if Need be.
      */
-    public static void Init() {
+    public static void Init()
+    {
         INSTANCE = new SimpleNetworkWrapper(CoreReferences.General.MOD_ID.toLowerCase() + "-ES");
 
         //Register the StandardNetworkableEvent System
@@ -48,11 +51,10 @@ public class EventNetworkManager {
 
         //Loop through all additional events and register them
         int tDescriminator = 2;
-        for (Pair<Class, Class> tMessageClassPair : tEvent.getAdditionalMessages().keySet()) {
+        for (Pair<Class, Class> tMessageClassPair : tEvent.getAdditionalMessages().keySet())
+        {
             INSTANCE.registerMessage(tMessageClassPair.getKey(), tMessageClassPair.getValue(), tDescriminator, tEvent.getAdditionalMessages().get(tMessageClassPair));
             tDescriminator++;
         }
     }
-
-
 }

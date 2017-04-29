@@ -13,16 +13,22 @@ import javax.annotation.Nonnull;
 /**
  * Created by Marc on 03.01.2016.
  */
-public class RenderGameOverlayEventHandler {
+public class RenderGameOverlayEventHandler
+{
 
     @SubscribeEvent
-    public void handleEvent (@Nonnull RenderGameOverlayEvent.Text event) {
-        if (Minecraft.getMinecraft().objectMouseOver != null && Minecraft.getMinecraft().objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK && Minecraft.getMinecraft().objectMouseOver.getBlockPos() != null) {
+    public void handleEvent(@Nonnull RenderGameOverlayEvent.Text event)
+    {
+        if (Minecraft.getMinecraft().objectMouseOver != null && Minecraft.getMinecraft().objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK
+              && Minecraft.getMinecraft().objectMouseOver.getBlockPos() != null)
+        {
             BlockPos blockpos = Minecraft.getMinecraft().objectMouseOver.getBlockPos();
             IBlockState iblockstate = Minecraft.getMinecraft().world.getBlockState(blockpos);
 
             if (iblockstate.getBlock() instanceof ICustomDebugInformationBlock)
-                ( (ICustomDebugInformationBlock) iblockstate.getBlock() ).handleDebugInformation(event, Minecraft.getMinecraft().world, blockpos);
+            {
+                ((ICustomDebugInformationBlock) iblockstate.getBlock()).handleDebugInformation(event, Minecraft.getMinecraft().world, blockpos);
+            }
         }
     }
 }

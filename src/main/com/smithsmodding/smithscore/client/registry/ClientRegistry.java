@@ -15,7 +15,7 @@ import javax.annotation.Nonnull;
 
 /**
  * Used as the Central point of Data on the client Side.
- *
+ * <p>
  * Defines the special client EventBus.
  */
 public class ClientRegistry extends CommonRegistry
@@ -29,7 +29,8 @@ public class ClientRegistry extends CommonRegistry
     private final MouseManager   mouseManager   = new MouseManager();
     private float partialTickTime;
 
-    public ClientRegistry () {
+    public ClientRegistry()
+    {
     }
 
     /**
@@ -41,7 +42,8 @@ public class ClientRegistry extends CommonRegistry
      */
     @Nonnull
     @Override
-    public EventBus getClientBus() {
+    public EventBus getClientBus()
+    {
         return clientEventBus;
     }
 
@@ -52,15 +54,18 @@ public class ClientRegistry extends CommonRegistry
     }
 
     @Nonnull
-    public TextureCreator getTextureCreator() {
+    public TextureCreator getTextureCreator()
+    {
         return textureCreator;
     }
 
-    public float getPartialTickTime() {
+    public float getPartialTickTime()
+    {
         return partialTickTime;
     }
 
-    public void setPartialTickTime(float partialTickTime) {
+    public void setPartialTickTime(float partialTickTime)
+    {
         this.partialTickTime = partialTickTime;
     }
 }
