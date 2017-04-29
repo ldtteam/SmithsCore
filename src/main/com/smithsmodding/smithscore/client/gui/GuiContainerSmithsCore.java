@@ -42,13 +42,13 @@ import java.util.List;
 public abstract class GuiContainerSmithsCore extends GuiContainer implements IGUIBasedComponentHost, IGUIBasedLedgerHost, IGUIBasedTabHost
 {
 
-    private boolean               isInitialized = false;
+    private           boolean               isInitialized = false;
     @Nonnull
-    private StandardRenderManager renderer      = new StandardRenderManager(this);
+    private transient StandardRenderManager renderer      = new StandardRenderManager(this);
     @Nonnull
-    private StandardLedgerManager ledgers       = new StandardLedgerManager(this);
+    private           StandardLedgerManager ledgers       = new StandardLedgerManager(this);
     @Nonnull
-    private CoreComponentState    state         = new CoreComponentState(this);
+    private           CoreComponentState    state         = new CoreComponentState(this);
     @Nonnull
     private String uniqueUIID;
 
@@ -90,15 +90,50 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
         if (SmithsCore.isInDevEnvironment())
         {
             //Running only in test environment
-
-            SmithsCore.getLogger().warn("Serializing gui.");
+            SmithsCore.getLogger().warn("Serializing tabs.");
             FileWriter file = null;
             BufferedWriter writer = null;
             try
             {
-                file = new FileWriter("./" + getID() + ".json");
+                file = new FileWriter("./" + getID() + "tabs.json");
                 writer = new BufferedWriter(file);
                 writer.write((new Gson()).toJson(tabs));
+            }
+            catch (IOException e)
+            {
+                SmithsCore.getLogger().error("Failed to access file.", e);
+            }
+            catch (Exception e)
+            {
+                SmithsCore.getLogger().error("Generic serialisation exception.", e);
+            }
+            finally
+            {
+                try
+                {
+                    if (writer != null)
+                    {
+                        writer.close();
+                    }
+
+                    if (file != null)
+                    {
+                        file.close();
+                    }
+                }
+                catch (IOException e)
+                {
+                }
+            }
+
+            SmithsCore.getLogger().warn("Serializing ledgers.");
+            file = null;
+            writer = null;
+            try
+            {
+                file = new FileWriter("./" + getID() + "ledgers.json");
+                writer = new BufferedWriter(file);
+                writer.write((new Gson()).toJson(ledgers));
             }
             catch (IOException e)
             {

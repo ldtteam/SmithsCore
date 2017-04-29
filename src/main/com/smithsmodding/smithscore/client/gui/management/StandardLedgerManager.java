@@ -20,7 +20,7 @@ import java.util.LinkedHashMap;
 public class StandardLedgerManager implements ILedgerManager
 {
 
-    private IGUIBasedLedgerHost host;
+    private transient IGUIBasedLedgerHost host;
     @Nonnull
     private LinkedHashMap<String, IGUILedger> ledgersLeft  = new LinkedHashMap<String, IGUILedger>();
     @Nonnull
@@ -36,6 +36,12 @@ public class StandardLedgerManager implements ILedgerManager
     public IGUIBasedLedgerHost getHost()
     {
         return host;
+    }
+
+    @Override
+    public void setHost(@Nonnull final IGUIBasedLedgerHost host)
+    {
+        this.host = host;
     }
 
     @Override

@@ -15,7 +15,7 @@ import java.util.LinkedHashMap;
 public class StandardTabManager implements ITabManager
 {
 
-    IGUIBasedTabHost host;
+    transient IGUIBasedTabHost host;
     String           activeTabId;
     @Nonnull
     LinkedHashMap<String, IGUITab> tabs = new LinkedHashMap<String, IGUITab>();
@@ -35,6 +35,12 @@ public class StandardTabManager implements ITabManager
     public IGUIBasedTabHost getHost()
     {
         return host;
+    }
+
+    @Override
+    public void setHost(@Nonnull final IGUIBasedTabHost host)
+    {
+        this.host = host;
     }
 
     /**
