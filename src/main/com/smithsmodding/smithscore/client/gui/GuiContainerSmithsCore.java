@@ -6,7 +6,6 @@
 
 package com.smithsmodding.smithscore.client.gui;
 
-import com.google.gson.Gson;
 import com.smithsmodding.smithscore.SmithsCore;
 import com.smithsmodding.smithscore.client.gui.components.core.IGUIComponent;
 import com.smithsmodding.smithscore.client.gui.hosts.IGUIBasedComponentHost;
@@ -32,8 +31,6 @@ import org.lwjgl.input.Keyboard;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -86,82 +83,6 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
         setIsInitialized(true);
 
         Keyboard.enableRepeatEvents(true);
-
-        if (SmithsCore.isInDevEnvironment())
-        {
-            //Running only in test environment
-            SmithsCore.getLogger().warn("Serializing tabs.");
-            FileWriter file = null;
-            BufferedWriter writer = null;
-            try
-            {
-                file = new FileWriter("./" + getID() + "tabs.json");
-                writer = new BufferedWriter(file);
-                writer.write((new Gson()).toJson(tabs));
-            }
-            catch (IOException e)
-            {
-                SmithsCore.getLogger().error("Failed to access file.", e);
-            }
-            catch (Exception e)
-            {
-                SmithsCore.getLogger().error("Generic serialisation exception.", e);
-            }
-            finally
-            {
-                try
-                {
-                    if (writer != null)
-                    {
-                        writer.close();
-                    }
-
-                    if (file != null)
-                    {
-                        file.close();
-                    }
-                }
-                catch (IOException e)
-                {
-                }
-            }
-
-            SmithsCore.getLogger().warn("Serializing ledgers.");
-            file = null;
-            writer = null;
-            try
-            {
-                file = new FileWriter("./" + getID() + "ledgers.json");
-                writer = new BufferedWriter(file);
-                writer.write((new Gson()).toJson(ledgers));
-            }
-            catch (IOException e)
-            {
-                SmithsCore.getLogger().error("Failed to access file.", e);
-            }
-            catch (Exception e)
-            {
-                SmithsCore.getLogger().error("Generic serialisation exception.", e);
-            }
-            finally
-            {
-                try
-                {
-                    if (writer != null)
-                    {
-                        writer.close();
-                    }
-
-                    if (file != null)
-                    {
-                        file.close();
-                    }
-                }
-                catch (IOException e)
-                {
-                }
-            }
-        }
     }
 
     @Override
