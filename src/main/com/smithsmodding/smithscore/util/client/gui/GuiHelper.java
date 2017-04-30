@@ -110,7 +110,7 @@ public final class GuiHelper
      * Draws the given TextureComponent Stretched (repeatedly) in the given Area offset from the current origin with the ElementCoordinate
      *
      * @param pCenterComponent   The Texture to render.
-     * @param pWidth             The Total width
+     * @param pWidth             The Total componentWidth
      * @param pHeight            The Total Height
      * @param pElementCoordinate The Offset.
      */
@@ -123,8 +123,8 @@ public final class GuiHelper
      * Renders a texture as if it would be the center of a MultiComponentTexture.
      *
      * @param pComponent         The Component to Render
-     * @param pWidth             The total width of the Component in the End
-     * @param pHeight            The total height of the Component in the End
+     * @param pWidth             The total componentWidth of the Component in the End
+     * @param pHeight            The total componentHeight of the Component in the End
      * @param pElementCoordinate The offset of the Component from the current GL Buffer Matric Origin.
      */
     private static void renderCenter(@Nonnull TextureComponent pComponent, int pWidth, int pHeight, @Nonnull Coordinate2D pElementCoordinate)
@@ -238,7 +238,7 @@ public final class GuiHelper
      * @param pCenterComponent   A TextureComponent that describes the center of this Texture.
      * @param pCornerComponents  An Array with the components for the Corners in this order: TopLeft, TopRight, BottomRight, BottomLeft.
      * @param pSideComponents    An Array with the components for the Sides in this order: Top, Right, Bottom, Left.
-     * @param pWidth             The total width
+     * @param pWidth             The total componentWidth
      * @param pHeight            The total Height
      * @param pElementCoordinate The Offset
      */
@@ -374,8 +374,8 @@ public final class GuiHelper
      * Renders a texture as if it would be the side of a MultiComponentTexture.
      *
      * @param pComponent         The Component to Render
-     * @param pWidth             The total width of the Component in the End
-     * @param pHeight            The total height of the Component in the End
+     * @param pWidth             The total componentWidth of the Component in the End
+     * @param pHeight            The total componentHeight of the Component in the End
      * @param pElementCoordinate The offset of the Component from the current GL Buffer Matric Origin.
      */
     private static void renderBorder(@Nonnull TextureComponent pComponent, int pWidth, int pHeight, @Nonnull Coordinate2D pElementCoordinate)

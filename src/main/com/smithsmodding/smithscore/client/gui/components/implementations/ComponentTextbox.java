@@ -21,12 +21,12 @@ import java.util.ArrayList;
  */
 public class ComponentTextbox extends GuiTextField implements IGUIComponent
 {
-    protected String                 uniqueID;
-    protected TextboxComponentState  state;
-    protected IGUIBasedComponentHost parent;
-    protected Coordinate2D           rootAnchorPixel;
-    protected int                    width;
-    protected int                    height;
+    protected           String                 uniqueID;
+    protected           TextboxComponentState  state;
+    protected transient IGUIBasedComponentHost parent;
+    protected           Coordinate2D           rootAnchorPixel;
+    protected           int                    componentWidth;
+    protected           int                    componentHeight;
 
     protected CustomResource secondaryBackground;
 
@@ -43,8 +43,8 @@ public class ComponentTextbox extends GuiTextField implements IGUIComponent
         this.state = state;
         this.parent = parent;
         this.rootAnchorPixel = rootAnchorPixel;
-        this.width = width;
-        this.height = height;
+        this.componentWidth = width;
+        this.componentHeight = height;
 
         getState().setComponent(this);
         setText(state.getText());
@@ -71,6 +71,12 @@ public class ComponentTextbox extends GuiTextField implements IGUIComponent
         return parent;
     }
 
+    @Override
+    public void setComponentHost(@Nonnull final IGUIBasedComponentHost host)
+    {
+        this.parent = host;
+    }
+
     @Nonnull
     @Override
     public Coordinate2D getGlobalCoordinate()
@@ -89,14 +95,14 @@ public class ComponentTextbox extends GuiTextField implements IGUIComponent
     @Override
     public Plane getAreaOccupiedByComponent()
     {
-        return new Plane(getGlobalCoordinate(), width, height);
+        return new Plane(getGlobalCoordinate(), componentWidth, componentHeight);
     }
 
     @Nonnull
     @Override
     public Plane getSize()
     {
-        return new Plane(0, 0, width, height);
+        return new Plane(0, 0, componentWidth, componentHeight);
     }
 
     @Override

@@ -26,49 +26,40 @@ import java.util.Map;
 /**
  * Author Orion (Created on: 25.06.2016)
  */
-public final class StructureRegistry
-{
+public final class StructureRegistry {
 
     private static final StructureRegistry clientInstance = new StructureRegistry();
     private static final StructureRegistry serverInstance = new StructureRegistry();
 
-    private final LinkedHashMap<Class<? extends IStructure>, IStructureFactory>   factories  = new LinkedHashMap<>();
+    private final LinkedHashMap<Class<? extends IStructure>, IStructureFactory> factories = new LinkedHashMap<>();
     private final LinkedHashMap<Integer, LinkedHashMap<Coordinate3D, IStructure>> structures = new LinkedHashMap<>();
 
-    private StructureRegistry()
-    {
+    private StructureRegistry() {
     }
 
     @Nonnull
-    public static StructureRegistry getInstance()
-    {
+    public static StructureRegistry getInstance() {
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-        {
             return clientInstance;
-        }
 
         return serverInstance;
     }
 
     @Nonnull
-    public static StructureRegistry getClientInstance()
-    {
+    public static StructureRegistry getClientInstance() {
         return clientInstance;
     }
 
     @Nonnull
-    public static StructureRegistry getServerInstance()
-    {
+    public static StructureRegistry getServerInstance() {
         return serverInstance;
     }
 
-    public void registerStructureFactory(@Nonnull IStructureFactory factory)
-    {
+    public void registerStructureFactory(@Nonnull IStructureFactory factory) {
         factories.put(factory.getStructureType(), factory);
     }
 
-    public IStructureFactory getFactory(@Nonnull IStructure structure)
-    {
+    public IStructureFactory getFactory(@Nonnull IStructure structure) {
         return getFactory(structure.getClass());
     }
 
@@ -77,34 +68,24 @@ public final class StructureRegistry
         return factories.get(clazz);
     }
 
-    public IStructure getStructure(@Nonnull Integer dimension, @Nonnull Coordinate3D location)
-    {
-        synchronized (structures)
-        {
+    public IStructure getStructure(@Nonnull Integer dimension, @Nonnull Coordinate3D location) {
+        synchronized (structures) {
             if (!structures.containsKey(dimension))
-            {
                 return null;
-            }
 
             if (structures.get(dimension).containsKey(location))
-            {
                 return structures.get(dimension).get(location);
-            }
 
-            for (IStructure structure : structures.get(dimension).values())
-            {
+            for (IStructure structure : structures.get(dimension).values()) {
                 if (structure.getPartLocations().contains(location))
-                {
                     return structure;
-                }
             }
 
             return null;
         }
     }
 
-    public void onStructurePartPlaced(@Nonnull IStructurePart part)
-    {
+    public void onStructurePartPlaced(@Nonnull IStructurePart part) {
         IStructureFactory factory = getFactory(part.getStructureType());
         IStructure newInitialStructure = factory.generateNewStructure(part);
 
@@ -115,49 +96,33 @@ public final class StructureRegistry
     }
 
     @SubscribeEvent
-    public void onWorldLoad(@Nonnull WorldEvent.Load event)
-    {
+    public void onWorldLoad(@Nonnull WorldEvent.Load event) {
         int dimensionId = event.getWorld().provider.getDimension();
-        File dimensionFile =
-          new File(FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getSaveHandler().getWorldDirectory(), "armory/structures/dim_" + dimensionId + ".dat");
+        File dimensionFile = new File(FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getSaveHandler().getWorldDirectory(), "armory/structures/dim_" + dimensionId + ".dat");
 
         if (structures.containsKey(dimensionId))
-        {
             structures.get(dimensionId).clear();
-        }
 
         if (!dimensionFile.exists())
-        {
             return;
-        }
 
         if (!structures.containsKey(dimensionId))
-        {
             structures.put(dimensionId, new LinkedHashMap<>());
-        }
 
-        try
-        {
-            if (SmithsCore.isInDevenvironment())
-            {
+        try {
+            if (SmithsCore.isInDevEnvironment())
                 SmithsCore.getLogger().info("Loading structures from: " + dimensionFile.getName());
-            }
 
             FileInputStream inputStream = new FileInputStream(dimensionFile);
             NBTTagCompound compound = CompressedStreamTools.readCompressed(inputStream);
 
             NBTTagList structuresList = compound.getTagList(CoreReferences.NBT.StructureData.STORE, Constants.NBT.TAG_COMPOUND);
 
-            for (int i = 0; i < structuresList.tagCount(); i++)
-            {
+            for (int i = 0; i < structuresList.tagCount(); i++) {
                 NBTTagCompound structureCompound = structuresList.getCompoundTagAt(i);
                 Class<? extends IStructure> structureClass = (Class<? extends IStructure>) Class.forName(structureCompound.getString(CoreReferences.NBT.StructureData.TYPE));
-                if (!factories.containsKey(structureClass))
-                {
-                    SmithsCore.getLogger()
-                      .warn(CoreReferences.LogMarkers.STRUCTURE,
-                        "Found a structure of type: " + structureClass.getName() + " in file: " + dimensionFile.getName()
-                          + " that has no associated factory, it will not persist!");
+                if (!factories.containsKey(structureClass)) {
+                    SmithsCore.getLogger().warn(CoreReferences.LogMarkers.STRUCTURE, "Found a structure of type: " + structureClass.getName() + " in file: " + dimensionFile.getName() + " that has no associated factory, it will not persist!");
                     continue;
                 }
 
@@ -167,46 +132,33 @@ public final class StructureRegistry
 
                 structures.get(dimensionId).put(structure.getMasterLocation(), structure);
             }
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             SmithsCore.getLogger().error(CoreReferences.LogMarkers.STRUCTURE, (Object) new Exception("Failed to load the structures data from Disk! They will not persist!", ex));
         }
     }
 
     @SubscribeEvent
-    public void onWorldSave(@Nonnull WorldEvent.Save event)
-    {
+    public void onWorldSave(@Nonnull WorldEvent.Save event) {
         saveStructureDataForWorld(event.getWorld().provider.getDimension());
     }
 
-    private void saveStructureDataForWorld(int dimensionId)
-    {
-        File dimensionFile =
-          new File(FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getSaveHandler().getWorldDirectory(), "armory/structures/dim_" + dimensionId + ".dat");
+    private void saveStructureDataForWorld(int dimensionId) {
+        File dimensionFile = new File(FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getSaveHandler().getWorldDirectory(), "armory/structures/dim_" + dimensionId + ".dat");
 
-        try
-        {
+        try {
             if (!dimensionFile.exists())
-            {
                 dimensionFile.mkdirs();
-            }
 
             if (dimensionFile.exists())
-            {
                 dimensionFile.delete();
-            }
 
             if (!structures.containsKey(dimensionId))
-            {
                 return;
-            }
 
             NBTTagCompound dimensionCompound = new NBTTagCompound();
             NBTTagList structureList = new NBTTagList();
 
-            for (Coordinate3D masterCoordinate : structures.get(dimensionId).keySet())
-            {
+            for (Coordinate3D masterCoordinate : structures.get(dimensionId).keySet()) {
                 NBTTagCompound structureCompound = new NBTTagCompound();
                 structureCompound.setTag(CoreReferences.NBT.StructureData.MASTERLOCATION, masterCoordinate.toCompound());
 
@@ -225,22 +177,16 @@ public final class StructureRegistry
 
             FileOutputStream outputStream = new FileOutputStream(dimensionFile);
             CompressedStreamTools.writeCompressed(dimensionCompound, outputStream);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             SmithsCore.getLogger().error(CoreReferences.LogMarkers.STRUCTURE, (Object) new Exception("Failed to write the structure data to Disk! It will not persist!", ex));
         }
     }
 
     @SubscribeEvent
-    public void onPlayerJoinServer(@Nonnull PlayerEvent.PlayerLoggedInEvent event)
-    {
-        synchronized (structures)
-        {
-            for (Map.Entry<Integer, LinkedHashMap<Coordinate3D, IStructure>> dimensionEntry : structures.entrySet())
-            {
-                for (IStructure structure : dimensionEntry.getValue().values())
-                {
+    public void onPlayerJoinServer(@Nonnull PlayerEvent.PlayerLoggedInEvent event) {
+        synchronized (structures) {
+            for (Map.Entry<Integer, LinkedHashMap<Coordinate3D, IStructure>> dimensionEntry : structures.entrySet()) {
+                for (IStructure structure : dimensionEntry.getValue().values()) {
                     new StructureEvent.Create(structure, dimensionEntry.getKey()).handleServerToClient((EntityPlayerMP) event.player);
                 }
             }
@@ -248,57 +194,40 @@ public final class StructureRegistry
     }
 
     @SubscribeEvent
-    public void onStructureCreation(@Nonnull StructureEvent.Create event)
-    {
-        synchronized (structures)
-        {
+    public void onStructureCreation(@Nonnull StructureEvent.Create event) {
+        synchronized (structures) {
             if (!structures.containsKey(event.getDimension()))
-            {
                 structures.put(event.getDimension(), new LinkedHashMap<>());
-            }
 
             structures.get(event.getDimension()).put(event.getStructure().getMasterLocation(), event.getStructure());
         }
     }
 
     @SubscribeEvent
-    public void onStructureDestruction(@Nonnull StructureEvent.Destroyed event)
-    {
-        synchronized (structures)
-        {
+    public void onStructureDestruction(@Nonnull StructureEvent.Destroyed event) {
+        synchronized (structures) {
             if (!structures.containsKey(event.getDimension()))
-            {
                 return;
-            }
 
             if (!structures.get(event.getDimension()).containsKey(event.getStructure().getMasterLocation()))
-            {
                 return;
-            }
 
             structures.get(event.getDimension()).remove(event.getStructure().getMasterLocation());
 
-            if (structures.get(event.getDimension()).size() == 0)
-            {
+            if (structures.get(event.getDimension()).size() == 0) {
                 structures.remove(event.getDimension());
             }
         }
     }
 
     @SubscribeEvent
-    public void onStructureMasterUpdated(@Nonnull StructureEvent.MasterBlockChanged event)
-    {
-        synchronized (structures)
-        {
+    public void onStructureMasterUpdated(@Nonnull StructureEvent.MasterBlockChanged event) {
+        synchronized (structures) {
             if (!structures.containsKey(event.getDimension()))
-            {
                 return;
-            }
 
             if (!structures.get(event.getDimension()).containsKey(event.getOldMaster()))
-            {
                 return;
-            }
 
             structures.get(event.getDimension()).remove(event.getOldMaster());
             structures.get(event.getDimension()).put(event.getStructure().getMasterLocation(), event.getStructure());
@@ -307,22 +236,18 @@ public final class StructureRegistry
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
-    public void onStructureUpdated(@Nonnull StructureEvent.Updated event)
-    {
-        synchronized (structures)
-        {
+    public void onStructureUpdated(@Nonnull StructureEvent.Updated event) {
+        synchronized (structures) {
             if (!structures.containsKey(event.getDimension()))
-            {
                 return;
-            }
 
             if (!structures.get(event.getDimension()).containsKey(event.getStructure().getMasterLocation()))
-            {
                 return;
-            }
 
             structures.get(event.getDimension()).remove(event.getStructure().getMasterLocation());
             structures.get(event.getDimension()).put(event.getStructure().getMasterLocation(), event.getStructure());
         }
     }
+
+
 }

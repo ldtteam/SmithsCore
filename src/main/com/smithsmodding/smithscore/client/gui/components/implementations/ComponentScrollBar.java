@@ -33,10 +33,10 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
     private String uniqueID;
     @Nonnull
     private LinkedHashMap<String, IGUIComponent> componentHashMap = new LinkedHashMap<String, IGUIComponent>();
-    private IGUIBasedComponentHost  parent;
-    private ScrollBarComponentState state;
-    private Coordinate2D            rootAnchorPixel;
-    private int                     height;
+    private transient IGUIBasedComponentHost  parent;
+    private           ScrollBarComponentState state;
+    private           Coordinate2D            rootAnchorPixel;
+    private           int                     height;
 
     public ComponentScrollBar(
                                @Nonnull String uniqueID,
@@ -214,6 +214,12 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
     public IGUIBasedComponentHost getComponentHost()
     {
         return parent;
+    }
+
+    @Override
+    public void setComponentHost(@Nonnull final IGUIBasedComponentHost host)
+    {
+        this.parent = host;
     }
 
     /**

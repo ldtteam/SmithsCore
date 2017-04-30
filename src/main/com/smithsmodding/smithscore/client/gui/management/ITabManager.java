@@ -19,6 +19,8 @@ public interface ITabManager
     @Nonnull
     IGUIBasedTabHost getHost();
 
+    void setHost(@Nonnull IGUIBasedTabHost host);
+
     /**
      * Method called by the Host.
      * <p>

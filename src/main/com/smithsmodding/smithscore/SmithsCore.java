@@ -5,6 +5,7 @@ import com.smithsmodding.smithscore.common.player.management.PlayerManager;
 import com.smithsmodding.smithscore.common.proxy.CoreCommonProxy;
 import com.smithsmodding.smithscore.common.registry.CommonRegistry;
 import com.smithsmodding.smithscore.util.CoreReferences;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -20,13 +21,12 @@ import java.util.concurrent.TimeUnit;
  * Created by Orion
  * Created on 25.10.2015
  * 21:46
- * <p>
+ *
  * Copyrighted according to Project specific license
  */
 @Mod(modid = CoreReferences.General.MOD_ID, name = "smithscore", version = CoreReferences.General.VERSION,
-  dependencies = "required-after:forge@[13.19,)")
-public class SmithsCore
-{
+        dependencies = "required-after:forge@[13.19,)")
+public class SmithsCore {
 
     // Instance of this mod use for internal and Forge references
     @Mod.Instance(CoreReferences.General.MOD_ID)
@@ -37,6 +37,8 @@ public class SmithsCore
 
     private static boolean isInDevEnvironment = Boolean.parseBoolean(System.getProperties().getProperty("SmithsCore.Dev", "false"));
 
+    private static boolean isInObfuscatedEnvironment = !(boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+
     // Private variable for the Sided registry
     @SidedProxy(clientSide = "com.smithsmodding.smithscore.client.registry.ClientRegistry", serverSide = "com.smithsmodding.smithscore.common.registry.CommonRegistry")
     private static CommonRegistry iRegistry;
@@ -45,24 +47,21 @@ public class SmithsCore
     @SidedProxy(clientSide = "com.smithsmodding.smithscore.client.proxy.CoreClientProxy", serverSide = "com.smithsmodding.smithscore.common.proxy.CoreCommonProxy")
     private static CoreCommonProxy proxy;
 
-    public static final SmithsCore getInstance() { return instance; }
+    public static final SmithsCore getInstance(){ return instance; }
 
-    public static final CoreCommonProxy getProxy()
-    {
+    public static final CoreCommonProxy getProxy() {
         return proxy;
     }
 
-    public static final CommonRegistry getRegistry()
-    {
+    public static final CommonRegistry getRegistry() {
         return iRegistry;
     }
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
+    public void preInit(FMLPreInitializationEvent event) {
         Stopwatch watch = Stopwatch.createStarted();
 
-        if (isInDevenvironment())
+        if (isInDevEnvironment())
         {
             getLogger().warn(CoreReferences.LogMarkers.PREINIT, "");
             getLogger().warn(CoreReferences.LogMarkers.PREINIT, "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -88,13 +87,27 @@ public class SmithsCore
         getLogger().info(CoreReferences.LogMarkers.PREINIT, "SmithsCore Pre-Init completed after: " + milliseconds + " mS.");
     }
 
-    public static final boolean isInDevenvironment() {return isInDevEnvironment; }
+    /**
+     * Method to check if SmithsCore should execute highly unstable features or log additional data.
+     *
+     * @return True when the Development flag is set, false when not.
+     */
+    public static final boolean isInDevEnvironment() {return isInDevEnvironment || isIsInObfuscatedEnvironment(); }
 
     public static final Logger getLogger() { return iLogger; }
 
-    @Mod.EventHandler
-    public void init(FMLInitializationEvent event)
+    /**
+     * Method to check if SmithsCore is running in a deobfuscated environment
+     *
+     * @return True when SmithsCore is running in a deobfuscated environment.
+     */
+    public static final boolean isIsInObfuscatedEnvironment()
     {
+        return isInObfuscatedEnvironment;
+    }
+
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent event) {
         Stopwatch watch = Stopwatch.createStarted();
 
         proxy.Init();
@@ -106,8 +119,7 @@ public class SmithsCore
     }
 
     @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event)
-    {
+    public void postInit(FMLPostInitializationEvent event) {
         Stopwatch watch = Stopwatch.createStarted();
 
         watch.stop();
@@ -117,8 +129,7 @@ public class SmithsCore
     }
 
     @Mod.EventHandler
-    public void onServerStarting(FMLServerStartingEvent event)
-    {
+    public void onServerStarting(FMLServerStartingEvent event) {
         PlayerManager.getInstance().onServerStart(event);
     }
 }

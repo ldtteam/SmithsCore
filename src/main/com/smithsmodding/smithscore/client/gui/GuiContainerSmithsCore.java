@@ -39,13 +39,13 @@ import java.util.List;
 public abstract class GuiContainerSmithsCore extends GuiContainer implements IGUIBasedComponentHost, IGUIBasedLedgerHost, IGUIBasedTabHost
 {
 
-    private boolean               isInitialized = false;
+    private           boolean               isInitialized = false;
     @Nonnull
-    private StandardRenderManager renderer      = new StandardRenderManager(this);
+    private transient StandardRenderManager renderer      = new StandardRenderManager(this);
     @Nonnull
-    private StandardLedgerManager ledgers       = new StandardLedgerManager(this);
+    private           StandardLedgerManager ledgers       = new StandardLedgerManager(this);
     @Nonnull
-    private CoreComponentState    state         = new CoreComponentState(this);
+    private           CoreComponentState    state         = new CoreComponentState(this);
     @Nonnull
     private String uniqueUIID;
 
@@ -178,6 +178,12 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
     public IGUIBasedComponentHost getComponentHost()
     {
         return this;
+    }
+
+    @Override
+    public void setComponentHost(@Nonnull final IGUIBasedComponentHost host)
+    {
+        //NOOP, This is the root of the component tree.
     }
 
     @Nonnull

@@ -17,6 +17,8 @@ public interface ILedgerManager
     @Nonnull
     IGUIBasedLedgerHost getHost();
 
+    void setHost(@Nonnull IGUIBasedLedgerHost host);
+
     void registerLedgerRightSide(@Nonnull IGUILedger ledger);
 
     void registerLedgerLeftSide(@Nonnull IGUILedger ledger);

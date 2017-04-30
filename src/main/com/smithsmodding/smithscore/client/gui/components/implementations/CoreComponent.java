@@ -15,12 +15,12 @@ import java.util.ArrayList;
  */
 public abstract class CoreComponent implements IGUIComponent
 {
-    protected String                 uniqueID;
-    protected IGUIComponentState     state;
-    protected IGUIBasedComponentHost parent;
-    protected Coordinate2D           rootAnchorPixel;
-    protected int                    width;
-    protected int                    height;
+    protected           String                 uniqueID;
+    protected           IGUIComponentState     state;
+    protected transient IGUIBasedComponentHost parent;
+    protected           Coordinate2D           rootAnchorPixel;
+    protected           int                    width;
+    protected           int                    height;
 
     public CoreComponent(
                           @Nonnull String uniqueID,
@@ -59,6 +59,12 @@ public abstract class CoreComponent implements IGUIComponent
     public IGUIBasedComponentHost getComponentHost()
     {
         return parent;
+    }
+
+    @Override
+    public void setComponentHost(@Nonnull final IGUIBasedComponentHost host)
+    {
+        this.parent = host;
     }
 
     @Nonnull

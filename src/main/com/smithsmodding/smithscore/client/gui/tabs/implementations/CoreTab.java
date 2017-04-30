@@ -33,7 +33,7 @@ public abstract class CoreTab implements IGUITab
 {
 
     String             uniqueID;
-    IGUIBasedTabHost   root;
+    transient IGUIBasedTabHost root;
     IGUIComponentState state;
 
     @Nonnull
@@ -179,6 +179,15 @@ public abstract class CoreTab implements IGUITab
     public IGUIBasedComponentHost getComponentHost()
     {
         return root;
+    }
+
+    @Override
+    public void setComponentHost(@Nonnull final IGUIBasedComponentHost host)
+    {
+        if (host instanceof IGUIBasedTabHost)
+        {
+            this.root = (IGUIBasedTabHost) host;
+        }
     }
 
     /**
@@ -458,6 +467,12 @@ public abstract class CoreTab implements IGUITab
     public IGUIBasedTabHost getTabHost()
     {
         return root;
+    }
+
+    @Override
+    public void setTabHost(@Nonnull final IGUIBasedTabHost host)
+    {
+        this.root = host;
     }
 
     /**

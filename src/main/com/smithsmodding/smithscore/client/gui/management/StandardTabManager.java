@@ -15,7 +15,7 @@ import java.util.LinkedHashMap;
 public class StandardTabManager implements ITabManager
 {
 
-    IGUIBasedTabHost host;
+    transient IGUIBasedTabHost host;
     String           activeTabId;
     @Nonnull
     LinkedHashMap<String, IGUITab> tabs = new LinkedHashMap<String, IGUITab>();
@@ -35,6 +35,12 @@ public class StandardTabManager implements ITabManager
     public IGUIBasedTabHost getHost()
     {
         return host;
+    }
+
+    @Override
+    public void setHost(@Nonnull final IGUIBasedTabHost host)
+    {
+        this.host = host;
     }
 
     /**
@@ -159,9 +165,9 @@ public class StandardTabManager implements ITabManager
     }
 
     /**
-     * Method to get the width of a Tab Selector
+     * Method to get the componentWidth of a Tab Selector
      *
-     * @return The width of a Tab Selector. Vanilla standard is 28.
+     * @return The componentWidth of a Tab Selector. Vanilla standard is 28.
      */
     @Override
     public int getTabSelectorWidth()
@@ -170,9 +176,9 @@ public class StandardTabManager implements ITabManager
     }
 
     /**
-     * Method to get the height of a Tab Selector.
+     * Method to get the componentHeight of a Tab Selector.
      *
-     * @return The height of a Tab Selector. Vanilla standard is 30. Due to border mechanics default is 33.
+     * @return The componentHeight of a Tab Selector. Vanilla standard is 30. Due to border mechanics default is 33.
      */
     @Override
     public int getTabSelectorHeight()

@@ -33,14 +33,14 @@ import java.util.List;
 public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
 {
 
-    protected CustomResource       ledgerIcon;
-    protected String               translatedLedgerHeader;
-    protected int                  closedLedgerHeight;
-    protected int                  closedLedgerWidth;
-    private   String               uniqueID;
-    private   LedgerComponentState state;
-    private   IGUIBasedLedgerHost  root;
-    private   LedgerConnectionSide side;
+    protected         CustomResource       ledgerIcon;
+    protected         String               translatedLedgerHeader;
+    protected         int                  closedLedgerHeight;
+    protected         int                  closedLedgerWidth;
+    private           String               uniqueID;
+    private           LedgerComponentState state;
+    private transient IGUIBasedLedgerHost  root;
+    private           LedgerConnectionSide side;
     @Nonnull
     private LinkedHashMap<String, IGUIComponent> components = new LinkedHashMap<String, IGUIComponent>();
     private MinecraftColor color;
@@ -133,6 +133,15 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
     public IGUIBasedComponentHost getComponentHost()
     {
         return root;
+    }
+
+    @Override
+    public void setComponentHost(@Nonnull final IGUIBasedComponentHost host)
+    {
+        if (host instanceof IGUIBasedLedgerHost)
+        {
+            this.root = (IGUIBasedLedgerHost) host;
+        }
     }
 
     /**
@@ -296,6 +305,12 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
         return root;
     }
 
+    @Override
+    public void setLedgerHost(@Nonnull final IGUIBasedLedgerHost host)
+    {
+        this.root = host;
+    }
+
     /**
      * Method to get the primary rendered side of the Ledger.
      *
@@ -402,14 +417,14 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
     /**
      * Method used by the rendering and animation system to determine the max size of the Ledger.
      *
-     * @return An int bigger then 16 plus the icon width that describes the maximum width of the Ledger when expanded.
+     * @return An int bigger then 16 plus the icon componentWidth that describes the maximum componentWidth of the Ledger when expanded.
      */
     public abstract int getMaxWidth();
 
     /**
      * Method used by the rendering and animation system to determine the max size of the Ledger.
      *
-     * @return An int bigger then 16 plus the icon height that describes the maximum height of the Ledger when expanded.
+     * @return An int bigger then 16 plus the icon componentHeight that describes the maximum componentHeight of the Ledger when expanded.
      */
     public abstract int getMaxHeight();
 

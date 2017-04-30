@@ -25,6 +25,11 @@ public interface IGUITab extends IGUIBasedComponentHost
     IGUIBasedTabHost getTabHost();
 
     /**
+     * Method to set the host of the tab.
+     */
+    void setTabHost(@Nonnull IGUIBasedTabHost host);
+
+    /**
      * Method to get this tabs TabManger.
      *
      * @return The TabManager of this Tab.

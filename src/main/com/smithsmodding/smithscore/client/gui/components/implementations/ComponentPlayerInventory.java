@@ -27,14 +27,14 @@ import java.util.List;
 public class ComponentPlayerInventory implements IGUIBasedComponentHost
 {
 
-    public static int WIDTH  = ContainerSmithsCore.PLAYER_INVENTORY_COLUMNS * 18 + 2 * 7;
-    public static int HEIGHT = (ContainerSmithsCore.PLAYER_INVENTORY_ROWS + 1) * 18 + 5 + 2 * 7;
+    public static int DEFAULT_WIDTH  = ContainerSmithsCore.PLAYER_INVENTORY_COLUMNS * 18 + 2 * 7;
+    public static int DEFAULT_HEIGHT = (ContainerSmithsCore.PLAYER_INVENTORY_ROWS + 1) * 18 + 5 + 2 * 7;
 
     private String uniqueID;
     @Nonnull
     private LinkedHashMap<String, IGUIComponent> componentHashMap = new LinkedHashMap<String, IGUIComponent>();
 
-    private IGUIBasedComponentHost parent;
+    private transient IGUIBasedComponentHost parent;
     @Nonnull
     private CoreComponentState state = new CoreComponentState(this);
 
@@ -62,8 +62,8 @@ public class ComponentPlayerInventory implements IGUIBasedComponentHost
         this.color = color;
         this.playerInventory = playerInventory;
 
-        this.width = WIDTH;
-        this.height = HEIGHT;
+        this.width = DEFAULT_WIDTH;
+        this.height = DEFAULT_HEIGHT;
 
         this.connectionType = connectionType;
     }
@@ -252,6 +252,12 @@ public class ComponentPlayerInventory implements IGUIBasedComponentHost
     public IGUIBasedComponentHost getComponentHost()
     {
         return parent.getComponentHost();
+    }
+
+    @Override
+    public void setComponentHost(@Nonnull final IGUIBasedComponentHost host)
+    {
+        this.parent = host;
     }
 
     @Nonnull
