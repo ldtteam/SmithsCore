@@ -135,16 +135,6 @@ public class CoreClientProxy extends CoreCommonProxy
 
         ModelLoaderRegistry.registerLoader(multiComponentModelLoader);
         ModelLoaderRegistry.registerLoader(SmithsCoreOBJLoader.INSTANCE);
-
-        Map<String, RenderPlayer> skinMap = Minecraft.getMinecraft().getRenderManager().getSkinMap();
-
-        RenderPlayer render = skinMap.get("default");
-        render.layerRenderers.removeIf(l -> l.getClass().equals(LayerCustomHead.class));
-        render.addLayer(new CancelableLayerCustomHead(render.getMainModel().bipedHead));
-
-        render = skinMap.get("slim");
-        render.layerRenderers.removeIf(l -> l.getClass().equals(LayerCustomHead.class));
-        render.addLayer(new CancelableLayerCustomHead(render.getMainModel().bipedHead));
     }
 
     /**
@@ -204,6 +194,16 @@ public class CoreClientProxy extends CoreCommonProxy
             multiColoredFontRenderer.setBidiFlag(Minecraft.getMinecraft().getLanguageManager().isCurrentLanguageBidirectional());
         }
         ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(multiColoredFontRenderer);
+
+        Map<String, RenderPlayer> skinMap = Minecraft.getMinecraft().getRenderManager().getSkinMap();
+
+        RenderPlayer render = skinMap.get("default");
+        render.layerRenderers.removeIf(l -> l.getClass().equals(LayerCustomHead.class));
+        render.addLayer(new CancelableLayerCustomHead(render.getMainModel().bipedHead));
+
+        render = skinMap.get("slim");
+        render.layerRenderers.removeIf(l -> l.getClass().equals(LayerCustomHead.class));
+        render.addLayer(new CancelableLayerCustomHead(render.getMainModel().bipedHead));
     }
 
     /**
