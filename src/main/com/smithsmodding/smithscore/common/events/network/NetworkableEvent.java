@@ -96,8 +96,8 @@ public class NetworkableEvent extends SmithsCoreEvent
     /**
      * Convenient function to post this event on the network event bus within smithscore
      */
-    public void PostNetwork()
+    public boolean PostNetwork()
     {
-        SmithsCore.getRegistry().getNetworkBus().post(this);
+        return SmithsCore.getRegistry().getNetworkBus().post(this);
     }
 }

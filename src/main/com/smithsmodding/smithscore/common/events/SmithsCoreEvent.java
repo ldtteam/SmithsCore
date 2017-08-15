@@ -22,17 +22,17 @@ public class SmithsCoreEvent extends Event
     /**
      * Convenient function to post this event on the common event bus within smithscore
      */
-    public void PostCommon()
+    public boolean PostCommon()
     {
-        SmithsCore.getRegistry().getCommonBus().post(this);
+        return SmithsCore.getRegistry().getCommonBus().post(this);
     }
 
     /**
      * Convenient function to post this event on the client event bus within smithscore
      */
-    public void PostClient()
+    public boolean PostClient()
     {
-        SmithsCore.getRegistry().getClientBus().post(this);
+        return SmithsCore.getRegistry().getClientBus().post(this);
     }
 
     /**

@@ -8,6 +8,7 @@ import com.smithsmodding.smithscore.client.handlers.network.ClientNetworkableEve
 import com.smithsmodding.smithscore.client.model.loader.MultiComponentModelLoader;
 import com.smithsmodding.smithscore.client.model.loader.SmithsCoreOBJLoader;
 import com.smithsmodding.smithscore.client.registry.ClientRegistry;
+import com.smithsmodding.smithscore.client.render.layers.CancelableLayerCustomHead;
 import com.smithsmodding.smithscore.common.capability.SmithsCoreCapabilityDispatcher;
 import com.smithsmodding.smithscore.common.handlers.network.CommonNetworkableEventHandler;
 import com.smithsmodding.smithscore.common.player.handlers.PlayersConnectedUpdatedEventHandler;
@@ -21,6 +22,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.entity.layers.LayerCustomHead;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -37,6 +40,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import java.io.File;
+import java.util.Map;
 
 /**
  * Specific proxy class used to initialize client only sides of this Mod
@@ -131,6 +135,16 @@ public class CoreClientProxy extends CoreCommonProxy
 
         ModelLoaderRegistry.registerLoader(multiComponentModelLoader);
         ModelLoaderRegistry.registerLoader(SmithsCoreOBJLoader.INSTANCE);
+
+        Map<String, RenderPlayer> skinMap = Minecraft.getMinecraft().getRenderManager().getSkinMap();
+
+        RenderPlayer render = skinMap.get("default");
+        render.layerRenderers.removeIf(l -> l.getClass().equals(LayerCustomHead.class));
+        render.addLayer(new CancelableLayerCustomHead(render.getMainModel().bipedHead));
+
+        render = skinMap.get("slim");
+        render.layerRenderers.removeIf(l -> l.getClass().equals(LayerCustomHead.class));
+        render.addLayer(new CancelableLayerCustomHead(render.getMainModel().bipedHead));
     }
 
     /**
