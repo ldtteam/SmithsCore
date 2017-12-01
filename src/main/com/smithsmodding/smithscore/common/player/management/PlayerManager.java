@@ -127,8 +127,8 @@ public class PlayerManager
     {
         File file = new File(FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getSaveHandler().getWorldDirectory(), "playerdata");
 
-        commonSidedJoinedMap = new HashMap<UUID, String>();
-        serverSidedJoinedMap = new HashMap<UUID, EntityPlayer>();
+        commonSidedJoinedMap = new HashMap<>();
+        serverSidedJoinedMap = new HashMap<>();
 
         if (file.isDirectory())
         {
