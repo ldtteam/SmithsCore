@@ -182,8 +182,8 @@ task("createChangelog") {
         def file = new FileOutputStream("build/changelog.md")
         def out = new BufferedOutputStream(file)
 
-        println("Retrieving changes from: " + teamCityURL + "guestAuth/app/rest/changes?locator=build:(id:" + teamcity["teamcity.build.id"] + ")")
-        def changesXML = new XmlSlurper().parse(teamCityURL + "guestAuth/app/rest/changes?locator=build:(id:" + teamcity["teamcity.build.id"] + ")")
+        println("Retrieving changes from: " + teamCityURL + "guestAuth/app/rest/changes?locator=build:(id:" + teamcity["teamcity.build.counter"] + ")")
+        def changesXML = new XmlSlurper().parse(teamCityURL + "guestAuth/app/rest/changes?locator=build:(id:" + teamcity["teamcity.build.counter"] + ")")
 
         def changes = changesXML.change
         println("createChangelog: Identified " + changes.size() + " changes to be written into the changelog.")
