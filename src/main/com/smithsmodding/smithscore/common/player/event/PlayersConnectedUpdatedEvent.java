@@ -51,7 +51,6 @@ public class PlayersConnectedUpdatedEvent extends StandardNetworkableEvent
     {
         int pairCount = pMessageBuffer.readInt();
 
-
         for (int pairIndex = 0; pairIndex < pairCount; pairIndex++)
         {
             commonSidedJoinedMap.put(NetworkHelper.readUUID(pMessageBuffer), ByteBufUtils.readUTF8String(pMessageBuffer));
@@ -69,10 +68,11 @@ public class PlayersConnectedUpdatedEvent extends StandardNetworkableEvent
     {
         pMessageBuffer.writeInt(commonSidedJoinedMap.size());
 
-        for (UUID id : commonSidedJoinedMap.keySet())
-        {
-            NetworkHelper.writeUUID(pMessageBuffer, id);
-            ByteBufUtils.writeUTF8String(pMessageBuffer, commonSidedJoinedMap.get(id));
-        }
+        commonSidedJoinedMap.keySet().stream()
+          .filter(id -> commonSidedJoinedMap.get(id) != null)
+          .forEach(id -> {
+              NetworkHelper.writeUUID(pMessageBuffer, id);
+              ByteBufUtils.writeUTF8String(pMessageBuffer, commonSidedJoinedMap.get(id));
+          });
     }
 }
