@@ -4,8 +4,143 @@ Cannot run the CurseUpload sequence. No API-Key or release type has been provide
 
 Found AccessTransformer: jei_at.cfg_jei_1.11.2-4.3.6.282_at.cfg
 Found AccessTransformer: SmithsCore_at.cfg
-:genIntellijRuns
+:extractMcpMappings SKIPPED
+:deobfCompileDeobfDepTask0 SKIPPED
+:deobfCompileRemapDepSourcesTask1 SKIPPED
+:deobfCompileDummyTask
+:deobfProvidedDummyTask
+:sourceApiJava UP-TO-DATE
+:compileApiJava UP-TO-DATE
+:processApiResources UP-TO-DATE
+:apiClasses UP-TO-DATE
+:sourceMainJava UP-TO-DATE
+:compileJavaNote: SpongePowered MIXIN Annotation Processor Version=0.7.5
+Note: ObfuscationServiceMCP supports type: "searge"
+Note: ObfuscationServiceMCP supports type: "notch"
+Note: Loading searge mappings from C:\Users\marcf\.gradle\caches\minecraft\de\oceanlabs\mcp\mcp_snapshot\20161220\1.11.2\srgs\mcp-srg.srg
+Note: Loading notch mappings from C:\Users\marcf\.gradle\caches\minecraft\de\oceanlabs\mcp\mcp_snapshot\20161220\1.11.2\srgs\mcp-notch.srg
+Note: Writing refmap to E:\Development\Minecraft\1.11\SmithsCore\build\tmp\compileJava\compileJava-refmap.json
+Note: Writing refmap to E:\Development\Minecraft\1.11\SmithsCore\build\tmp\compileJava\compileJava-refmap.json
+Note: Writing searge output SRGs to E:\Development\Minecraft\1.11\SmithsCore\build\tmp\compileJava\mcp-srg.srg
+Note: Writing notch output SRGs to E:\Development\Minecraft\1.11\SmithsCore\build\tmp\compileJava\mcp-notch.srg
+Note: Writing refmap to E:\Development\Minecraft\1.11\SmithsCore\build\tmp\compileJava\compileJava-refmap.json
+Note: Writing refmap to E:\Development\Minecraft\1.11\SmithsCore\build\tmp\compileJava\compileJava-refmap.json
+Note: Writing searge output SRGs to E:\Development\Minecraft\1.11\SmithsCore\build\tmp\compileJava\mcp-srg.srg
+Note: Writing notch output SRGs to E:\Development\Minecraft\1.11\SmithsCore\build\tmp\compileJava\mcp-notch.srg
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+
+:processResources
+:classes
+:devJar
+:jar
+:javadocE:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\common\events\network\NetworkableEvent.java:99: warning: no @return
+    public boolean PostNetwork()
+                   ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\common\events\SmithsCoreEvent.java:25: warning: no @return
+    public boolean PostCommon()
+                   ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\common\events\SmithsCoreEvent.java:33: warning: no @return
+    public boolean PostClient()
+                   ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\client\gui\tabs\core\IGUITab.java:30: warning: no @param for host
+    void setTabHost(@Nonnull IGUIBasedTabHost host);
+         ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\common\inventory\IItemStorage.java:19: warning: no @return
+    boolean isEmpty();
+            ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\common\inventory\IItemStorage.java:24: warning: no @return
+    int getSizeInventory();
+        ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\common\inventory\IItemStorage.java:30: warning: no @param for index
+    ItemStack getStackInSlot(int index);
+              ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\common\inventory\IItemStorage.java:30: warning: no @return
+    ItemStack getStackInSlot(int index);
+              ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\common\inventory\IItemStorage.java:36: warning: no @param for index
+    ItemStack decrStackSize(int index, int count);
+              ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\common\inventory\IItemStorage.java:36: warning: no @param for count
+    ItemStack decrStackSize(int index, int count);
+              ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\common\inventory\IItemStorage.java:36: warning: no @return
+    ItemStack decrStackSize(int index, int count);
+              ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\common\inventory\IItemStorage.java:46: warning: no @param for index
+    void setInventorySlotContents(int index, @Nonnull ItemStack stack);
+         ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\common\inventory\IItemStorage.java:46: warning: no @param for stack
+    void setInventorySlotContents(int index, @Nonnull ItemStack stack);
+         ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\common\inventory\IItemStorage.java:51: warning: no @return
+    int getInventoryStackLimit();
+        ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\common\inventory\IItemStorage.java:62: warning: no @param for index
+    boolean isItemValidForSlot(int index, @Nonnull ItemStack stack);
+            ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\common\inventory\IItemStorage.java:62: warning: no @param for stack
+    boolean isItemValidForSlot(int index, @Nonnull ItemStack stack);
+            ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\common\inventory\IItemStorage.java:62: warning: no @return
+    boolean isItemValidForSlot(int index, @Nonnull ItemStack stack);
+            ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\common\events\AutomaticEventBusSubscriber.java:17: warning: no @return
+    String modid() default "";
+           ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\util\client\RenderHelper.java:66: warning: no @param for fluid
+    public static void renderFluidCuboid(
+                       ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\util\client\RenderHelper.java:66: warning: no @param for pos
+    public static void renderFluidCuboid(
+                       ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\util\client\RenderHelper.java:66: warning: no @param for x
+    public static void renderFluidCuboid(
+                       ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\util\client\RenderHelper.java:66: warning: no @param for y
+    public static void renderFluidCuboid(
+                       ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\util\client\RenderHelper.java:66: warning: no @param for z
+    public static void renderFluidCuboid(
+                       ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\util\client\RenderHelper.java:66: warning: no @param for x1
+    public static void renderFluidCuboid(
+                       ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\util\client\RenderHelper.java:66: warning: no @param for y1
+    public static void renderFluidCuboid(
+                       ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\util\client\RenderHelper.java:66: warning: no @param for z1
+    public static void renderFluidCuboid(
+                       ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\util\client\RenderHelper.java:66: warning: no @param for x2
+    public static void renderFluidCuboid(
+                       ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\util\client\RenderHelper.java:66: warning: no @param for y2
+    public static void renderFluidCuboid(
+                       ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\util\client\RenderHelper.java:66: warning: no @param for z2
+    public static void renderFluidCuboid(
+                       ^
+E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\util\client\RenderHelper.java:66: warning: no @param for color
+    public static void renderFluidCuboid(
+                       ^
+
+30 warnings
+:javadocJar
+:extractMcpData SKIPPED
+:getVersionJson
+:extractUserdev UP-TO-DATE
+:genSrgs SKIPPED
+:reobfJar
+:extractRangemapReplacedMain
+E:\Development\Minecraft\1.11\SmithsCore\build\sources\main\java
+:retromapReplacedMain
+remapping source...
+:sourceJar
+:assemble
 
 BUILD SUCCESSFUL
 
-Total time: 2.546 secs
+Total time: 1 mins 2.836 secs
