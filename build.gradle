@@ -6,12 +6,18 @@ buildscript{
 			url = "http://files.minecraftforge.net/maven"
 		}
         maven {
+            name = 'sponge'
+            url = 'https://repo.spongepowered.org/maven'
+        }
+        maven {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
  	} 
 	dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'gradle.plugin.org.spongepowered:spongegradle:0.8.1'
+        classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
 	}
 }
 
@@ -29,6 +35,10 @@ repositories {
     maven {
         name 'DVS1 Maven FS'
         url 'http://dvs1.progwml6.com/files/maven'
+    }
+    maven {
+        name = 'sponge'
+        url = 'https://repo.spongepowered.org/maven'
     }
 }
 
@@ -80,9 +90,19 @@ minecraft {
     replace "@APIVERSION@", apiversion
 }
 
+configurations {
+    embed
+    compile.extendsFrom(embed)
+}
+
 dependencies {
 	//Mod dependencies
     deobfCompile "mezz.jei:jei_" + config.minecraft_version + ":" + config.jei_version
+
+    //Mixins
+    embed('org.spongepowered:mixin:0.6.6-SNAPSHOT') {
+        exclude module: 'launchwrapper'
+    }
 
     //Test dependencies
     testCompile 'junit:junit:4.11'
@@ -128,7 +148,21 @@ processResources
 
 jar {
     manifest {
+        attributes 'FMLCorePlugin': 'com.smithsmodding.smithscore.core.SmithsCoreFMLPlugin'
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
         attributes 'FMLAT': 'SmithsCore_at.cfg'
+        attributes 'MixinConfigs': 'mixins.smitshcore.json'
+        attributes 'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker'
+        attributes 'TweakOrder': 0
+        attributes 'ForceLoadAsMod': true
+    }
+
+    from configurations.embed.collect {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        it.isDirectory() ? it : zipTree(it)
     }
 }
 
@@ -204,4 +238,7 @@ task("createChangelog") {
         out.close()
     }
 }
+
+
+idea { module { inheritOutputDirs = true; } }
 

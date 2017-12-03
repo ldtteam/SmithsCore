@@ -1,25 +1,25 @@
 package com.smithsmodding.smithscore.core.hooks;
 
-import com.smithsmodding.smithscore.SmithsCore;
 import com.smithsmodding.smithscore.client.events.texture.TextureStitchCollectedEvent;
+import com.smithsmodding.smithscore.core.interfaces.ITextureMap;
+import net.minecraft.client.renderer.texture.AbstractTexture;
+import net.minecraft.client.renderer.texture.ITickableTextureObject;
 import net.minecraft.client.renderer.texture.TextureMap;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * Hook Class for the TextureMap.
  */
-public class TextureMapHook
+@Mixin(TextureMap.class)
+public abstract class TextureMapHook extends AbstractTexture implements ITickableTextureObject, ITextureMap
 {
 
-    /**
-     * Hook called by the ASM Transformer to notify SmithsCore mods of the execution of a Stitch.
-     * Is fired when all textures (including the the texture for missing textures have been collected,
-     * but before the actual stitch occurs).
-     *
-     * @param map The texture map that is about to be stitch.
-     */
-    public static void onTextureStichCollected(TextureMap map)
+    @Inject(method = "loadTextureAtlas", at = @At("HEAD"))
+    public void onLoadTextureAtlas(CallbackInfo cbi)
     {
-        SmithsCore.getLogger().info("Collection completed. Calling additional collection hook.");
-        SmithsCore.getRegistry().getClientBus().post(new TextureStitchCollectedEvent(map));
+        new TextureStitchCollectedEvent(this).PostClient();
     }
 }

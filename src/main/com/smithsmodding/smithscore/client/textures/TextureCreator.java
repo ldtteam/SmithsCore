@@ -2,13 +2,13 @@ package com.smithsmodding.smithscore.client.textures;
 
 import com.google.common.collect.Maps;
 import com.smithsmodding.smithscore.SmithsCore;
+import com.smithsmodding.smithscore.client.events.texture.TextureStitchCollectedEvent;
+import com.smithsmodding.smithscore.core.interfaces.ITextureMap;
 import com.smithsmodding.smithscore.util.client.ResourceHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.LoaderState;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -97,7 +97,7 @@ public class TextureCreator implements IResourceManagerReloadListener
      * @param event The events fired before the TextureSheet is stitched. TextureStitchEvent.Pre instance.
      */
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void createCustomTextures(@Nonnull TextureStitchEvent.Pre event)
+    public void createCustomTextures(@Nonnull TextureStitchCollectedEvent event)
     {
         //Only run the creation once, after all mods have been loaded.
         if (!Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION))
@@ -114,7 +114,7 @@ public class TextureCreator implements IResourceManagerReloadListener
      *
      * @param map The map to register the textures to.
      */
-    public void createMaterialTextures(@Nonnull TextureMap map)
+    public void createMaterialTextures(@Nonnull ITextureMap map)
     {
         for (ResourceLocation baseTexture : baseTextures)
         {
@@ -146,7 +146,7 @@ public class TextureCreator implements IResourceManagerReloadListener
                                               @Nonnull ITextureController controller,
                                               @Nonnull ResourceLocation baseTexture,
                                               @Nonnull TextureAtlasSprite base,
-                                              @Nonnull TextureMap map)
+      @Nonnull ITextureMap map)
     {
         String location = baseTexture.toString() + "_" + controller.getCreationIdentifier();
         TextureAtlasSprite sprite = null;

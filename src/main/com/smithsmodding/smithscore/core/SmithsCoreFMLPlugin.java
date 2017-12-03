@@ -1,6 +1,9 @@
 package com.smithsmodding.smithscore.core;
 
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+import org.spongepowered.asm.launch.MixinBootstrap;
+import org.spongepowered.asm.mixin.MixinEnvironment;
+import org.spongepowered.asm.mixin.Mixins;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -10,8 +13,22 @@ import java.util.Map;
  */
 @IFMLLoadingPlugin.TransformerExclusions("com.smithsmodding.smithscore.core.")
 @IFMLLoadingPlugin.SortingIndex(1001)
+@IFMLLoadingPlugin.MCVersion("1.11.2")
 public class SmithsCoreFMLPlugin implements IFMLLoadingPlugin
 {
+
+    public SmithsCoreFMLPlugin()
+    {
+        MixinBootstrap.init();
+
+        //-Dfml.coreMods.load=com.smithsmodding.smithscore.core.SmithsCoreFMLPlugin
+
+        // Retrieves the DEFAULT mixin environment
+        MixinEnvironment.getDefaultEnvironment();
+
+        Mixins.addConfiguration("mixins.smithscore.json");
+    }
+
     /**
      * Return a list of classes that implements the IClassTransformer interface
      *
@@ -20,9 +37,7 @@ public class SmithsCoreFMLPlugin implements IFMLLoadingPlugin
     @Override
     public String[] getASMTransformerClass()
     {
-        return new String[] {
-          "com.smithsmodding.smithscore.core.transformers.TextureHookTransformer"
-        };
+        return new String[] {};
     }
 
     /**
@@ -38,7 +53,7 @@ public class SmithsCoreFMLPlugin implements IFMLLoadingPlugin
     @Override
     public String getModContainerClass()
     {
-        return null;
+        return "com.smithsmodding.smithscore.core.SmithsCoreCoreMod";
     }
 
     /**
