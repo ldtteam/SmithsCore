@@ -18,12 +18,19 @@ import com.smithsmodding.smithscore.common.proxy.CoreCommonProxy;
 import com.smithsmodding.smithscore.common.structures.StructureRegistry;
 import com.smithsmodding.smithscore.util.client.ResourceHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelSkeleton;
+import net.minecraft.client.model.ModelZombie;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.entity.RenderArmorStand;
 import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.entity.RenderSkeleton;
+import net.minecraft.client.renderer.entity.RenderZombie;
 import net.minecraft.client.renderer.entity.layers.LayerCustomHead;
 import net.minecraft.client.resources.IReloadableResourceManager;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -172,6 +179,7 @@ public class CoreClientProxy extends CoreCommonProxy
         SmithsCore.getRegistry().getCommonBus().register(StructureRegistry.getServerInstance());
 
         SmithsCore.getRegistry().getClientBus().register(new ButtonInputEventHandler());
+        SmithsCore.getRegistry().getClientBus().register(((ClientRegistry) SmithsCore.getRegistry()).getTextureCreator());
     }
 
     /**
@@ -195,13 +203,25 @@ public class CoreClientProxy extends CoreCommonProxy
 
         Map<String, RenderPlayer> skinMap = Minecraft.getMinecraft().getRenderManager().getSkinMap();
 
-        RenderPlayer render = skinMap.get("default");
-        render.layerRenderers.removeIf(l -> l.getClass().equals(LayerCustomHead.class));
-        render.addLayer(new CancelableLayerCustomHead(render.getMainModel().bipedHead));
+        RenderPlayer renderPlayer = skinMap.get("default");
+        renderPlayer.layerRenderers.removeIf(l -> l.getClass().equals(LayerCustomHead.class));
+        renderPlayer.addLayer(new CancelableLayerCustomHead(renderPlayer.getMainModel().bipedHead));
 
-        render = skinMap.get("slim");
-        render.layerRenderers.removeIf(l -> l.getClass().equals(LayerCustomHead.class));
-        render.addLayer(new CancelableLayerCustomHead(render.getMainModel().bipedHead));
+        renderPlayer = skinMap.get("slim");
+        renderPlayer.layerRenderers.removeIf(l -> l.getClass().equals(LayerCustomHead.class));
+        renderPlayer.addLayer(new CancelableLayerCustomHead(renderPlayer.getMainModel().bipedHead));
+
+        RenderZombie renderZombie = (RenderZombie) Minecraft.getMinecraft().getRenderManager().entityRenderMap.get(EntityZombie.class);
+        renderZombie.layerRenderers.removeIf(l -> l.getClass().equals(LayerCustomHead.class));
+        renderZombie.addLayer(new CancelableLayerCustomHead(((ModelZombie) renderZombie.getMainModel()).bipedHead));
+
+        RenderSkeleton renderSkeleton = (RenderSkeleton) Minecraft.getMinecraft().getRenderManager().entityRenderMap.get(EntitySkeleton.class);
+        renderSkeleton.layerRenderers.removeIf(l -> l.getClass().equals(LayerCustomHead.class));
+        renderSkeleton.addLayer(new CancelableLayerCustomHead(((ModelSkeleton) renderSkeleton.getMainModel()).bipedHead));
+
+        RenderArmorStand renderArmorStand = (RenderArmorStand) Minecraft.getMinecraft().getRenderManager().entityRenderMap.get(RenderArmorStand.class);
+        renderArmorStand.layerRenderers.removeIf(l -> l.getClass().equals(LayerCustomHead.class));
+        renderArmorStand.addLayer(new CancelableLayerCustomHead(renderArmorStand.getMainModel().bipedHead));
     }
 
     /**

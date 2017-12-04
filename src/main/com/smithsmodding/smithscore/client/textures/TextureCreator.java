@@ -96,7 +96,7 @@ public class TextureCreator implements IResourceManagerReloadListener
      *
      * @param event The events fired before the TextureSheet is stitched. TextureStitchEvent.Pre instance.
      */
-    @SubscribeEvent(priority = EventPriority.LOWEST)
+    @SubscribeEvent(priority = EventPriority.NORMAL)
     public void createCustomTextures(@Nonnull TextureStitchCollectedEvent event)
     {
         //Only run the creation once, after all mods have been loaded.
