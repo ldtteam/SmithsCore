@@ -153,17 +153,15 @@ jar {
         attributes 'FMLCorePluginContainsFMLMod': 'true'
         attributes 'FMLAT': 'SmithsCore_at.cfg'
         attributes 'MixinConfigs': 'mixins.smitshcore.json'
-        attributes 'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker'
+        attributes 'TweakClass': 'com.smithsmodding.shading.mixin.launch.MixinTweaker'
         attributes 'TweakOrder': 0
         attributes 'ForceLoadAsMod': true
     }
 
-    from configurations.embed.collect {
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/NOTICE'
-        it.isDirectory() ? it : zipTree(it)
+    configurations.embed.each { dep ->
+        from(project.zipTree(dep)){
+            exclude 'META-INF', 'META-INF/**'
+        }
     }
 }
 
@@ -179,6 +177,13 @@ task devJar(type: Jar, dependsOn: 'classes') {
 task javadocJar(type: Jar, dependsOn: 'javadoc') {
     from "build/docs/javadoc"
     classifier "javadoc"
+}
+
+//Shade it.
+reobf {
+    jar {
+        extraLines 'PK: org/spongepowered/asm com/smithsmodding/shading/mixin'
+    }
 }
 
 artifacts {
