@@ -29,6 +29,7 @@ import net.minecraft.client.renderer.entity.RenderSkeleton;
 import net.minecraft.client.renderer.entity.RenderZombie;
 import net.minecraft.client.renderer.entity.layers.LayerCustomHead;
 import net.minecraft.client.resources.IReloadableResourceManager;
+import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
@@ -219,7 +220,7 @@ public class CoreClientProxy extends CoreCommonProxy
         renderSkeleton.layerRenderers.removeIf(l -> l.getClass().equals(LayerCustomHead.class));
         renderSkeleton.addLayer(new CancelableLayerCustomHead(((ModelSkeleton) renderSkeleton.getMainModel()).bipedHead));
 
-        RenderArmorStand renderArmorStand = (RenderArmorStand) Minecraft.getMinecraft().getRenderManager().entityRenderMap.get(RenderArmorStand.class);
+        RenderArmorStand renderArmorStand = (RenderArmorStand) Minecraft.getMinecraft().getRenderManager().entityRenderMap.get(EntityArmorStand.class);
         renderArmorStand.layerRenderers.removeIf(l -> l.getClass().equals(LayerCustomHead.class));
         renderArmorStand.addLayer(new CancelableLayerCustomHead(renderArmorStand.getMainModel().bipedHead));
     }
