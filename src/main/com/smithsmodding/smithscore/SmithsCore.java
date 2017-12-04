@@ -1,11 +1,13 @@
 package com.smithsmodding.smithscore;
 
 import com.google.common.base.Stopwatch;
+import com.smithsmodding.smithscore.common.events.AutomaticEventBusSubcriptionInjector;
 import com.smithsmodding.smithscore.common.player.management.PlayerManager;
 import com.smithsmodding.smithscore.common.proxy.CoreCommonProxy;
 import com.smithsmodding.smithscore.common.registry.CommonRegistry;
 import com.smithsmodding.smithscore.util.CoreReferences;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -79,7 +81,9 @@ public class SmithsCore {
 
         proxy.preInit();
 
-        //AutomaticEventBusSubcriptionInjector.inject(event.getModMetadata().parentMod, event.getAsmData());
+        Loader.instance().getActiveModList().forEach(mod -> {
+            AutomaticEventBusSubcriptionInjector.inject(mod, event.getAsmData());
+        });
 
         watch.stop();
 

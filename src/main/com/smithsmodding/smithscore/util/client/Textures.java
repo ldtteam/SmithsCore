@@ -1,10 +1,12 @@
 package com.smithsmodding.smithscore.util.client;
 
+import com.smithsmodding.smithscore.client.events.texture.TextureStitchCollectedEvent;
+import com.smithsmodding.smithscore.common.events.AutomaticEventBusSubscriber;
+import com.smithsmodding.smithscore.util.CoreReferences;
 import com.smithsmodding.smithscore.util.client.color.Colors;
 import com.smithsmodding.smithscore.util.client.gui.MultiComponentTexture;
 import com.smithsmodding.smithscore.util.client.gui.TextureComponent;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.LoaderState;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -15,6 +17,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by Marc on 06.12.2015.
  */
+@AutomaticEventBusSubscriber(modid = CoreReferences.General.MOD_ID, types = AutomaticEventBusSubscriber.BusType.CLIENT)
 public class Textures
 {
 
@@ -25,7 +28,7 @@ public class Textures
      * @param event The events fired before the TextureSheet is stitched. TextureStitchEvent.Pre instance.
      */
     @SubscribeEvent(priority = EventPriority.LOW)
-    public void loadTextures(@Nonnull TextureStitchEvent.Pre event)
+    public void loadTextures(@Nonnull TextureStitchCollectedEvent event)
     {
         //Only run the creation once, after all mods have been loaded.
         if (!Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION))
@@ -37,7 +40,7 @@ public class Textures
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
-    public void loadTexturesAfterCreation(TextureStitchEvent.Post event)
+    public void loadTexturesAfterCreation(TextureStitchCollectedEvent event)
     {
         if (!Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION))
         {

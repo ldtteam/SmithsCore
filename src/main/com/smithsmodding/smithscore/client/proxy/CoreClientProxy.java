@@ -17,7 +17,6 @@ import com.smithsmodding.smithscore.common.player.management.PlayerManager;
 import com.smithsmodding.smithscore.common.proxy.CoreCommonProxy;
 import com.smithsmodding.smithscore.common.structures.StructureRegistry;
 import com.smithsmodding.smithscore.util.client.ResourceHelper;
-import com.smithsmodding.smithscore.util.client.Textures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -143,7 +142,6 @@ public class CoreClientProxy extends CoreCommonProxy
     @Override
     protected void registerEventHandlers()
     {
-        MinecraftForge.EVENT_BUS.register(new Textures());
         MinecraftForge.EVENT_BUS.register(((ClientRegistry) SmithsCore.getRegistry()).getTextureCreator());
         MinecraftForge.EVENT_BUS.register(((ClientRegistry) SmithsCore.getRegistry()).getMouseManager());
         MinecraftForge.EVENT_BUS.register(new ClientTickEventHandler());

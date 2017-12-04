@@ -13,7 +13,7 @@ Found AccessTransformer: SmithsCore_at.cfg
 :compileApiJava UP-TO-DATE
 :processApiResources UP-TO-DATE
 :apiClasses UP-TO-DATE
-:sourceMainJava UP-TO-DATE
+:sourceMainJava
 :compileJavaNote: SpongePowered MIXIN Annotation Processor Version=0.7.5
 Note: ObfuscationServiceMCP supports type: "searge"
 Note: ObfuscationServiceMCP supports type: "notch"
@@ -129,6 +129,15 @@ E:\Development\Minecraft\1.11\SmithsCore\src\main\com\smithsmodding\smithscore\u
 
 30 warnings
 :javadocJar
+:sourceTestJava
+:compileTestJavaNote: SpongePowered MIXIN Annotation Processor Version=0.7.5
+Note: ObfuscationServiceMCP supports type: "searge"
+Note: ObfuscationServiceMCP supports type: "notch"
+warning: The following options were not recognized by any processor: '[reobfNotchSrgFile, outRefMapFile, outNotchSrgFile, reobfSrgFile, outSrgFile]'
+
+:processTestResources UP-TO-DATE
+:testClasses
+:test
 :extractMcpData SKIPPED
 :getVersionJson
 :extractUserdev UP-TO-DATE
@@ -140,7 +149,9 @@ E:\Development\Minecraft\1.11\SmithsCore\build\sources\main\java
 remapping source...
 :sourceJar
 :assemble
+:check
+:build
 
 BUILD SUCCESSFUL
 
-Total time: 1 mins 2.836 secs
+Total time: 1 mins 10.267 secs
