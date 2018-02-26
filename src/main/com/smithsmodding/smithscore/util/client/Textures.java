@@ -9,6 +9,7 @@ import com.smithsmodding.smithscore.util.client.gui.TextureComponent;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.LoaderState;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -18,6 +19,7 @@ import javax.annotation.Nonnull;
  * Created by Marc on 06.12.2015.
  */
 @AutomaticEventBusSubscriber(modid = CoreReferences.General.MOD_ID, types = AutomaticEventBusSubscriber.BusType.CLIENT)
+@Mod.EventBusSubscriber(modid = CoreReferences.General.MOD_ID)
 public class Textures
 {
 
@@ -28,7 +30,7 @@ public class Textures
      * @param event The events fired before the TextureSheet is stitched. TextureStitchEvent.Pre instance.
      */
     @SubscribeEvent(priority = EventPriority.LOW)
-    public void loadTextures(@Nonnull TextureStitchCollectedEvent event)
+    public static void loadTextures(@Nonnull TextureStitchCollectedEvent event)
     {
         //Only run the creation once, after all mods have been loaded.
         if (!Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION))
@@ -40,7 +42,7 @@ public class Textures
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
-    public void loadTexturesAfterCreation(TextureStitchCollectedEvent event)
+    public static void loadTexturesAfterCreation(TextureStitchCollectedEvent event)
     {
         if (!Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION))
         {
