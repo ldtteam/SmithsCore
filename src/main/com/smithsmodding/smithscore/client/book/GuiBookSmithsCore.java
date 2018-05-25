@@ -13,6 +13,7 @@ import com.smithsmodding.smithscore.util.common.positioning.Plane;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -378,6 +379,35 @@ public class GuiBookSmithsCore extends GuiScreen implements IGUIBasedComponentHo
             }
         }
 
+        return false;
+    }
+
+    @Override
+    public void handleMouseInput() throws IOException
+    {
+        int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+        int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+
+        int delta = Mouse.getEventDWheel();
+        if (delta != 0)
+        {
+            final Plane plane = getSize().Move(getLocalCoordinate().getXComponent(), getLocalCoordinate().getYComponent());
+            if (plane.ContainsCoordinate(x, y))
+            {
+                x -= getLocalCoordinate().getXComponent();
+                y -= getLocalCoordinate().getYComponent();
+
+                handleMouseWheel(x, y, delta);
+            }
+        }
+        super.handleMouseInput();
+    }
+
+    @Nonnull
+    @Override
+    public boolean handleMouseWheel(final int relativeMouseX, @Nonnull final int relativeMouseY, @Nonnull final int deltaWheel)
+    {
+        //TODO!
         return false;
     }
 

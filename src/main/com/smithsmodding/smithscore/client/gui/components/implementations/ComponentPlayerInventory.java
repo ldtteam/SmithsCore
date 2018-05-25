@@ -325,6 +325,13 @@ public class ComponentPlayerInventory implements IGUIBasedComponentHost
         return false;
     }
 
+    @Nonnull
+    @Override
+    public boolean handleMouseWheel(final int relativeMouseX, @Nonnull final int relativeMouseY, @Nonnull final int deltaWheel)
+    {
+        return false;
+    }
+
     @Override
     public boolean requiresForcedMouseInput()
     {

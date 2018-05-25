@@ -158,6 +158,13 @@ public class ComponentTextbox extends GuiTextField implements IGUIComponent
         return !getSize().ContainsCoordinate(relativeMouseX, relativeMouseY);
     }
 
+    @Nonnull
+    @Override
+    public boolean handleMouseWheel(final int relativeMouseX, @Nonnull final int relativeMouseY, @Nonnull final int deltaWheel)
+    {
+        return false;
+    }
+
     @Override
     public boolean requiresForcedMouseInput()
     {

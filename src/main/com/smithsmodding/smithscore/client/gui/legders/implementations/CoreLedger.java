@@ -409,6 +409,33 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
 
     @Nonnull
     @Override
+    public boolean handleMouseWheel(final int relativeMouseX, @Nonnull final int relativeMouseY, @Nonnull final int deltaWheel)
+    {
+        return getAllComponents()
+                 .values()
+                 .stream()
+                 .filter(c ->
+                           c
+                             .getSize()
+                             .Move(
+                               c.getLocalCoordinate().getXComponent(),
+                               c.getLocalCoordinate().getYComponent()
+                             )
+                             .ContainsCoordinate(relativeMouseX, relativeMouseY))
+                 .filter(c ->
+                           c
+                             .handleMouseWheel(
+                               relativeMouseX - c.getLocalCoordinate().getXComponent(),
+                               relativeMouseY - c.getLocalCoordinate().getYComponent(),
+                               deltaWheel
+                             ))
+                 .findFirst()
+                 .map(c -> true)
+                 .orElse(false);
+    }
+
+    @Nonnull
+    @Override
     public ArrayList<String> getToolTipContent()
     {
         return new ArrayList<String>();

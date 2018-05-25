@@ -132,6 +132,13 @@ public abstract class CoreComponent implements IGUIComponent
         return false;
     }
 
+    @Nonnull
+    @Override
+    public boolean handleMouseWheel(final int relativeMouseX, @Nonnull final int relativeMouseY, @Nonnull final int deltaWheel)
+    {
+        return false;
+    }
+
     @Nullable
     @Override
     public ArrayList<String> getToolTipContent()

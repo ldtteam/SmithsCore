@@ -27,6 +27,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -115,6 +116,71 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
         }
 
         this.handleMouseClickedInside(mouseX - getLocalCoordinate().getXComponent(), mouseY - getLocalCoordinate().getYComponent(), mouseButton);
+    }
+
+    @Override
+    public void handleMouseInput() throws IOException
+    {
+        int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+        int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+
+        int delta = Mouse.getEventDWheel();
+        if (delta != 0)
+        {
+            final Plane plane = getSize().Move(getLocalCoordinate().getXComponent(), getLocalCoordinate().getYComponent());
+            if (plane.ContainsCoordinate(x, y))
+            {
+                x -= getLocalCoordinate().getXComponent();
+                y -= getLocalCoordinate().getYComponent();
+
+                handleMouseWheel(x, y, delta);
+            }
+        }
+        super.handleMouseInput();
+    }
+
+    @Nonnull
+    @Override
+    public boolean handleMouseWheel(final int relativeMouseX, @Nonnull final int relativeMouseY, @Nonnull final int deltaWheel)
+    {
+        if (tabs.getCurrentTab().handleMouseWheel(relativeMouseX, relativeMouseY, deltaWheel))
+        {
+            return true;
+        }
+
+        for (IGUIComponent component : getLedgerManager().getLeftLedgers().values())
+        {
+            Coordinate2D location = component.getLocalCoordinate();
+            Plane localOccupiedArea = component.getSize().Move(location.getXComponent(), location.getYComponent());
+
+            if (!localOccupiedArea.ContainsCoordinate(relativeMouseX, relativeMouseY))
+            {
+                continue;
+            }
+
+            if (component.handleMouseWheel(relativeMouseX - location.getXComponent(), relativeMouseY - location.getYComponent(), deltaWheel))
+            {
+                return true;
+            }
+        }
+
+        for (IGUIComponent component : getLedgerManager().getRightLedgers().values())
+        {
+            Coordinate2D location = component.getLocalCoordinate();
+            Plane localOccupiedArea = component.getSize().Move(location.getXComponent(), location.getYComponent());
+
+            if (!localOccupiedArea.ContainsCoordinate(relativeMouseX, relativeMouseY))
+            {
+                continue;
+            }
+
+            if (component.handleMouseWheel(relativeMouseX - location.getXComponent(), relativeMouseY - location.getYComponent(), deltaWheel))
+            {
+                return true;
+            }
+        }
+
+        return true;
     }
 
     /**

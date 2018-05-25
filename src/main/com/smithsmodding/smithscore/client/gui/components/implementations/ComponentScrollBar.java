@@ -407,6 +407,15 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
         return false;
     }
 
+    @Nonnull
+    @Override
+    public boolean handleMouseWheel(final int relativeMouseX, @Nonnull final int relativeMouseY, @Nonnull final int deltaWheel)
+    {
+        state.updateCurrent(deltaWheel);
+        state.updateDragButtonPosition();
+        return true;
+    }
+
     @Nullable
     @Override
     public ArrayList<String> getToolTipContent()

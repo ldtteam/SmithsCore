@@ -547,6 +547,22 @@ public abstract class CoreTab implements IGUITab
         return false;
     }
 
+    @Nonnull
+    @Override
+    public boolean handleMouseWheel(final int relativeMouseX, @Nonnull final int relativeMouseY, @Nonnull final int deltaWheel)
+    {
+        for (IGUIComponent component : components.values())
+        {
+            if (component.requiresForcedMouseInput())
+            {
+                Coordinate2D location = component.getLocalCoordinate();
+                component.handleMouseWheel(relativeMouseX - location.getXComponent(), relativeMouseY - location.getYComponent(), deltaWheel);
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Method to check if this function should capture all of the buttons pressed on the mouse regardless of the press
      * location was inside or outside of the Component.

@@ -294,6 +294,13 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
         return false;
     }
 
+    @Nonnull
+    @Override
+    public boolean handleMouseWheel(final int relativeMouseX, @Nonnull final int relativeMouseY, @Nonnull final int deltaWheel)
+    {
+        return scrollbar.handleMouseWheel(0, 0, deltaWheel);
+    }
+
     @Nullable
     @Override
     public ArrayList<String> getToolTipContent()

@@ -4,6 +4,7 @@ import com.smithsmodding.smithscore.client.gui.hosts.IGUIBasedComponentHost;
 import com.smithsmodding.smithscore.client.gui.state.IGUIComponentState;
 import com.smithsmodding.smithscore.util.common.positioning.Coordinate2D;
 import com.smithsmodding.smithscore.util.common.positioning.Plane;
+import com.sun.istack.internal.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -149,6 +150,17 @@ public interface IGUIComponent
      */
     @Nonnull
     boolean handleMouseClickedOutside(@Nonnull int relativeMouseX, @Nonnull int relativeMouseY, @Nonnull int mouseButton);
+
+    /**
+     * Called when the mousewheel is is used.
+     *
+     * @param relativeMouseX The position of the mouse.
+     * @param relativeMouseY The position of the mouse.
+     * @param deltaWheel     The amount the wheel was turned.
+     * @return True when wheel event was used, false when not.
+     */
+    @Nonnull
+    boolean handleMouseWheel(@NotNull int relativeMouseX, @Nonnull int relativeMouseY, @Nonnull int deltaWheel);
 
     /**
      * Method to check if this function should capture all of the buttons pressed on the mouse

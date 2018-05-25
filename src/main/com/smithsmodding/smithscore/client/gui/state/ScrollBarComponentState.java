@@ -136,7 +136,7 @@ public class ScrollBarComponentState extends CoreComponentState
 
     public void updateCurrent(float delta)
     {
-        setCurrent(current + delta);
+        setCurrent(Math.max(getMinimum(), Math.min(current + delta, getMaximum())));
     }
 
     public void onDownClick()
