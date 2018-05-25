@@ -70,6 +70,12 @@ public interface IGUIComponent
     Coordinate2D getLocalCoordinate();
 
     /**
+     * Method to set the local coordinate of the component from the outside.
+     * @param coordinate The new local coordinate
+     */
+    void setLocalCoordinate(@Nonnull final Coordinate2D coordinate);
+
+    /**
      * Gets the Area Occupied by this Component, is locally oriented.
      *
      * @return A Plane detailing the the position and size of this Component.

@@ -15,7 +15,7 @@ public class CoreComponentState implements IGUIComponentState
     private boolean enabled = true;
     private boolean visible = true;
 
-    public CoreComponentState(@Nonnull IGUIComponent component)
+    public CoreComponentState(IGUIComponent component)
     {
         this.component = component;
     }
@@ -23,7 +23,6 @@ public class CoreComponentState implements IGUIComponentState
     public CoreComponentState() {}
 
     @Override
-    @Nonnull
     public IGUIComponent getComponent()
     {
         return component;

@@ -40,7 +40,7 @@ public class ComponentBorder extends CoreComponent
                             CornerTypes lowerRightCorner,
                             CornerTypes lowerLeftCorner)
     {
-        this(uniqueID, new CoreComponentState(null), parent, rootAnchorPixel, width, height, color, topLeftType, topRightType, lowerRightCorner, lowerLeftCorner);
+        this(uniqueID, new CoreComponentState(), parent, rootAnchorPixel, width, height, color, topLeftType, topRightType, lowerRightCorner, lowerLeftCorner);
     }
 
     public ComponentBorder(

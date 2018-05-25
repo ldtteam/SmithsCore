@@ -177,6 +177,12 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
         }
     }
 
+    @Override
+    public void setLocalCoordinate(@Nonnull final Coordinate2D coordinate)
+    {
+        //Noop local coords of ledgers are dynamically calculated.
+    }
+
     /**
      * Gets the Area Occupied by this Component, is locally oriented.
      *

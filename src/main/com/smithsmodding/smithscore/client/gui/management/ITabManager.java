@@ -33,7 +33,6 @@ public interface ITabManager
      *
      * @return The currently displayed Tab.
      */
-    @Nonnull
     IGUITab getCurrentTab();
 
     /**

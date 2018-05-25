@@ -67,7 +67,6 @@ public class StandardTabManager implements ITabManager
      *
      * @return The currently displayed Tab.
      */
-    @Nonnull
     @Override
     public IGUITab getCurrentTab()
     {

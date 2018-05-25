@@ -441,7 +441,7 @@ public class ItemLayerModel implements IRetexturableModel
             }
         }
 
-        public List<BakedQuad> getQuads(@Nonnull IBlockState state, @Nullable EnumFacing side, long rand)
+        public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand)
         {
             if (side == null)
             {

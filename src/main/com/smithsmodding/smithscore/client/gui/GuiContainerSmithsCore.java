@@ -26,6 +26,7 @@ import com.smithsmodding.smithscore.util.common.positioning.Plane;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.item.ItemStack;
 import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nonnull;
@@ -151,7 +152,7 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
     @Override
     public void registerTabs(@Nonnull IGUIBasedTabHost host)
     {
-        registerNewTab(new DummyTab(getID() + ".Dummy", this, new CoreComponentState(), null, new MinecraftColor(Color.white), ""));
+        registerNewTab(new DummyTab(getID() + ".Dummy", this, new CoreComponentState(), ItemStack.EMPTY, new MinecraftColor(Color.white), ""));
     }
 
     private void setIsInitialized(boolean isInitialized)
@@ -198,6 +199,12 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
     public Coordinate2D getLocalCoordinate()
     {
         return new Coordinate2D(guiLeft, guiTop);
+    }
+
+    @Override
+    public void setLocalCoordinate(@Nonnull final Coordinate2D coordinate)
+    {
+        //Noop guis can not be moved.
     }
 
     @Nonnull
@@ -598,7 +605,10 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
     public LinkedHashMap<String, IGUIComponent> getAllComponents()
     {
         LinkedHashMap<String, IGUIComponent> activeTabs = new LinkedHashMap<String, IGUIComponent>();
-        activeTabs.put(tabs.getCurrentTab().getID(), tabs.getCurrentTab());
+        if (tabs.getCurrentTab() != null)
+        {
+            activeTabs.put(tabs.getCurrentTab().getID(), tabs.getCurrentTab());
+        }
 
         return activeTabs;
     }

@@ -81,6 +81,12 @@ public abstract class CoreComponent implements IGUIComponent
         return rootAnchorPixel;
     }
 
+    @Override
+    public void setLocalCoordinate(@Nonnull final Coordinate2D coordinate)
+    {
+        this.rootAnchorPixel = coordinate;
+    }
+
     @Nonnull
     @Override
     public Plane getAreaOccupiedByComponent()

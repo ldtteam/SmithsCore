@@ -15,7 +15,7 @@ public class TextboxComponentState extends CoreComponentState
     private       FontRenderer fontRendererInstance = Minecraft.getMinecraft().fontRendererObj;
     private       String       text                 = "";
 
-    public TextboxComponentState(@Nonnull IGUIComponent component)
+    public TextboxComponentState(IGUIComponent component)
     {
         super(component);
     }
