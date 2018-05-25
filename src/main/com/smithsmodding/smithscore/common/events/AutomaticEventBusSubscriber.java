@@ -1,10 +1,17 @@
 package com.smithsmodding.smithscore.common.events;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 import static com.smithsmodding.smithscore.common.events.AutomaticEventBusSubscriber.BusType.*;
 
 /**
  * Created by marcf on 1/20/2017.
  */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
 public @interface AutomaticEventBusSubscriber
 {
 

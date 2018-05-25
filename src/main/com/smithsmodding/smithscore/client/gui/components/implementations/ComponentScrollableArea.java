@@ -126,6 +126,12 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
         return rootAnchorPixel;
     }
 
+    @Override
+    public void setLocalCoordinate(@Nonnull final Coordinate2D coordinate)
+    {
+        this.rootAnchorPixel = coordinate;
+    }
+
     /**
      * Gets the Area Occupied by this Component, is locally oriented.
      *

@@ -1,5 +1,6 @@
 package com.smithsmodding.smithscore.client.gui.tabs.implementations;
 
+import com.google.common.collect.Lists;
 import com.smithsmodding.smithscore.client.gui.components.core.IGUIComponent;
 import com.smithsmodding.smithscore.client.gui.components.implementations.ComponentBorder;
 import com.smithsmodding.smithscore.client.gui.components.implementations.ComponentItemStackDisplay;
@@ -224,6 +225,12 @@ public abstract class CoreTab implements IGUITab
         }
     }
 
+    @Override
+    public void setLocalCoordinate(@Nonnull final Coordinate2D coordinate)
+    {
+        //Noop local coords of tabs are dynamically calculated.
+    }
+
     /**
      * Gets the Area Occupied by this Component, is locally oriented.
      *
@@ -379,17 +386,6 @@ public abstract class CoreTab implements IGUITab
 
         GlStateManager.translate(0, 0, -2);
         GlStateManager.popMatrix();
-
-        /*
-        TODO: Fix tooltip drawing on TabSelectors.
-
-        if (selectorDisplay.getAreaOccupiedByComponent().ContainsCoordinate(mouseX, mouseY))
-        {
-            GlStateManager.translate(0,0,5);
-            getRootGuiObject().drawHoveringText(tab.getToolTipContent(), mouseX + 4, mouseY + 4, Minecraft.getMinecraft().fontRendererObj);
-            GlStateManager.translate(0,0,-5);
-        }
-        */
     }
 
     /**
@@ -404,7 +400,94 @@ public abstract class CoreTab implements IGUITab
     @Override
     public void drawForeground(int mouseX, int mouseY)
     {
-        //NOOP
+        ITabManager manager = root.getTabManager();
+
+        if (manager.getTabs().size() < 2)
+        {
+            return;
+        }
+
+        int tabIndex = manager.getCurrentTabIndex();
+        int selectorIndex = tabIndex % manager.getTabSelectorCount();
+
+        for (int i = tabIndex - selectorIndex; i < tabIndex - selectorIndex + manager.getTabSelectorCount(); i++)
+        {
+            if (i != selectorIndex)
+            {
+                final IGUITab tab = manager.getTabFromSelectorIndex(i);
+
+                Coordinate2D selectorRootCoord =
+                  new Coordinate2D(manager.getSelectorsHorizontalOffset() + manager.getTabSelectorWidth() * i, manager.getInActiveSelectorVerticalOffset()).getTranslatedCoordinate(
+                    new Coordinate2D(0, -1 * (manager.getTabSelectorHeight() + 1))).getTranslatedCoordinate(new Coordinate2D(0, manager.getInActiveSelectorVerticalOffset()));
+
+                int displayOffset = (manager.getTabSelectorWidth() - 16) / 2;
+                ComponentItemStackDisplay selectorDisplay = new ComponentItemStackDisplay(this.uniqueID + ".TabSelectors." + i + ".Display",
+                  this,
+                  new CoreComponentState(),
+                  selectorRootCoord.getTranslatedCoordinate(new Coordinate2D(displayOffset,
+                    displayOffset)),
+                  tab.getDisplayStack())
+                {
+                    @Override
+                    public ArrayList<String> getToolTipContent()
+                    {
+                        return tab.getToolTipContent();
+                    }
+                };
+
+                if (selectorDisplay.getAreaOccupiedByComponent().ContainsCoordinate(mouseX, mouseY))
+                {
+                    final Coordinate2D globalSelectorCoordinate = selectorDisplay.getGlobalCoordinate().getInvertedCoordinate();
+                    GlStateManager.pushMatrix();
+                    //GlStateManager.translate(globalSelectorCoordinate.getXComponent(),globalSelectorCoordinate.getYComponent(),5);
+                    getRootGuiObject().getRenderManager().renderToolTipComponent(selectorDisplay, mouseX - selectorDisplay.getGlobalCoordinate().getXComponent(), mouseY - selectorDisplay.getGlobalCoordinate().getYComponent());
+                    GlStateManager.popMatrix();
+                }
+            }
+        }
+
+        final IGUITab tab = manager.getTabFromSelectorIndex(selectorIndex);
+
+        Coordinate2D selectorRootCoord = new Coordinate2D(manager.getSelectorsHorizontalOffset() + manager.getTabSelectorWidth() * selectorIndex,
+          manager.getInActiveSelectorVerticalOffset()).getTranslatedCoordinate(new Coordinate2D(0,
+          -1
+            * (manager.getTabSelectorHeight()
+                 + 1)));
+        ComponentBorder activeBorder = new ComponentBorder(this.uniqueID + ".TabSelectors." + selectorIndex + ".Background",
+          this,
+          selectorRootCoord,
+          manager.getTabSelectorWidth(),
+          manager.getTabSelectorHeight(),
+          tab.getTabColor(),
+          ComponentBorder.CornerTypes.Inwards,
+          ComponentBorder.CornerTypes.Inwards,
+          ComponentBorder.CornerTypes.Outwards,
+          ComponentBorder.CornerTypes.Outwards);
+
+        int displayOffset = (activeBorder.getSize().getWidth() - 16) / 2;
+        final ArrayList<String> toolTipContents = Lists.newArrayList(toolTipString);
+        ComponentItemStackDisplay selectorDisplay = new ComponentItemStackDisplay(this.uniqueID + ".TabSelectors." + selectorIndex + ".Display",
+          this,
+          new CoreComponentState(),
+          selectorRootCoord.getTranslatedCoordinate(new Coordinate2D(displayOffset, displayOffset)),
+          tab.getDisplayStack())
+        {
+            @Nullable
+            @Override
+            public ArrayList<String> getToolTipContent()
+            {
+                return toolTipContents;
+            }
+        };
+
+        if (selectorDisplay.getAreaOccupiedByComponent().ContainsCoordinate(mouseX, mouseY))
+        {
+            final Coordinate2D globalSelectorCoordinate = selectorDisplay.getGlobalCoordinate().getInvertedCoordinate();
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(globalSelectorCoordinate.getXComponent(),globalSelectorCoordinate.getYComponent(),5);
+            getRootGuiObject().getRenderManager().renderToolTipComponent(selectorDisplay, mouseX - selectorDisplay.getGlobalCoordinate().getXComponent(), mouseY - selectorDisplay.getGlobalCoordinate().getYComponent());
+            GlStateManager.popMatrix();
+        }
     }
 
     /**

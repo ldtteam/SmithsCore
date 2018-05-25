@@ -246,6 +246,12 @@ public class ComponentScrollBar implements IGUIComponent, IGUIBasedComponentHost
         return rootAnchorPixel;
     }
 
+    @Override
+    public void setLocalCoordinate(@Nonnull final Coordinate2D coordinate)
+    {
+        this.rootAnchorPixel = coordinate;
+    }
+
     /**
      * Gets the Area Occupied by this Component, is locally oriented.
      *

@@ -266,6 +266,12 @@ public class GuiBookSmithsCore extends GuiScreen implements IGUIBasedComponentHo
     }
 
     @Override
+    public void setLocalCoordinate(@Nonnull final Coordinate2D coordinate)
+    {
+        //Noop guis can not be moved.
+    }
+
+    @Override
     @Nonnull
     public Plane getAreaOccupiedByComponent()
     {

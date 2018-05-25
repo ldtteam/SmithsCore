@@ -274,6 +274,12 @@ public class ComponentPlayerInventory implements IGUIBasedComponentHost
         return rootAnchorPixel;
     }
 
+    @Override
+    public void setLocalCoordinate(@Nonnull final Coordinate2D coordinate)
+    {
+        this.rootAnchorPixel = coordinate;
+    }
+
     @Nonnull
     @Override
     public Plane getAreaOccupiedByComponent()

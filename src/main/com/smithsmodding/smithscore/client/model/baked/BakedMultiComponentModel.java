@@ -20,6 +20,7 @@ import net.minecraftforge.common.model.TRSRTransformation;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
 import java.util.List;
 
@@ -109,7 +110,7 @@ public class BakedMultiComponentModel implements IPerspectiveAwareModel
         }
 
         @Override
-        public boolean matchedItemStack(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull EntityLivingBase entity)
+        public boolean matchedItemStack(@Nonnull ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity)
         {
             if (!stack.hasTagCompound())
             {

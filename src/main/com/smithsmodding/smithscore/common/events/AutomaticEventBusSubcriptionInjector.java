@@ -25,8 +25,14 @@ public final class AutomaticEventBusSubcriptionInjector
 
     public static void inject(ModContainer mod, ASMDataTable data)
     {
-        SmithsCore.getLogger().info("Attempting to inject @AutomaticEventBusSubscriber classes into the eventbus for %s", mod.getModId());
         SetMultimap<String, ASMDataTable.ASMData> modData = data.getAnnotationsFor(mod);
+
+        if (modData == null)
+        {
+            return;
+        }
+
+        SmithsCore.getLogger().info(String.format("Attempting to inject @AutomaticEventBusSubscriber classes into the eventbus for %s", mod.getModId()));
         Set<ASMDataTable.ASMData> mods = modData.get(Mod.class.getName());
         Set<ASMDataTable.ASMData> targets = modData.get(AutomaticEventBusSubscriber.class.getName());
         ClassLoader mcl = Loader.instance().getModClassLoader();
@@ -50,71 +56,77 @@ public final class AutomaticEventBusSubcriptionInjector
 
                 if ((types == DEFAULT || types.contains(AutomaticEventBusSubscriber.BusType.CLIENT)) && SmithsCore.getProxy().getEffectiveSide() == Side.CLIENT)
                 {
-                    SmithsCore.getLogger().info("Found @AutomaticEventBusSubscriber class %s ready for registration on the Client Event bus", targ.getClassName());
+                    SmithsCore.getLogger().info(String.format("Found @AutomaticEventBusSubscriber class %s ready for registration on the Client Event bus", targ.getClassName()));
                     String amodid = (String) targ.getAnnotationInfo().get("modid");
                     if (Strings.isNullOrEmpty(amodid))
                     {
                         amodid = ASMDataTable.getOwnerModID(mods, targ);
                         if (Strings.isNullOrEmpty(amodid))
                         {
-                            SmithsCore.getLogger().warn("Could not determine owning mod for @AutomaticEventBusSubscriber on %s for mod %s", targ.getClassName(), mod.getModId());
+                            SmithsCore.getLogger()
+                              .warn(String.format("Could not determine owning mod for @AutomaticEventBusSubscriber on %s for mod %s", targ.getClassName(), mod.getModId()));
                             continue;
                         }
                     }
                     if (!mod.getModId().equals(amodid))
                     {
-                        SmithsCore.getLogger().info("Skipping @AutomaticEventBusSubscriber injection for %s since it is not for mod %s", targ.getClassName(), mod.getModId());
+                        SmithsCore.getLogger()
+                          .info(String.format("Skipping @AutomaticEventBusSubscriber injection for %s since it is not for mod %s", targ.getClassName(), mod.getModId()));
                         continue; //We're not injecting this guy
                     }
                     Class<?> subscriptionTarget = Class.forName(targ.getClassName(), true, mcl);
                     SmithsCore.getRegistry().getClientBus().register(subscriptionTarget);
-                    SmithsCore.getLogger().info("Injected @AutomaticEventBusSubscriber class %s in the Client Event bus", targ.getClassName());
+                    SmithsCore.getLogger().info(String.format("Injected @AutomaticEventBusSubscriber class %s in the Client Event bus", targ.getClassName()));
                 }
 
                 if ((types == DEFAULT || types.contains(AutomaticEventBusSubscriber.BusType.SERVER)))
                 {
-                    SmithsCore.getLogger().info("Found @AutomaticEventBusSubscriber class %s ready for registration on the Common Event bus", targ.getClassName());
+                    SmithsCore.getLogger().info(String.format("Found @AutomaticEventBusSubscriber class %s ready for registration on the Common Event bus", targ.getClassName()));
                     String amodid = (String) targ.getAnnotationInfo().get("modid");
                     if (Strings.isNullOrEmpty(amodid))
                     {
                         amodid = ASMDataTable.getOwnerModID(mods, targ);
                         if (Strings.isNullOrEmpty(amodid))
                         {
-                            SmithsCore.getLogger().warn("Could not determine owning mod for @AutomaticEventBusSubscriber on %s for mod %s", targ.getClassName(), mod.getModId());
+                            SmithsCore.getLogger()
+                              .warn(String.format("Could not determine owning mod for @AutomaticEventBusSubscriber on %s for mod %s", targ.getClassName(), mod.getModId()));
                             continue;
                         }
                     }
                     if (!mod.getModId().equals(amodid))
                     {
-                        SmithsCore.getLogger().info("Skipping @AutomaticEventBusSubscriber injection for %s since it is not for mod %s", targ.getClassName(), mod.getModId());
+                        SmithsCore.getLogger()
+                          .info(String.format("Skipping @AutomaticEventBusSubscriber injection for %s since it is not for mod %s", targ.getClassName(), mod.getModId()));
                         continue; //We're not injecting this guy
                     }
                     Class<?> subscriptionTarget = Class.forName(targ.getClassName(), true, mcl);
                     SmithsCore.getRegistry().getCommonBus().register(subscriptionTarget);
-                    SmithsCore.getLogger().info("Injected @AutomaticEventBusSubscriber class %s in the Common Event bus", targ.getClassName());
+                    SmithsCore.getLogger().info(String.format("Injected @AutomaticEventBusSubscriber class %s in the Common Event bus", targ.getClassName()));
                 }
 
                 if ((types == DEFAULT || types.contains(AutomaticEventBusSubscriber.BusType.NETWORK)))
                 {
-                    SmithsCore.getLogger().info("Found @AutomaticEventBusSubscriber class %s ready for registration on the Network Event bus", targ.getClassName());
+                    SmithsCore.getLogger().info(String.format("Found @AutomaticEventBusSubscriber class %s ready for registration on the Network Event bus", targ.getClassName()));
                     String amodid = (String) targ.getAnnotationInfo().get("modid");
                     if (Strings.isNullOrEmpty(amodid))
                     {
                         amodid = ASMDataTable.getOwnerModID(mods, targ);
                         if (Strings.isNullOrEmpty(amodid))
                         {
-                            SmithsCore.getLogger().warn("Could not determine owning mod for @AutomaticEventBusSubscriber on %s for mod %s", targ.getClassName(), mod.getModId());
+                            SmithsCore.getLogger()
+                              .warn(String.format("Could not determine owning mod for @AutomaticEventBusSubscriber on %s for mod %s", targ.getClassName(), mod.getModId()));
                             continue;
                         }
                     }
                     if (!mod.getModId().equals(amodid))
                     {
-                        SmithsCore.getLogger().info("Skipping @AutomaticEventBusSubscriber injection for %s since it is not for mod %s", targ.getClassName(), mod.getModId());
+                        SmithsCore.getLogger()
+                          .info(String.format("Skipping @AutomaticEventBusSubscriber injection for %s since it is not for mod %s", targ.getClassName(), mod.getModId()));
                         continue; //We're not injecting this guy
                     }
                     Class<?> subscriptionTarget = Class.forName(targ.getClassName(), true, mcl);
                     SmithsCore.getRegistry().getNetworkBus().register(subscriptionTarget);
-                    SmithsCore.getLogger().info("Injected @AutomaticEventBusSubscriber class %s in the Network Event bus", targ.getClassName());
+                    SmithsCore.getLogger().info(String.format("Injected @AutomaticEventBusSubscriber class %s in the Network Event bus", targ.getClassName()));
                 }
             }
             catch (Exception e)
