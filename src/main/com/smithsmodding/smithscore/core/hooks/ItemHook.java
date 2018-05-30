@@ -19,6 +19,7 @@ public abstract class ItemHook
      * Ensures that the share tag is created regardless of item.
      *
      * @return always true
+     * @author Orion
      */
     @Overwrite
     public boolean getShareTag()
