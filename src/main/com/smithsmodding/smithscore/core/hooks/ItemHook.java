@@ -27,7 +27,7 @@ public abstract class ItemHook
         return true;
     }
 
-    @Inject(method = "getNBTShareTag", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "getNBTShareTag", at = @At("RETURN"), cancellable = true, remap = false)
     public void onGetNBTShareTag(final ItemStack stack, final CallbackInfoReturnable<NBTTagCompound> callbackInfoReturnable)
     {
         NBTTagCompound compound = callbackInfoReturnable.getReturnValue();
