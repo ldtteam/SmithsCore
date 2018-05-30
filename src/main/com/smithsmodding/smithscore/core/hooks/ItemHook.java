@@ -20,6 +20,7 @@ public abstract class ItemHook
      *
      * @return always true
      * @author Orion
+     * @reason Items should always try to send their data.
      */
     @Overwrite
     public boolean getShareTag()

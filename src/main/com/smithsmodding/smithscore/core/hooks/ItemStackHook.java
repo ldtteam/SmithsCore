@@ -84,10 +84,10 @@ public abstract class ItemStackHook
         }
     }
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing);
 
-    @Shadow
+    @Shadow(remap = false)
     @Nullable
     public abstract <T> T getCapability(final Capability<T> capability, @Nullable final EnumFacing facing);
 }
