@@ -1,6 +1,5 @@
 package com.smithsmodding.smithscore.util.client.color;
 
-import com.smithsmodding.smithscore.client.font.MultiColoredFontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 
 import javax.annotation.Nonnull;
@@ -22,6 +21,7 @@ import java.awt.image.ColorModel;
  */
 public class MinecraftColor extends Color
 {
+    public static int MARKER = 0xE800;
 
     /**
      * Creates an opaque sRGB color with the specified red, green,
@@ -203,9 +203,9 @@ public class MinecraftColor extends Color
     public String encodeColor()
     {
         return String.format("%c%c%c",
-          ((char) (MultiColoredFontRenderer.MARKER + (getRed() & 0xFF))),
-          ((char) (MultiColoredFontRenderer.MARKER + (getGreen() & 0xFF))),
-          ((char) (MultiColoredFontRenderer.MARKER + (getBlue() & 0xFF))));
+          ((char) (MARKER + (getRed() & 0xFF))),
+          ((char) (MARKER + (getGreen() & 0xFF))),
+          ((char) (MARKER + (getBlue() & 0xFF))));
     }
 
     /**

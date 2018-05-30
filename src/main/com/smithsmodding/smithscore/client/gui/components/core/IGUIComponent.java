@@ -4,7 +4,6 @@ import com.smithsmodding.smithscore.client.gui.hosts.IGUIBasedComponentHost;
 import com.smithsmodding.smithscore.client.gui.state.IGUIComponentState;
 import com.smithsmodding.smithscore.util.common.positioning.Coordinate2D;
 import com.smithsmodding.smithscore.util.common.positioning.Plane;
-import com.sun.istack.internal.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -166,7 +165,7 @@ public interface IGUIComponent
      * @return True when wheel event was used, false when not.
      */
     @Nonnull
-    boolean handleMouseWheel(@NotNull int relativeMouseX, @Nonnull int relativeMouseY, @Nonnull int deltaWheel);
+    boolean handleMouseWheel(@Nonnull int relativeMouseX, @Nonnull int relativeMouseY, @Nonnull int deltaWheel);
 
     /**
      * Method to check if this function should capture all of the buttons pressed on the mouse

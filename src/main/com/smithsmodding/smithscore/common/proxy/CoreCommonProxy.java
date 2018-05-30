@@ -53,6 +53,7 @@ public class CoreCommonProxy
 
         SmithsCoreCapabilityDispatcher.initialize();
 
+        SmithsCore.getRegistry().getCommonBus().register(StructureRegistry.getServerInstance());
         SmithsCore.getRegistry().getCommonBus().register(new CommonNetworkableEventHandler());
         SmithsCore.getRegistry().getNetworkBus().register(new GuiInputEventHandler());
     }

@@ -323,7 +323,11 @@ public class ItemStackHelper
     {
         if (!pItemStack.isEmpty())
         {
-            return String.format("%sxitemStack[%s@%s]", pItemStack.getCount(), pItemStack.getUnlocalizedName(), pItemStack.getItemDamage());
+            return String.format("%sxitemStack[%s@%s][%s]",
+              pItemStack.getCount(),
+              pItemStack.getUnlocalizedName(),
+              pItemStack.getItemDamage(),
+              pItemStack.hasTagCompound() ? pItemStack.getTagCompound().toString() : "");
         }
 
         return "null";

@@ -3,14 +3,12 @@ package com.smithsmodding.smithscore.common.capability;
 import com.smithsmodding.smithscore.util.CoreReferences;
 import com.smithsmodding.smithscore.util.common.capabilities.NullFactory;
 import com.smithsmodding.smithscore.util.common.capabilities.NullStorage;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.capabilities.*;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -52,12 +50,22 @@ public final class SmithsCoreCapabilityDispatcher implements ICapabilitySerializ
         CapabilityManager.INSTANCE.register(IInstanceCap.class, new NullStorage<>(), new NullFactory<>());
     }
 
-    public static void attach(AttachCapabilitiesEvent event)
+    public static void attach(AttachCapabilitiesEvent<ItemStack> event)
     {
-        if (!event.getCapabilities().containsKey(new ResourceLocation(CoreReferences.General.MOD_ID.toLowerCase(), CoreReferences.CapabilityManager.DEFAULT)))
+        final ItemStack stack = event.getObject();
+        final ICapabilityProvider itemProvider = stack.getItem().initCapabilities(stack, null);
+
+        if (itemProvider != null && itemProvider.hasCapability(INSTANCE_CAPABILITY, null))
         {
-            event.addCapability(new ResourceLocation(CoreReferences.General.MOD_ID.toLowerCase(), CoreReferences.CapabilityManager.DEFAULT), new SmithsCoreCapabilityDispatcher());
+            return;
         }
+
+        if (event.getCapabilities().containsKey(new ResourceLocation(CoreReferences.General.MOD_ID.toLowerCase(), CoreReferences.CapabilityManager.DEFAULT)))
+        {
+            return;
+        }
+
+        event.addCapability(new ResourceLocation(CoreReferences.General.MOD_ID.toLowerCase(), CoreReferences.CapabilityManager.DEFAULT), new SmithsCoreCapabilityDispatcher());
     }
 
     /**
@@ -69,19 +77,6 @@ public final class SmithsCoreCapabilityDispatcher implements ICapabilitySerializ
     public <T> void registerNewInstance(@Nonnull Capability<T> cap)
     {
         this.registerCapability(cap, cap.getDefaultInstance());
-    }
-
-    /**
-     * Method to remove a Capability from the Dispatcher.
-     *
-     * @param cap The capability to remove.
-     * @param <T> The type of the capability.
-     * @return The instance of the capability that was registered if any. Null if none was registered or was stored under that key.
-     */
-    @Nullable
-    public <T> T removeCapability(Capability<T> cap)
-    {
-        return (T) capInstanceMap.remove(cap);
     }
 
     /**
@@ -186,7 +181,7 @@ public final class SmithsCoreCapabilityDispatcher implements ICapabilitySerializ
         }
 
         @SubscribeEvent
-        public void handle(AttachCapabilitiesEvent.Item event)
+        public void handle(AttachCapabilitiesEvent<ItemStack> event)
         {
             SmithsCoreCapabilityDispatcher.attach(event);
         }
@@ -211,6 +206,11 @@ public final class SmithsCoreCapabilityDispatcher implements ICapabilitySerializ
         @Override
         public void accept(Capability<T> tCapability, T t)
         {
+            if (tCapability.equals(INSTANCE_CAPABILITY))
+            {
+                return;
+            }
+
             managerCompound.setTag(tCapability.getName(), tCapability.writeNBT(t, null));
         }
     }

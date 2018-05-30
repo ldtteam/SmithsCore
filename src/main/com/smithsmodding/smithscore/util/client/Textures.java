@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.LoaderState;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nonnull;
 
@@ -20,7 +21,7 @@ import javax.annotation.Nonnull;
  * Created by Marc on 06.12.2015.
  */
 @AutomaticEventBusSubscriber(modid = CoreReferences.General.MOD_ID, types = AutomaticEventBusSubscriber.BusType.CLIENT)
-@Mod.EventBusSubscriber(modid = CoreReferences.General.MOD_ID)
+@Mod.EventBusSubscriber(modid = CoreReferences.General.MOD_ID, value = Side.CLIENT)
 public class Textures
 {
 

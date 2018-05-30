@@ -128,14 +128,7 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
         int delta = Mouse.getEventDWheel();
         if (delta != 0)
         {
-            final Plane plane = getSize().Move(getLocalCoordinate().getXComponent(), getLocalCoordinate().getYComponent());
-            if (plane.ContainsCoordinate(x, y))
-            {
-                x -= getLocalCoordinate().getXComponent();
-                y -= getLocalCoordinate().getYComponent();
-
-                handleMouseWheel(x, y, delta);
-            }
+            handleMouseWheel(x, y, delta);
         }
         super.handleMouseInput();
     }
@@ -144,7 +137,7 @@ public abstract class GuiContainerSmithsCore extends GuiContainer implements IGU
     @Override
     public boolean handleMouseWheel(final int relativeMouseX, @Nonnull final int relativeMouseY, @Nonnull final int deltaWheel)
     {
-        if (tabs.getCurrentTab().handleMouseWheel(relativeMouseX, relativeMouseY, deltaWheel))
+        if (tabs.getCurrentTab().handleMouseWheel(relativeMouseX - getLocalCoordinate().getXComponent(), relativeMouseY - getLocalCoordinate().getYComponent(), deltaWheel))
         {
             return true;
         }

@@ -417,27 +417,22 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
     @Override
     public boolean handleMouseWheel(final int relativeMouseX, @Nonnull final int relativeMouseY, @Nonnull final int deltaWheel)
     {
-        return getAllComponents()
-                 .values()
-                 .stream()
-                 .filter(c ->
-                           c
-                             .getSize()
-                             .Move(
-                               c.getLocalCoordinate().getXComponent(),
-                               c.getLocalCoordinate().getYComponent()
-                             )
-                             .ContainsCoordinate(relativeMouseX, relativeMouseY))
-                 .filter(c ->
-                           c
-                             .handleMouseWheel(
-                               relativeMouseX - c.getLocalCoordinate().getXComponent(),
-                               relativeMouseY - c.getLocalCoordinate().getYComponent(),
-                               deltaWheel
-                             ))
-                 .findFirst()
-                 .map(c -> true)
-                 .orElse(false);
+        for (IGUIComponent component : components.values())
+        {
+            final Plane plane = component.getSize().Move(component.getLocalCoordinate().getXComponent(), component.getLocalCoordinate().getYComponent());
+
+            if (plane.ContainsCoordinate(relativeMouseX, relativeMouseY))
+            {
+                if (component.handleMouseWheel(relativeMouseX - component.getLocalCoordinate().getXComponent(),
+                  relativeMouseY - component.getLocalCoordinate().getYComponent(),
+                  deltaWheel))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     @Nonnull

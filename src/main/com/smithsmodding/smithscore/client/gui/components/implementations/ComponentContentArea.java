@@ -90,6 +90,11 @@ public class ComponentContentArea extends CoreComponent implements IGUIBasedComp
     public void registerNewComponent(@Nonnull IGUIComponent component)
     {
         componentHashMap.put(component.getID(), component);
+
+        if (component instanceof IGUIBasedComponentHost)
+        {
+            ((IGUIBasedComponentHost) component).registerComponents((IGUIBasedComponentHost) component);
+        }
     }
 
     /**

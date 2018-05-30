@@ -636,10 +636,16 @@ public abstract class CoreTab implements IGUITab
     {
         for (IGUIComponent component : components.values())
         {
-            if (component.requiresForcedMouseInput())
+            final Plane plane = component.getSize().Move(component.getLocalCoordinate().getXComponent(), component.getLocalCoordinate().getYComponent());
+
+            if (plane.ContainsCoordinate(relativeMouseX, relativeMouseY))
             {
-                Coordinate2D location = component.getLocalCoordinate();
-                component.handleMouseWheel(relativeMouseX - location.getXComponent(), relativeMouseY - location.getYComponent(), deltaWheel);
+                if (component.handleMouseWheel(relativeMouseX - component.getLocalCoordinate().getXComponent(),
+                  relativeMouseY - component.getLocalCoordinate().getYComponent(),
+                  deltaWheel))
+                {
+                    return true;
+                }
             }
         }
 

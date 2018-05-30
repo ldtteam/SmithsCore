@@ -97,6 +97,11 @@ public final class StructureRegistry {
 
     @SubscribeEvent
     public void onWorldLoad(@Nonnull WorldEvent.Load event) {
+        if (event.getWorld().isRemote)
+        {
+            return;
+        }
+
         int dimensionId = event.getWorld().provider.getDimension();
         File dimensionFile = new File(FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getSaveHandler().getWorldDirectory(), "armory/structures/dim_" + dimensionId + ".dat");
 

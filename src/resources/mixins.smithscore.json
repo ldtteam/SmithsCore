@@ -4,9 +4,13 @@
   "refmap": "mixins.common.refmap.json",
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
+  "client": [
+    "TextureMapHook"
+  ],
   "mixins": [
-    "TextureMapHook",
-    "EntityLivingHook"
+    "EntityLivingHook",
+    "ItemHook",
+    "ItemStackHook"
   ],
   "injectors": {
     "defaultRequire": 1
