@@ -6,7 +6,6 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
-import java.util.Map;
 
 /**
  * General event for registry manipulation.
@@ -28,9 +27,8 @@ public abstract class SmithsCoreRegistryEvent<V extends IForgeRegistryEntry<V>> 
         @Nonnull
         private final int id;
 
-        public Add(@Nonnull V objectAdded, @Nonnull int id, @Nonnull Map<ResourceLocation, ?> slaveset)
+        public Add(@Nonnull V objectAdded, @Nonnull int id)
         {
-            super(slaveset);
             this.objectAdded = objectAdded;
             this.id = id;
         }
@@ -70,9 +68,8 @@ public abstract class SmithsCoreRegistryEvent<V extends IForgeRegistryEntry<V>> 
         @Nonnull
         private final IForgeRegistry<V> registry;
 
-        public Clear(@Nonnull Map<ResourceLocation, ?> slaveset, @Nonnull IForgeRegistry<V> registry)
+        public Clear(@Nonnull IForgeRegistry<V> registry)
         {
-            super(slaveset);
             this.registry = registry;
         }
 
@@ -99,9 +96,8 @@ public abstract class SmithsCoreRegistryEvent<V extends IForgeRegistryEntry<V>> 
         @Nonnull
         private final BiMap<ResourceLocation, ? extends IForgeRegistry<?>> registries;
 
-        public Create(@Nonnull Map<ResourceLocation, ?> slaveset, @Nonnull BiMap<ResourceLocation, ? extends IForgeRegistry<?>> registries)
+        public Create(@Nonnull BiMap<ResourceLocation, ? extends IForgeRegistry<?>> registries)
         {
-            super(slaveset);
             this.registries = registries;
         }
 
@@ -131,9 +127,8 @@ public abstract class SmithsCoreRegistryEvent<V extends IForgeRegistryEntry<V>> 
         @Nonnull
         private final ResourceLocation name;
 
-        public Substitute(@Nonnull Map<ResourceLocation, ?> slaveset, @Nonnull V original, @Nonnull V replacement, @Nonnull ResourceLocation name)
+        public Substitute(@Nonnull V original, @Nonnull V replacement, @Nonnull ResourceLocation name)
         {
-            super(slaveset);
             this.original = original;
             this.replacement = replacement;
             this.name = name;
@@ -173,22 +168,8 @@ public abstract class SmithsCoreRegistryEvent<V extends IForgeRegistryEntry<V>> 
         }
     }
 
-    @Nonnull
-    private final Map<ResourceLocation, ?> slaveset;
-
-    SmithsCoreRegistryEvent(@Nonnull Map<ResourceLocation, ?> slaveset)
+    SmithsCoreRegistryEvent()
     {
-        this.slaveset = slaveset;
-    }
 
-    /**
-     * The slaveset of the registry that is being manipulated.
-     *
-     * @return the slaveset of the registry that is being manipulated.
-     */
-    @Nonnull
-    public Map<ResourceLocation, ?> getSlaveset()
-    {
-        return slaveset;
     }
 }
