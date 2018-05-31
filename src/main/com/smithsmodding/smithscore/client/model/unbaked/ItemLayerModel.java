@@ -1,7 +1,5 @@
 package com.smithsmodding.smithscore.client.model.unbaked;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.state.IBlockState;
@@ -11,8 +9,8 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IPerspectiveAwareModel;
-import net.minecraftforge.client.model.IRetexturableModel;
+import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.client.model.PerspectiveMapWrapper;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
@@ -22,16 +20,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector4f;
-import java.util.Arrays;
-import java.util.BitSet;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Copy of Forges ItemLayerModel Class of Minecraft 1.9.
  * Removed the Final though.
  */
-public class ItemLayerModel implements IRetexturableModel
+public class ItemLayerModel implements IModel
 {
     public static final ItemLayerModel INSTANCE = new ItemLayerModel(ImmutableList.of());
 
@@ -360,18 +355,19 @@ public class ItemLayerModel implements IRetexturableModel
         return textures;
     }
 
-    @Nonnull
-    public IBakedModel bake(@Nonnull IModelState state, @Nonnull final VertexFormat format, @Nonnull Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter)
+    @Override
+    public IBakedModel bake(
+      final IModelState state, final VertexFormat format, final java.util.function.Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter)
     {
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
-        Optional<TRSRTransformation> transform = state.apply(Optional.absent());
+        Optional<TRSRTransformation> transform = state.apply(Optional.empty());
         for (int i = 0; i < textures.size(); i++)
         {
             TextureAtlasSprite sprite = bakedTextureGetter.apply(textures.get(i));
             builder.addAll(getQuadsForSprite(i, sprite, format, transform));
         }
         TextureAtlasSprite particle = bakedTextureGetter.apply(textures.isEmpty() ? new ResourceLocation("missingno") : textures.get(0));
-        ImmutableMap<TransformType, TRSRTransformation> map = IPerspectiveAwareModel.MapWrapper.getTransforms(state);
+        ImmutableMap<TransformType, TRSRTransformation> map = PerspectiveMapWrapper.getTransforms(state);
         return new BakedItemModel(builder.build(), particle, map, overrides, null);
     }
 
@@ -399,7 +395,7 @@ public class ItemLayerModel implements IRetexturableModel
         return new ItemLayerModel(builder.build(), overrides);
     }
 
-    public static class BakedItemModel implements IPerspectiveAwareModel
+    public static class BakedItemModel implements IBakedModel
     {
         @Nonnull
         private final ImmutableList<BakedQuad> quads;
@@ -486,7 +482,7 @@ public class ItemLayerModel implements IRetexturableModel
         @Nonnull
         public Pair<? extends IBakedModel, Matrix4f> handlePerspective(@Nonnull TransformType type)
         {
-            Pair<? extends IBakedModel, Matrix4f> pair = IPerspectiveAwareModel.MapWrapper.handlePerspective(this, transforms, type);
+            Pair<? extends IBakedModel, Matrix4f> pair = PerspectiveMapWrapper.handlePerspective(this, transforms, type);
             if (type == TransformType.GUI && !isCulled && pair.getRight() == null)
             {
                 return Pair.of(otherModel, null);

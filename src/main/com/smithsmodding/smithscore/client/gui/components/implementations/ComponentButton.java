@@ -113,10 +113,10 @@ public class ComponentButton extends CoreComponent
         }
         else if (contents instanceof String)
         {
-            int contentX = (this.width - Minecraft.getMinecraft().fontRendererObj.getStringWidth((String) contents)) / 2;
-            int contentY = (this.height - Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT) / 2;
+            int contentX = (this.width - Minecraft.getMinecraft().fontRenderer.getStringWidth((String) contents)) / 2;
+            int contentY = (this.height - Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT) / 2;
 
-            Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow((String) contents, contentX, contentY, (new MinecraftColor(MinecraftColor.WHITE)).getRGB());
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow((String) contents, contentX, contentY, (new MinecraftColor(MinecraftColor.WHITE)).getRGB());
         }
         else if (contents instanceof ItemStack)
         {

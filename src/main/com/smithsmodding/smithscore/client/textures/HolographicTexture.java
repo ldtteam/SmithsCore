@@ -17,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DirectColorModel;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.function.Function;
 
 /**
  * Created by Marc on 22.12.2015.
@@ -122,7 +123,8 @@ public class HolographicTexture extends TextureAtlasSprite
     }
 
     @Override
-    public boolean load(@Nonnull IResourceManager manager, @Nonnull ResourceLocation location)
+    public boolean load(
+      final IResourceManager manager, final ResourceLocation location, final Function<ResourceLocation, TextureAtlasSprite> textureGetter)
     {
         this.framesTextureData = Lists.newArrayList();
         this.frameCounter = 0;

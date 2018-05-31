@@ -88,9 +88,9 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
           componentLabel = new ComponentLabel(getID() + ".header.label",
                                                this,
                                                new CoreComponentState(null),
-                                               new Coordinate2D(closedLedgerWidth, 5 + (ledgerIcon.getHeight() - Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT) / 2),
+          new Coordinate2D(closedLedgerWidth, 5 + (ledgerIcon.getHeight() - Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT) / 2),
                                                new MinecraftColor(MinecraftColor.WHITE),
-                                               Minecraft.getMinecraft().fontRendererObj,
+          Minecraft.getMinecraft().fontRenderer,
                                                translatedLedgerHeader);
 
         registerNewComponent(componentImage);

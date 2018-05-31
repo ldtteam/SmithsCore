@@ -1,6 +1,5 @@
 package com.smithsmodding.smithscore.client.model.unbaked;
 
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.smithsmodding.smithscore.SmithsCore;
@@ -13,8 +12,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.IModelCustomData;
-import net.minecraftforge.client.model.IRetexturableModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
@@ -26,7 +23,7 @@ import java.util.*;
  * Modified version of the MC Forge OBJLoader used until hiding of groups is supported.
  * Licensed under its License.
  */
-public class SmithsCoreOBJModel implements IRetexturableModel, IModelCustomData
+public class SmithsCoreOBJModel implements IModel
 {
     private final ResourceLocation             modelLocation;
     //private Gson GSON = new GsonBuilder().create();
@@ -82,9 +79,9 @@ public class SmithsCoreOBJModel implements IRetexturableModel, IModelCustomData
         return textures;
     }
 
-    @Nonnull
     @Override
-    public IBakedModel bake(@Nonnull IModelState state, @Nonnull VertexFormat format, @Nonnull Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter)
+    public IBakedModel bake(
+      final IModelState state, final VertexFormat format, final java.util.function.Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter)
     {
         ImmutableMap.Builder<String, TextureAtlasSprite> builder = ImmutableMap.builder();
         builder.put(ModelLoader.White.LOCATION.toString(), ModelLoader.White.INSTANCE);

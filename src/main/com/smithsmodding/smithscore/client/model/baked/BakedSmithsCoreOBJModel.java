@@ -1,6 +1,5 @@
 package com.smithsmodding.smithscore.client.model.baked;
 
-import com.google.common.base.Optional;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -19,8 +18,8 @@ import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.PerspectiveMapWrapper;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.Models;
@@ -31,15 +30,12 @@ import org.apache.commons.lang3.tuple.Pair;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Author Orion (Created on: 17.07.2016)
  */
-public class BakedSmithsCoreOBJModel implements IPerspectiveAwareModel
+public class BakedSmithsCoreOBJModel implements IBakedModel
 {
     private final SmithsCoreOBJModel                       model;
     private final VertexFormat                             format;
@@ -140,7 +136,7 @@ public class BakedSmithsCoreOBJModel implements IPerspectiveAwareModel
         List<BakedQuad> quads = Lists.newArrayList();
         Collections.synchronizedSet(new LinkedHashSet<BakedQuad>());
         Set<SmithsCoreOBJFace> faces = Collections.synchronizedSet(new LinkedHashSet<SmithsCoreOBJFace>());
-        Optional<TRSRTransformation> transform = Optional.absent();
+        Optional<TRSRTransformation> transform = Optional.empty();
         for (SmithsCoreOBJGroup g : this.model.getMatLib().getGroups().values())
         {
 //                g.minUVBounds = this.model.getMatLib().minUVBounds;
@@ -156,7 +152,7 @@ public class BakedSmithsCoreOBJModel implements IPerspectiveAwareModel
                 SmithsCoreOBJState state = (SmithsCoreOBJState) modelState;
                 if (state.getParent() != null)
                 {
-                    transform = state.getParent().apply(Optional.absent());
+                    transform = state.getParent().apply(Optional.empty());
                 }
                 //TODO: can this be replaced by updateStateVisibilityMap(OBJState)?
                 if (state.getGroupNamesFromMap().contains(SmithsCoreOBJGroup.ALL))
@@ -190,7 +186,7 @@ public class BakedSmithsCoreOBJModel implements IPerspectiveAwareModel
             }
             else
             {
-                transform = modelState.apply(Optional.absent());
+                transform = modelState.apply(Optional.empty());
                 faces.addAll(g.applyTransform(transform));
             }
         }
@@ -375,7 +371,7 @@ public class BakedSmithsCoreOBJModel implements IPerspectiveAwareModel
     @Override
     public Pair<? extends IBakedModel, Matrix4f> handlePerspective(@Nonnull ItemCameraTransforms.TransformType cameraTransformType)
     {
-        return IPerspectiveAwareModel.MapWrapper.handlePerspective(this, state, cameraTransformType);
+        return PerspectiveMapWrapper.handlePerspective(this, state, cameraTransformType);
     }
 
     @Nonnull

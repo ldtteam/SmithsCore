@@ -81,7 +81,7 @@ public final class GuiHelper
         float f = 0.00390625F;
         float f1 = 0.00390625F;
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer worldrenderer = tessellator.getBuffer();
+        BufferBuilder worldrenderer = tessellator.getBuffer();
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
         worldrenderer.pos((double) (pXKoord + 0), (double) (pYKoord + pHeight), (double) pZKoord)
           .tex((double) ((float) (pU + 0) * f), (double) ((float) (pV + pHeight) * f1))
@@ -335,7 +335,7 @@ public final class GuiHelper
     private static void drawCutIcon(@Nonnull TextureAtlasSprite pIcon, int pX, int pY, int pZ, int pWidth, int pHeight, int pCutOffVertical)
     {
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer worldrenderer = tessellator.getBuffer();
+        BufferBuilder worldrenderer = tessellator.getBuffer();
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 
         worldrenderer.pos((double) (pX + 0), (double) (pY + pHeight), (double) pZ).tex((double) pIcon.getMinU(), (double) pIcon.getInterpolatedV(pHeight)).endVertex();
@@ -444,7 +444,7 @@ public final class GuiHelper
     public static void drawTexturedModelRectFromIcon(int pXCoord, int pYCoord, int pZCoord, @Nonnull TextureAtlasSprite pIIcon, int pWidth, int pHeight)
     {
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer worldrenderer = tessellator.getBuffer();
+        BufferBuilder worldrenderer = tessellator.getBuffer();
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
         worldrenderer.pos((double) (pXCoord + 0), (double) (pYCoord + pHeight), (double) pZCoord).tex((double) pIIcon.getMinU(), (double) pIIcon.getMaxV()).endVertex();
         worldrenderer.pos((double) (pXCoord + pWidth), (double) (pYCoord + pHeight), (double) pZCoord).tex((double) pIIcon.getMaxU(), (double) pIIcon.getMaxV()).endVertex();
@@ -489,7 +489,7 @@ public final class GuiHelper
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         GlStateManager.shadeModel(7425);
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer worldrenderer = tessellator.getBuffer();
+        BufferBuilder worldrenderer = tessellator.getBuffer();
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
         worldrenderer.pos((double) pPlane.LowerRightCoord().getXComponent(), (double) pPlane.TopLeftCoord().getYComponent(), (double) pZKoord).color(f3, f2, f1, f).endVertex();
         worldrenderer.pos((double) pPlane.TopLeftCoord().getXComponent(), (double) pPlane.TopLeftCoord().getYComponent(), (double) pZKoord).color(f3, f2, f1, f).endVertex();
@@ -523,7 +523,7 @@ public final class GuiHelper
 
         if (font == null)
         {
-            font = Minecraft.getMinecraft().fontRendererObj;
+            font = Minecraft.getMinecraft().fontRenderer;
         }
 
         ITEMRENDERER.renderItemAndEffectIntoGUI(stack, x, y);
@@ -556,7 +556,7 @@ public final class GuiHelper
 
         if (font == null)
         {
-            font = Minecraft.getMinecraft().fontRendererObj;
+            font = Minecraft.getMinecraft().fontRenderer;
         }
 
         ITEMRENDERER.renderItemAndEffectIntoGUI(stack, x, y);
