@@ -66,6 +66,10 @@ version = config.minecraft_version.toString() + "-" + config.mod_version.toStrin
 def apiversion = config.minecraft_version.toString() + "-" + config.api_version.toString() + "-" + System.getenv().BUILDID.toString()
 
 def release = System.getenv().RELEASETYPE
+if (release != "release" && release != "alpha" && release != "beta")
+{
+    release = "alpha"
+}
 
 if(release != "release")
 {
