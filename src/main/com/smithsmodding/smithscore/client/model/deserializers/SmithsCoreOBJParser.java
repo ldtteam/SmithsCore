@@ -125,8 +125,9 @@ public class SmithsCoreOBJParser
                 {
                     if (splitData.length > 4)
                     {
-                        SmithsCore.getLogger()
-                          .log(Level.WARN, "OBJModel.Parser: found a face ('f') with more than 4 vertices, only the first 4 of these vertices will be rendered!");
+                        if (SmithsCore.isInDevEnvironment())
+                            SmithsCore.getLogger()
+                              .log(Level.WARN, "OBJModel.Parser: found a face ('f') with more than 4 vertices, only the first 4 of these vertices will be rendered!");
                     }
 
                     List<SmithsCoreOBJVertex> v = Lists.newArrayListWithCapacity(splitData.length);
@@ -216,8 +217,10 @@ public class SmithsCoreOBJParser
                     if (!unknownObjectCommands.contains(key))
                     {
                         unknownObjectCommands.add(key);
-                        SmithsCore.getLogger()
-                          .info("OBJLoader.Parser: command '%s' (model: '%s') is not currently supported, skipping. Line: %d '%s'", key, objFrom, lineNum, currentLine);
+
+                        if (SmithsCore.isInDevEnvironment())
+                            SmithsCore.getLogger()
+                              .info("OBJLoader.Parser: command '%s' (model: '%s') is not currently supported, skipping. Line: %d '%s'", key, objFrom, lineNum, currentLine);
                     }
                 }
             }
