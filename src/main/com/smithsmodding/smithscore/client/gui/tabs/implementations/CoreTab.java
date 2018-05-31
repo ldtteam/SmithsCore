@@ -340,7 +340,7 @@ public abstract class CoreTab implements IGUITab
                 if (selectorDisplay.getAreaOccupiedByComponent().ContainsCoordinate(mouseX, mouseY))
                 {
                     GlStateManager.translate(0, 0, 5);
-                    getRootGuiObject().drawHoveringText(tab.getToolTipContent(), mouseX + 4, mouseY + 4, Minecraft.getMinecraft().fontRendererObj);
+                    getRootGuiObject().drawHoveringText(tab.getToolTipContent(), mouseX + 4, mouseY + 4, Minecraft.getMinecraft().fontRenderer);
                     GlStateManager.translate(0, 0, -5);
                 }
             }

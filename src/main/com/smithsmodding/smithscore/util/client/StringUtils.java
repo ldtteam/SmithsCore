@@ -55,6 +55,6 @@ public class StringUtils
     @Nonnull
     public static String[] SplitString(@Nonnull String pToSplit, int pMaxWidth)
     {
-        return (String[]) Minecraft.getMinecraft().fontRendererObj.listFormattedStringToWidth(pToSplit, pMaxWidth).toArray();
+        return (String[]) Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(pToSplit, pMaxWidth).toArray();
     }
 }

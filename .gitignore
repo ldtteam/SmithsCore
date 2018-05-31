@@ -23,9 +23,9 @@ local.properties
 *.launch
 
 #Forge
-Forge
-build
-out
+Forge/
+build/
+out/
 run/
 *.ipr
 *.iws

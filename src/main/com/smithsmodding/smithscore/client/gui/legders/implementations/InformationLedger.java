@@ -41,7 +41,7 @@ public class InformationLedger extends CoreLedger
         for (String line : translatedDisplayedStrings)
         {
             Collections.addAll(this.translatedDisplayedStrings,
-              StringUtils.SplitString(line, closedLedgerWidth + Minecraft.getMinecraft().fontRendererObj.getStringWidth(translatedGuiOwner) - 15));
+              StringUtils.SplitString(line, closedLedgerWidth + Minecraft.getMinecraft().fontRenderer.getStringWidth(translatedGuiOwner) - 15));
 
             if (translatedDisplayedStrings.indexOf(line) != translatedDisplayedStrings.size() - 1)
             {
@@ -64,7 +64,7 @@ public class InformationLedger extends CoreLedger
                                            this,
                                            new CoreComponentState(),
                                            new Coordinate2D(8, closedLedgerHeight),
-                                           closedLedgerWidth + Minecraft.getMinecraft().fontRendererObj.getStringWidth(this.translatedLedgerHeader) - 8,
+          closedLedgerWidth + Minecraft.getMinecraft().fontRenderer.getStringWidth(this.translatedLedgerHeader) - 8,
                                            87));
     }
 
@@ -76,7 +76,7 @@ public class InformationLedger extends CoreLedger
     @Override
     public int getMaxWidth()
     {
-        return closedLedgerWidth + Minecraft.getMinecraft().fontRendererObj.getStringWidth(translatedLedgerHeader) + 8;
+        return closedLedgerWidth + Minecraft.getMinecraft().fontRenderer.getStringWidth(translatedLedgerHeader) + 8;
     }
 
     /**
@@ -113,9 +113,9 @@ public class InformationLedger extends CoreLedger
                 host.registerNewComponent(new ComponentLabel(getID() + ".line." + i,
                                                               host,
                                                               new CoreComponentState(null),
-                                                              new Coordinate2D(0, i * (Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT + 3)),
+                  new Coordinate2D(0, i * (Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 3)),
                                                               new MinecraftColor(MinecraftColor.WHITE),
-                                                              Minecraft.getMinecraft().fontRendererObj,
+                  Minecraft.getMinecraft().fontRenderer,
                                                               line));
             }
         }

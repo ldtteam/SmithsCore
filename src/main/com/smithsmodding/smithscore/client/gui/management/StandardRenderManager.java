@@ -397,6 +397,6 @@ public class StandardRenderManager implements IRenderManager
         int globalMouseX = component.getGlobalCoordinate().getXComponent() + mouseX;
         int globalMouseY = component.getGlobalCoordinate().getYComponent() + mouseY;
 
-        ((IGUIBasedComponentHost) root).drawHoveringText(component.getToolTipContent(), globalMouseX + 4, globalMouseY + 4, Minecraft.getMinecraft().fontRendererObj);
+        ((IGUIBasedComponentHost) root).drawHoveringText(component.getToolTipContent(), globalMouseX + 4, globalMouseY + 4, Minecraft.getMinecraft().fontRenderer);
     }
 }

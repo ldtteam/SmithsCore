@@ -274,7 +274,7 @@ public class CoreClientProxy extends CoreCommonProxy
     {
         if (context.side == Side.SERVER)
         {
-            return context.getServerHandler().playerEntity;
+            return context.getServerHandler().player;
         }
         else
         {

@@ -1,7 +1,6 @@
 package com.smithsmodding.smithscore.client.model.states;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.smithsmodding.smithscore.client.model.data.SmithsCoreOBJGroup;
@@ -13,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Author Orion (Created on: 17.07.2016)
@@ -78,7 +78,7 @@ public class SmithsCoreOBJState implements IModelState
         {
             return parent.apply(part);
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Nonnull

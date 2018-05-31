@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.IPerspectiveAwareModel;
+import net.minecraftforge.client.model.PerspectiveMapWrapper;
 import net.minecraftforge.common.model.TRSRTransformation;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Author Marc (Created on: 29.05.2016)
  */
-public class BakedMultiComponentModel implements IPerspectiveAwareModel
+public class BakedMultiComponentModel implements IBakedModel
 {
     final TextureAtlasSprite                                                   particleTexture;
     final ItemCameraTransforms                                                 cameraTransforms;
@@ -96,7 +96,7 @@ public class BakedMultiComponentModel implements IPerspectiveAwareModel
     @Override
     public Pair<? extends IBakedModel, Matrix4f> handlePerspective(@Nonnull ItemCameraTransforms.TransformType cameraTransformType)
     {
-        return IPerspectiveAwareModel.MapWrapper.handlePerspective(this, trsrTransforms, cameraTransformType);
+        return PerspectiveMapWrapper.handlePerspective(this, trsrTransforms, cameraTransformType);
     }
 
     public static class BakedComponentModelItemOverride extends PreBakedItemOverride

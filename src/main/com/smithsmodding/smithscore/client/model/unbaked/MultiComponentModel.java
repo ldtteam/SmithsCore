@@ -1,6 +1,5 @@
 package com.smithsmodding.smithscore.client.model.unbaked;
 
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.smithsmodding.smithscore.client.model.baked.BakedMultiComponentModel;
@@ -57,8 +56,8 @@ public class MultiComponentModel implements IModel
     }
 
     @Override
-    @Nonnull
-    public IBakedModel bake(@Nonnull IModelState state, @Nonnull VertexFormat format, @Nonnull Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter)
+    public IBakedModel bake(
+      final IModelState state, final VertexFormat format, final java.util.function.Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter)
     {
         ImmutableList.Builder<PreBakedItemOverride> builder = new ImmutableList.Builder<>();
 
@@ -74,9 +73,9 @@ public class MultiComponentModel implements IModel
         }
 
         return new BakedMultiComponentModel(overrides.get(0).getModel().getParticleTexture(),
-                                             overrides.get(0).getModel().getItemCameraTransforms(),
-                                             new PreBakedComponentOverrideList(overrides),
-                                             transforms);
+          overrides.get(0).getModel().getItemCameraTransforms(),
+          new PreBakedComponentOverrideList(overrides),
+          transforms);
     }
 
     @Nonnull

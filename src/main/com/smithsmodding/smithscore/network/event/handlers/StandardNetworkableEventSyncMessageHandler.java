@@ -45,7 +45,7 @@ public class StandardNetworkableEventSyncMessageHandler implements IMessageHandl
         }
         else
         {
-            runnable = (IThreadListener) pContext.getServerHandler().playerEntity.world;
+            runnable = (IThreadListener) pContext.getServerHandler().player.world;
         }
 
         runnable.addScheduledTask(new Runnable()

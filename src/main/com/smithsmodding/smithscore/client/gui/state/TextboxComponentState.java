@@ -4,15 +4,13 @@ import com.smithsmodding.smithscore.client.gui.components.core.IGUIComponent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 
-import javax.annotation.Nonnull;
-
 /**
  * Author Marc (Created on: 14.06.2016)
  */
 public class TextboxComponentState extends CoreComponentState
 {
     private final int          id                   = 0;
-    private       FontRenderer fontRendererInstance = Minecraft.getMinecraft().fontRendererObj;
+    private       FontRenderer fontRendererInstance = Minecraft.getMinecraft().fontRenderer;
     private       String       text                 = "";
 
     public TextboxComponentState(IGUIComponent component)

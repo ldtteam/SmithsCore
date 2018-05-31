@@ -4,7 +4,7 @@ import com.smithsmodding.smithscore.client.gui.hosts.IGUIBasedComponentHost;
 import com.smithsmodding.smithscore.client.gui.state.IGUIComponentState;
 import com.smithsmodding.smithscore.util.client.gui.GuiHelper;
 import com.smithsmodding.smithscore.util.common.positioning.Coordinate2D;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
@@ -52,6 +52,6 @@ public class ComponentItemStackDisplay extends CoreComponent
     @Override
     public ArrayList<String> getToolTipContent()
     {
-        return new ArrayList<String>(stack.getTooltip(FMLClientHandler.instance().getClientPlayerEntity(), Minecraft.getMinecraft().gameSettings.advancedItemTooltips));
+        return new ArrayList<String>(stack.getTooltip(FMLClientHandler.instance().getClientPlayerEntity(), ITooltipFlag.TooltipFlags.NORMAL));
     }
 }

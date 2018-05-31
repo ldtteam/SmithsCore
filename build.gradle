@@ -15,7 +15,7 @@ buildscript{
         }
  	} 
 	dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath 'gradle.plugin.org.spongepowered:spongegradle:0.8.1'
         classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
 	}
@@ -66,6 +66,10 @@ version = config.minecraft_version.toString() + "-" + config.mod_version.toStrin
 def apiversion = config.minecraft_version.toString() + "-" + config.api_version.toString() + "-" + System.getenv().BUILDID.toString()
 
 def release = System.getenv().RELEASETYPE
+if (release != "release" && release != "alpha" && release != "beta")
+{
+    release = "alpha"
+}
 
 if(release != "release")
 {
@@ -81,7 +85,7 @@ minecraft {
     version = config.minecraft_version+ "-" + config.forge_version
     runDir = "run"
 
-    mappings = "snapshot_20161220"
+    mappings = "snapshot_20180421"
 
     useDepAts = true
 

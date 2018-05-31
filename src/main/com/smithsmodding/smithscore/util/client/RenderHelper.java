@@ -1,9 +1,9 @@
 package com.smithsmodding.smithscore.util.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -78,7 +78,7 @@ public class RenderHelper
                                           int color)
     {
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer renderer = tessellator.getBuffer();
+        BufferBuilder renderer = tessellator.getBuffer();
         renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         int brightness = Minecraft.getMinecraft().world.getCombinedLight(pos, fluid.getFluid().getLuminosity());
@@ -103,7 +103,7 @@ public class RenderHelper
 
     public static void pre(double x, double y, double z)
     {
-        Minecraft.getMinecraft().world.theProfiler.startSection("pre");
+        Minecraft.getMinecraft().world.profiler.startSection("pre");
         GlStateManager.pushMatrix();
 
         net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
@@ -120,11 +120,11 @@ public class RenderHelper
         }
 
         GlStateManager.translate(x, y, z);
-        Minecraft.getMinecraft().world.theProfiler.endSection();
+        Minecraft.getMinecraft().world.profiler.endSection();
     }
 
     public static void putTexturedQuad(
-                                        @Nonnull VertexBuffer renderer,
+      @Nonnull BufferBuilder renderer,
                                         TextureAtlasSprite sprite,
                                         double x,
                                         double y,
@@ -150,16 +150,16 @@ public class RenderHelper
 
     public static void post()
     {
-        Minecraft.getMinecraft().world.theProfiler.startSection("post");
+        Minecraft.getMinecraft().world.profiler.startSection("post");
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();
         net.minecraft.client.renderer.RenderHelper.enableStandardItemLighting();
-        Minecraft.getMinecraft().world.theProfiler.endSection();
+        Minecraft.getMinecraft().world.profiler.endSection();
     }
 
     // x and x+w has to be within [0,1], same for y/h and z/d
     public static void putTexturedQuad(
-                                        @Nonnull VertexBuffer renderer,
+      @Nonnull BufferBuilder renderer,
                                         @Nullable TextureAtlasSprite sprite,
                                         double x,
                                         double y,
@@ -182,9 +182,9 @@ public class RenderHelper
             return;
         }
 
-        Minecraft.getMinecraft().world.theProfiler.startSection("Quad Putting");
+        Minecraft.getMinecraft().world.profiler.startSection("Quad Putting");
 
-        Minecraft.getMinecraft().world.theProfiler.startSection("Pre calculations");
+        Minecraft.getMinecraft().world.profiler.startSection("Pre calculations");
         double minU;
         double maxU;
         double minV;
@@ -229,9 +229,9 @@ public class RenderHelper
             yt1 = 1d - yt2;
             yt2 = tmp;
         }
-        Minecraft.getMinecraft().world.theProfiler.endSection();
+        Minecraft.getMinecraft().world.profiler.endSection();
 
-        Minecraft.getMinecraft().world.theProfiler.startSection("UV Calculations");
+        Minecraft.getMinecraft().world.profiler.startSection("UV Calculations");
         switch (face)
         {
             case DOWN:
@@ -261,9 +261,9 @@ public class RenderHelper
                 minV = sprite.getMinV();
                 maxV = sprite.getMaxV();
         }
-        Minecraft.getMinecraft().world.theProfiler.endSection();
+        Minecraft.getMinecraft().world.profiler.endSection();
 
-        Minecraft.getMinecraft().world.theProfiler.startSection("Vertex Assignment");
+        Minecraft.getMinecraft().world.profiler.startSection("Vertex Assignment");
         switch (face)
         {
             case DOWN:
@@ -303,8 +303,8 @@ public class RenderHelper
                 renderer.pos(x2, y1, z2).color(r, g, b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
                 break;
         }
-        Minecraft.getMinecraft().world.theProfiler.endSection();
-        Minecraft.getMinecraft().world.theProfiler.endSection();
+        Minecraft.getMinecraft().world.profiler.endSection();
+        Minecraft.getMinecraft().world.profiler.endSection();
     }
 
     public static void renderFluidSide(@Nonnull FluidStack fluid, @Nonnull BlockPos pos, double x, double y, double z, double w, double h, double d, @Nonnull EnumFacing facing)
@@ -350,7 +350,7 @@ public class RenderHelper
                                         @Nonnull EnumFacing facing)
     {
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer renderer = tessellator.getBuffer();
+        BufferBuilder renderer = tessellator.getBuffer();
 
         renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
@@ -360,7 +360,7 @@ public class RenderHelper
     }
 
     public static void renderFluidSide(
-                                        @Nonnull VertexBuffer renderer,
+      @Nonnull BufferBuilder renderer,
                                         @Nonnull FluidStack fluid,
                                         @Nonnull BlockPos pos,
                                         double x,
@@ -375,7 +375,7 @@ public class RenderHelper
                                         int color,
                                         @Nonnull EnumFacing facing)
     {
-        Minecraft.getMinecraft().world.theProfiler.startSection("FluidSide rendering");
+        Minecraft.getMinecraft().world.profiler.startSection("FluidSide rendering");
         int brightness = Minecraft.getMinecraft().world.getCombinedLight(pos, fluid.getFluid().getLuminosity());
 
         pre(x, y, z);
@@ -397,11 +397,11 @@ public class RenderHelper
           (!(facing == EnumFacing.DOWN || facing == EnumFacing.UP)));
 
         post();
-        Minecraft.getMinecraft().world.theProfiler.endSection();
+        Minecraft.getMinecraft().world.profiler.endSection();
     }
 
     public static void renderFluidSide(
-                                        @Nonnull VertexBuffer renderer,
+      @Nonnull BufferBuilder renderer,
                                         @Nonnull FluidStack fluid,
                                         @Nonnull BlockPos pos,
                                         double x,
@@ -420,7 +420,7 @@ public class RenderHelper
     }
 
     public static void renderFluidSide(
-                                        @Nonnull VertexBuffer renderer,
+      @Nonnull BufferBuilder renderer,
                                         @Nonnull FluidStack fluid,
                                         @Nonnull BlockPos pos,
                                         double x,
@@ -438,7 +438,7 @@ public class RenderHelper
         renderFluidSide(renderer, fluid, pos, x, y, z, x1, y1, z1, x2, y2, z2, color, facing);
     }
 
-    public static void setBrightness(@Nonnull VertexBuffer renderer, int brightness)
+    public static void setBrightness(@Nonnull BufferBuilder renderer, int brightness)
     {
         renderer.putBrightness4(brightness, brightness, brightness, brightness);
     }
