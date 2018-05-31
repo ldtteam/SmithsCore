@@ -17,19 +17,22 @@ import javax.annotation.Nonnull;
 /**
  * Root class for all smithscore events.
  */
-public class SmithsCoreEvent extends Event {
+public class SmithsCoreEvent extends Event
+{
     /**
      * Convenient function to post this event on the common event bus within smithscore
      */
-    public void PostCommon() {
-        SmithsCore.getRegistry().getCommonBus().post(this);
+    public boolean PostCommon()
+    {
+        return SmithsCore.getRegistry().getCommonBus().post(this);
     }
 
     /**
      * Convenient function to post this event on the client event bus within smithscore
      */
-    public void PostClient() {
-        SmithsCore.getRegistry().getClientBus().post(this);
+    public boolean PostClient()
+    {
+        return SmithsCore.getRegistry().getClientBus().post(this);
     }
 
     /**
@@ -39,8 +42,10 @@ public class SmithsCoreEvent extends Event {
      * @return The ClientNetHandler on the ClientSide and the ServerNetHandler on the server side.
      */
     @Nonnull
-    public INetHandler getSidedPlayerHandlerFromContext(@Nonnull MessageContext pContext) {
-        if (pContext.side == Side.SERVER) {
+    public INetHandler getSidedPlayerHandlerFromContext(@Nonnull MessageContext pContext)
+    {
+        if (pContext.side == Side.SERVER)
+        {
             return pContext.getServerHandler();
         }
 

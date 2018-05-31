@@ -13,11 +13,18 @@ import javax.annotation.Nonnull;
 /**
  * Created by Marc on 09.01.2016.
  */
-public class ComponentImage extends CoreComponent {
+public class ComponentImage extends CoreComponent
+{
 
     private CustomResource image;
 
-    public ComponentImage (@Nonnull String uniqueID, @Nonnull IGUIComponentState state, @Nonnull IGUIBasedComponentHost root, @Nonnull Coordinate2D rootAnchorPixel, @Nonnull CustomResource image) {
+    public ComponentImage(
+                           @Nonnull String uniqueID,
+                           @Nonnull IGUIComponentState state,
+                           @Nonnull IGUIBasedComponentHost root,
+                           @Nonnull Coordinate2D rootAnchorPixel,
+                           @Nonnull CustomResource image)
+    {
         super(uniqueID, root, state, rootAnchorPixel, image.getWidth(), image.getHeight());
 
         this.image = image;
@@ -31,7 +38,8 @@ public class ComponentImage extends CoreComponent {
      * @param partialTickTime The partial tick time, used to calculate fluent animations.
      */
     @Override
-    public void update (int mouseX, int mouseY, float partialTickTime) {
+    public void update(int mouseX, int mouseY, float partialTickTime)
+    {
         //NOOP
     }
 
@@ -43,7 +51,8 @@ public class ComponentImage extends CoreComponent {
      * @param mouseY The current Y-Coordinate of the mouse
      */
     @Override
-    public void drawBackground (int mouseX, int mouseY) {
+    public void drawBackground(int mouseX, int mouseY)
+    {
         GlStateManager.enableAlpha();
         GlStateManager.enableBlend();
         GuiHelper.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
@@ -61,7 +70,8 @@ public class ComponentImage extends CoreComponent {
      * @param mouseY The current Y-Coordinate of the mouse
      */
     @Override
-    public void drawForeground (int mouseX, int mouseY) {
+    public void drawForeground(int mouseX, int mouseY)
+    {
         //NOOP
     }
 }

@@ -20,7 +20,8 @@ import javax.annotation.Nullable;
  * <p>
  * Created following the TinkersConstruct RenderHelper.
  */
-public class RenderHelper {
+public class RenderHelper
+{
     /**
      * Renders a fluid block, call from TESR. x/y/z is the rendering offset.
      *
@@ -33,7 +34,8 @@ public class RenderHelper {
      * @param h     Height. 1 = full Y-Height
      * @param d     Depth. 1 = full Z-Depth
      */
-    public static void renderFluidCuboid(@Nonnull FluidStack fluid, @Nonnull BlockPos pos, double x, double y, double z, double w, double h, double d) {
+    public static void renderFluidCuboid(@Nonnull FluidStack fluid, @Nonnull BlockPos pos, double x, double y, double z, double w, double h, double d)
+    {
         double wd = (1d - w) / 2d;
         double hd = (1d - h) / 2d;
         double dd = (1d - d) / 2d;
@@ -41,7 +43,19 @@ public class RenderHelper {
         renderFluidCuboid(fluid, pos, x, y, z, wd, hd, dd, 1d - wd, 1d - hd, 1d - dd);
     }
 
-    public static void renderFluidCuboid(@Nonnull FluidStack fluid, @Nonnull BlockPos pos, double x, double y, double z, double x1, double y1, double z1, double x2, double y2, double z2) {
+    public static void renderFluidCuboid(
+                                          @Nonnull FluidStack fluid,
+                                          @Nonnull BlockPos pos,
+                                          double x,
+                                          double y,
+                                          double z,
+                                          double x1,
+                                          double y1,
+                                          double z1,
+                                          double x2,
+                                          double y2,
+                                          double z2)
+    {
         int color = fluid.getFluid().getColor(fluid);
         renderFluidCuboid(fluid, pos, x, y, z, x1, y1, z1, x2, y2, z2, color);
     }
@@ -49,7 +63,20 @@ public class RenderHelper {
     /**
      * Renders block with offset x/y/z from x1/y1/z1 to x2/y2/z2 inside the block local coordinates, so from 0-1
      */
-    public static void renderFluidCuboid(@Nonnull FluidStack fluid, @Nonnull BlockPos pos, double x, double y, double z, double x1, double y1, double z1, double x2, double y2, double z2, int color) {
+    public static void renderFluidCuboid(
+                                          @Nonnull FluidStack fluid,
+                                          @Nonnull BlockPos pos,
+                                          double x,
+                                          double y,
+                                          double z,
+                                          double x1,
+                                          double y1,
+                                          double z1,
+                                          double x2,
+                                          double y2,
+                                          double z2,
+                                          int color)
+    {
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer renderer = tessellator.getBuffer();
         renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
@@ -96,8 +123,20 @@ public class RenderHelper {
         Minecraft.getMinecraft().world.theProfiler.endSection();
     }
 
-    public static void putTexturedQuad(@Nonnull VertexBuffer renderer, TextureAtlasSprite sprite, double x, double y, double z, double w, double h, double d, @Nonnull EnumFacing face,
-                                       int color, int brightness, boolean flowing) {
+    public static void putTexturedQuad(
+                                        @Nonnull VertexBuffer renderer,
+                                        TextureAtlasSprite sprite,
+                                        double x,
+                                        double y,
+                                        double z,
+                                        double w,
+                                        double h,
+                                        double d,
+                                        @Nonnull EnumFacing face,
+                                        int color,
+                                        int brightness,
+                                        boolean flowing)
+    {
         int l1 = brightness >> 0x10 & 0xFFFF;
         int l2 = brightness & 0xFFFF;
 
@@ -119,10 +158,27 @@ public class RenderHelper {
     }
 
     // x and x+w has to be within [0,1], same for y/h and z/d
-    public static void putTexturedQuad(@Nonnull VertexBuffer renderer, @Nullable TextureAtlasSprite sprite, double x, double y, double z, double w, double h, double d, @Nonnull EnumFacing face,
-                                       int r, int g, int b, int a, int light1, int light2, boolean flowing) {
+    public static void putTexturedQuad(
+                                        @Nonnull VertexBuffer renderer,
+                                        @Nullable TextureAtlasSprite sprite,
+                                        double x,
+                                        double y,
+                                        double z,
+                                        double w,
+                                        double h,
+                                        double d,
+                                        @Nonnull EnumFacing face,
+                                        int r,
+                                        int g,
+                                        int b,
+                                        int a,
+                                        int light1,
+                                        int light2,
+                                        boolean flowing)
+    {
         // safety
-        if (sprite == null) {
+        if (sprite == null)
+        {
             return;
         }
 
@@ -135,7 +191,8 @@ public class RenderHelper {
         double maxV;
 
         double size = 16f;
-        if (flowing) {
+        if (flowing)
+        {
             size = 8f;
         }
 
@@ -148,16 +205,26 @@ public class RenderHelper {
 
         double xt1 = x1 % 1d;
         double xt2 = xt1 + w;
-        while (xt2 > 1f) xt2 -= 1f;
+        while (xt2 > 1f)
+        {
+            xt2 -= 1f;
+        }
         double yt1 = y1 % 1d;
         double yt2 = yt1 + h;
-        while (yt2 > 1f) yt2 -= 1f;
+        while (yt2 > 1f)
+        {
+            yt2 -= 1f;
+        }
         double zt1 = z1 % 1d;
         double zt2 = zt1 + d;
-        while (zt2 > 1f) zt2 -= 1f;
+        while (zt2 > 1f)
+        {
+            zt2 -= 1f;
+        }
 
         // flowing stuff should start from the bottom, not from the start
-        if (flowing) {
+        if (flowing)
+        {
             double tmp = 1d - yt1;
             yt1 = 1d - yt2;
             yt2 = tmp;
@@ -165,7 +232,8 @@ public class RenderHelper {
         Minecraft.getMinecraft().world.theProfiler.endSection();
 
         Minecraft.getMinecraft().world.theProfiler.startSection("UV Calculations");
-        switch (face) {
+        switch (face)
+        {
             case DOWN:
             case UP:
                 minU = sprite.getInterpolatedU(xt1 * size);
@@ -196,7 +264,8 @@ public class RenderHelper {
         Minecraft.getMinecraft().world.theProfiler.endSection();
 
         Minecraft.getMinecraft().world.theProfiler.startSection("Vertex Assignment");
-        switch (face) {
+        switch (face)
+        {
             case DOWN:
                 renderer.pos(x1, y1, z1).color(r, g, b, a).tex(minU, minV).lightmap(light1, light2).endVertex();
                 renderer.pos(x2, y1, z1).color(r, g, b, a).tex(maxU, minV).lightmap(light1, light2).endVertex();
@@ -369,7 +438,8 @@ public class RenderHelper {
         renderFluidSide(renderer, fluid, pos, x, y, z, x1, y1, z1, x2, y2, z2, color, facing);
     }
 
-    public static void setBrightness(@Nonnull VertexBuffer renderer, int brightness) {
+    public static void setBrightness(@Nonnull VertexBuffer renderer, int brightness)
+    {
         renderer.putBrightness4(brightness, brightness, brightness, brightness);
     }
 }

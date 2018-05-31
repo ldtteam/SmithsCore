@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
  * Created by Orion
  * Created on 01.12.2015
  * 18:14
- *
+ * <p>
  * Copyrighted according to Project specific license
  */
 public interface IGUIManagerProvider<G extends IGUIManager>

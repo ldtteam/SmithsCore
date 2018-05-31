@@ -20,7 +20,8 @@ import java.util.List;
  * Same functionality as in TinkersConstruct
  */
 @SideOnly(Side.CLIENT)
-public class MultiColoredFontRenderer extends FontRenderer {
+public class MultiColoredFontRenderer extends FontRenderer
+{
 
     public static int MARKER = 0xE800;
 
@@ -30,33 +31,41 @@ public class MultiColoredFontRenderer extends FontRenderer {
     private int green;
     private int blue;
 
-    public MultiColoredFontRenderer(@Nonnull GameSettings gameSettingsIn, @Nonnull ResourceLocation location, @Nonnull TextureManager textureManagerIn) {
+    public MultiColoredFontRenderer(@Nonnull GameSettings gameSettingsIn, @Nonnull ResourceLocation location, @Nonnull TextureManager textureManagerIn)
+    {
         super(gameSettingsIn, location, textureManagerIn, true);
     }
 
     @Nonnull
-    public static String getCustomFormatFromString(@Nonnull String text) {
+    public static String getCustomFormatFromString(@Nonnull String text)
+    {
         String s = "";
         int i = 0;
         int j = text.length();
 
-        while ((i < j - 1)) {
+        while ((i < j - 1))
+        {
             char c = text.charAt(i);
             // vanilla formatting
-            if (c == 167) {
+            if (c == 167)
+            {
 
                 char c0 = text.charAt(i + 1);
 
-                if (c0 >= 48 && c0 <= 57 || c0 >= 97 && c0 <= 102 || c0 >= 65 && c0 <= 70) {
+                if (c0 >= 48 && c0 <= 57 || c0 >= 97 && c0 <= 102 || c0 >= 65 && c0 <= 70)
+                {
                     s = "\u00a7" + c0;
                     i++;
-                } else if (c0 >= 107 && c0 <= 111 || c0 >= 75 && c0 <= 79 || c0 == 114 || c0 == 82) {
+                }
+                else if (c0 >= 107 && c0 <= 111 || c0 >= 75 && c0 <= 79 || c0 == 114 || c0 == 82)
+                {
                     s = s + "\u00a7" + c0;
                     i++;
                 }
             }
             // custom formatting
-            else if ((int) c >= MARKER && (int) c <= MARKER + 0xFF) {
+            else if ((int) c >= MARKER && (int) c <= MARKER + 0xFF)
+            {
                 s = String.format("%s%s%s", c, text.charAt(i + 1), text.charAt(i + 2));
                 i += 2;
             }
@@ -67,12 +76,16 @@ public class MultiColoredFontRenderer extends FontRenderer {
     }
 
     @Nonnull
-    protected String wrapFormattedStringToWidth(@Nonnull String str, @Nonnull int wrapWidth) {
+    protected String wrapFormattedStringToWidth(@Nonnull String str, @Nonnull int wrapWidth)
+    {
         int i = this.sizeStringToWidth(str, wrapWidth);
 
-        if (str.length() <= i) {
+        if (str.length() <= i)
+        {
             return str;
-        } else {
+        }
+        else
+        {
             String s = str.substring(0, i);
             char c0 = str.charAt(i);
             boolean flag = c0 == 32 || c0 == 10;
@@ -91,12 +104,15 @@ public class MultiColoredFontRenderer extends FontRenderer {
 
     @Override
     @Nonnull
-    protected float renderUnicodeChar(@Nonnull char letter, @Nonnull boolean italic) {
+    protected float renderUnicodeChar(@Nonnull char letter, @Nonnull boolean italic)
+    {
         // special color settings through char code
         // we use \u2700 to \u27FF, where the lower byte represents the Hue of the color
-        if ((int) letter >= MARKER && (int) letter <= MARKER + 0xFF) {
+        if ((int) letter >= MARKER && (int) letter <= MARKER + 0xFF)
+        {
             int value = letter & 0xFF;
-            switch (state) {
+            switch (state)
+            {
                 case 0:
                     red = value;
                     break;
@@ -114,23 +130,26 @@ public class MultiColoredFontRenderer extends FontRenderer {
             state = ++state % 3;
 
             int color = (red << 16) | (green << 8) | blue | (0xff << 24);
-            if ((color & -67108864) == 0) {
+            if ((color & -67108864) == 0)
+            {
                 color |= -16777216;
             }
 
-            if (dropShadow) {
+            if (dropShadow)
+            {
                 color = (color & 16579836) >> 2 | color & -16777216;
             }
 
             this.setColor(((color >> 16) & 255) / 255f,
-                    ((color >> 8) & 255) / 255f,
-                    ((color) & 255) / 255f,
-                    ((color >> 24) & 255) / 255f);
+              ((color >> 8) & 255) / 255f,
+              ((color) & 255) / 255f,
+              ((color >> 24) & 255) / 255f);
             return 0;
         }
 
         // invalid sequence encountered
-        if (state != 0) {
+        if (state != 0)
+        {
             state = 0;
             this.setColor(1f, 1f, 1f, 1f);
         }

@@ -9,32 +9,39 @@ import javax.annotation.Nonnull;
 /**
  * Author Marc (Created on: 14.06.2016)
  */
-public class TextboxComponentState extends CoreComponentState {
-    private final int id = 0;
-    private FontRenderer fontRendererInstance = Minecraft.getMinecraft().fontRendererObj;
-    private String text = "";
+public class TextboxComponentState extends CoreComponentState
+{
+    private final int          id                   = 0;
+    private       FontRenderer fontRendererInstance = Minecraft.getMinecraft().fontRendererObj;
+    private       String       text                 = "";
 
-    public TextboxComponentState(@Nonnull IGUIComponent component) {
+    public TextboxComponentState(IGUIComponent component)
+    {
         super(component);
     }
 
-    public int getId() {
+    public int getId()
+    {
         return id;
     }
 
-    public FontRenderer getFontRendererInstance() {
+    public FontRenderer getFontRendererInstance()
+    {
         return fontRendererInstance;
     }
 
-    public void setFontRendererInstance(FontRenderer fontRendererInstance) {
+    public void setFontRendererInstance(FontRenderer fontRendererInstance)
+    {
         this.fontRendererInstance = fontRendererInstance;
     }
 
-    public String getText() {
+    public String getText()
+    {
         return text;
     }
 
-    public void setText(String text) {
+    public void setText(String text)
+    {
         this.text = text;
     }
 }

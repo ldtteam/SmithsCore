@@ -1,16 +1,17 @@
 package com.smithsmodding.smithscore.util.common.helper;
 
-
 import javax.annotation.Nonnull;
 import javax.vecmath.Vector3f;
 
 /**
  * Author Marc (Created on: 11.06.2016)
  */
-public class MathHelper {
+public class MathHelper
+{
 
     @Nonnull
-    public static Vector3f fromDegreeToRadian(@Nonnull Vector3f degree) {
+    public static Vector3f fromDegreeToRadian(@Nonnull Vector3f degree)
+    {
         return new Vector3f(fromDegreeToRadian(degree.getX()), fromDegreeToRadian(degree.getY()), fromDegreeToRadian(degree.getZ()));
     }
 

@@ -22,36 +22,49 @@ import java.util.Map;
 /**
  * Author Marc (Created on: 28.05.2016)
  */
-public class MultiComponentModelLoader implements ICustomModelLoader {
+public class MultiComponentModelLoader implements ICustomModelLoader
+{
 
-    public static final MultiComponentModelLoader instance = new MultiComponentModelLoader();
-    public static final String EXTENSION = "mcm-smithscore";
+    public static final MultiComponentModelLoader instance  = new MultiComponentModelLoader();
+    public static final String                    EXTENSION = "mcm-smithscore";
 
     @Nonnull
     private ArrayList<String> acceptedDomains = new ArrayList<>();
 
-    private MultiComponentModelLoader() {
+    private MultiComponentModelLoader()
+    {
     }
 
-    public void registerDomain(@Nonnull String domain) {
+    public void registerDomain(@Nonnull String domain)
+    {
         acceptedDomains.add(domain.toLowerCase());
     }
 
     @Override
-    public boolean accepts(@Nonnull ResourceLocation modelLocation) {
-        if (!modelLocation.getResourcePath().endsWith(EXTENSION)) return false;
+    public boolean accepts(@Nonnull ResourceLocation modelLocation)
+    {
+        if (!modelLocation.getResourcePath().endsWith(EXTENSION))
+        {
+            return false;
+        }
 
         for (String domain : acceptedDomains)
+        {
             if (modelLocation.getResourceDomain().toLowerCase().equals(domain))
+            {
                 return true;
+            }
+        }
 
         return false;
     }
 
     @Override
     @Nonnull
-    public IModel loadModel(@Nonnull ResourceLocation modelLocation) throws Exception {
-        if (!Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION)) {
+    public IModel loadModel(@Nonnull ResourceLocation modelLocation) throws Exception
+    {
+        if (!Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION))
+        {
             return DummyModel.INSTANCE;
         }
 
@@ -60,7 +73,8 @@ public class MultiComponentModelLoader implements ICustomModelLoader {
         MultiComponentModelDefinition definition = MultiComponentModelDeserializer.instance.deserialize(modelLocation);
 
         ImmutableMap.Builder<String, IModel> builder = new ImmutableMap.Builder<>();
-        for (Map.Entry<String, ResourceLocation> component : definition.getTextureLocations().entrySet()) {
+        for (Map.Entry<String, ResourceLocation> component : definition.getTextureLocations().entrySet())
+        {
             builder.put(component.getKey(), new ItemLayerModel(ImmutableList.of(component.getValue())));
         }
 
@@ -68,7 +82,8 @@ public class MultiComponentModelLoader implements ICustomModelLoader {
     }
 
     @Override
-    public void onResourceManagerReload(@Nonnull IResourceManager resourceManager) {
+    public void onResourceManagerReload(@Nonnull IResourceManager resourceManager)
+    {
         ///NOOP
     }
 }

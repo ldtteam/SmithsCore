@@ -14,10 +14,11 @@ import java.util.UUID;
  * Created by Orion
  * Created on 01.12.2015
  * 18:11
- *
+ * <p>
  * Copyrighted according to Project specific license
  */
-public class TileStorageBasedGUIManager implements IGUIManager{
+public class TileStorageBasedGUIManager implements IGUIManager
+{
 
     @Nonnull
     protected ArrayList<UUID> watchingPlayers = new ArrayList<UUID>();
@@ -28,8 +29,10 @@ public class TileStorageBasedGUIManager implements IGUIManager{
      * @param playerId The unique ID of the player that opens the UI.
      */
     @Override
-    public void onGuiOpened(@Nonnull UUID playerId) {
-        if (watchingPlayers.contains(playerId)) {
+    public void onGuiOpened(@Nonnull UUID playerId)
+    {
+        if (watchingPlayers.contains(playerId))
+        {
             return;
         }
 
@@ -42,8 +45,10 @@ public class TileStorageBasedGUIManager implements IGUIManager{
      * @param playerID The unique ID of the player that closed the UI.
      */
     @Override
-    public void onGUIClosed(@Nonnull UUID playerID) {
-        if (!watchingPlayers.contains(playerID)) {
+    public void onGUIClosed(@Nonnull UUID playerID)
+    {
+        if (!watchingPlayers.contains(playerID))
+        {
             return;
         }
 
@@ -54,12 +59,12 @@ public class TileStorageBasedGUIManager implements IGUIManager{
      * Method used by components that support overriding tooltips to grab the new tooltip string.
      *
      * @param component The component requesting the override.
-     *
      * @return A string displayed as tooltip for the IGUIComponent during rendering.
      */
     @Nonnull
     @Override
-    public String getCustomToolTipDisplayString (@Nonnull IGUIComponent component) {
+    public String getCustomToolTipDisplayString(@Nonnull IGUIComponent component)
+    {
         return "";
     }
 
@@ -67,11 +72,11 @@ public class TileStorageBasedGUIManager implements IGUIManager{
      * Method to get the value for a progressbar. RAnged between 0 and 1.
      *
      * @param component The component to get the value for
-     *
      * @return A float between 0 and 1 with 0 meaning no progress on the specific bar and 1 meaning full.
      */
     @Override
-    public float getProgressBarValue (@Nonnull IGUIComponent component) {
+    public float getProgressBarValue(@Nonnull IGUIComponent component)
+    {
         return 0F;
     }
 
@@ -79,23 +84,25 @@ public class TileStorageBasedGUIManager implements IGUIManager{
      * Method used by the rendering system to dynamically update a Label.
      *
      * @param component The component requesting the content.
-     *
      * @return THe string that should be displayed.
      */
     @Nonnull
     @Override
-    public String getLabelContents (@Nonnull IGUIComponent component) {
+    public String getLabelContents(@Nonnull IGUIComponent component)
+    {
         return "";
     }
 
     @Nullable
     @Override
-    public ArrayList<FluidStack> getTankContents (@Nonnull IGUIComponent component) {
+    public ArrayList<FluidStack> getTankContents(@Nonnull IGUIComponent component)
+    {
         return new ArrayList<FluidStack>();
     }
 
     @Override
-    public int getTotalTankContents (@Nonnull IGUIComponent component) {
+    public int getTotalTankContents(@Nonnull IGUIComponent component)
+    {
         return 0;
     }
 
@@ -105,12 +112,14 @@ public class TileStorageBasedGUIManager implements IGUIManager{
      * @param newActiveTabId The new active Tabs ID.
      */
     @Override
-    public void onTabChanged (@Nonnull String newActiveTabId) {
+    public void onTabChanged(@Nonnull String newActiveTabId)
+    {
         return;
     }
 
     @Override
-    public void onInput(GuiInputEvent.InputTypes types, @Nonnull String componentId, @Nonnull String input) {
+    public void onInput(GuiInputEvent.InputTypes types, @Nonnull String componentId, @Nonnull String input)
+    {
         return;
     }
 

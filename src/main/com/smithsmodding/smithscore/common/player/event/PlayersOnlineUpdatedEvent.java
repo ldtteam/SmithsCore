@@ -16,13 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class PlayersOnlineUpdatedEvent extends StandardNetworkableEvent {
+public class PlayersOnlineUpdatedEvent extends StandardNetworkableEvent
+{
 
     private List<UUID> commonSidedOnlineMap = new ArrayList<UUID>();
 
     public PlayersOnlineUpdatedEvent() {}
 
-    public PlayersOnlineUpdatedEvent(@Nonnull PlayerManager manager) {
+    public PlayersOnlineUpdatedEvent(@Nonnull PlayerManager manager)
+    {
         commonSidedOnlineMap = manager.getCommonSidedOnlineMap();
     }
 
@@ -32,7 +34,8 @@ public class PlayersOnlineUpdatedEvent extends StandardNetworkableEvent {
      * @return The list of online Players
      */
     @Nonnull
-    public List<UUID> getCommonSidedOnlineMap() {
+    public List<UUID> getCommonSidedOnlineMap()
+    {
         return commonSidedOnlineMap;
     }
 
@@ -43,10 +46,12 @@ public class PlayersOnlineUpdatedEvent extends StandardNetworkableEvent {
      * @param pMessageBuffer The ByteBuffer from the IMessage used to Synchronize the implementing events.
      */
     @Override
-    public void readFromMessageBuffer(@Nonnull ByteBuf pMessageBuffer) {
+    public void readFromMessageBuffer(@Nonnull ByteBuf pMessageBuffer)
+    {
         int pairCount = pMessageBuffer.readInt();
 
-        for (int pairIndex = 0; pairIndex < pairCount; pairIndex++) {
+        for (int pairIndex = 0; pairIndex < pairCount; pairIndex++)
+        {
             commonSidedOnlineMap.add(NetworkHelper.readUUID(pMessageBuffer));
         }
     }
@@ -58,10 +63,12 @@ public class PlayersOnlineUpdatedEvent extends StandardNetworkableEvent {
      * @param pMessageBuffer The buffer from the IMessage
      */
     @Override
-    public void writeToMessageBuffer(@Nonnull ByteBuf pMessageBuffer) {
+    public void writeToMessageBuffer(@Nonnull ByteBuf pMessageBuffer)
+    {
         pMessageBuffer.writeInt(commonSidedOnlineMap.size());
 
-        for (UUID id : commonSidedOnlineMap) {
+        for (UUID id : commonSidedOnlineMap)
+        {
             NetworkHelper.writeUUID(pMessageBuffer, id);
         }
     }

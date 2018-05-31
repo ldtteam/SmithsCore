@@ -38,25 +38,25 @@ public interface IRenderManager
     /**
      * Method to render the BackGround of a Component
      *
-     * @param component The Component to render.
+     * @param component     The Component to render.
      * @param parentEnabled Indicates if the parent is enabled.
      */
-    void renderBackgroundComponent (@Nonnull IGUIComponent component, boolean parentEnabled);
+    void renderBackgroundComponent(@Nonnull IGUIComponent component, boolean parentEnabled);
 
     /**
      * Method to render the ForeGround of a Component
      *
-     * @param component The Component to render
+     * @param component     The Component to render
      * @param parentEnabled Indicates if the parent is enabled.
      */
-    void renderForegroundComponent (@Nonnull IGUIComponent component, boolean parentEnabled);
+    void renderForegroundComponent(@Nonnull IGUIComponent component, boolean parentEnabled);
 
     /**
      * Method to render the ToolTip of the Component
      *
      * @param component The Component to render the tooltip from.
-     * @param mouseX The absolute X-Coordinate of the Mouse
-     * @param mouseY The absolute Y-Coordinate of the Mouse
+     * @param mouseX    The absolute X-Coordinate of the Mouse
+     * @param mouseY    The absolute Y-Coordinate of the Mouse
      */
-    void renderToolTipComponent (@Nonnull IGUIComponent component, int mouseX, int mouseY);
+    void renderToolTipComponent(@Nonnull IGUIComponent component, int mouseX, int mouseY);
 }

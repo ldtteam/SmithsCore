@@ -6,15 +6,17 @@ import java.util.*;
 
 /**
  * Created by Orion Created on 03.07.2015 14:42
- *
+ * <p>
  * Copyrighted according to Project specific license
  */
-public class PathFinder {
+public class PathFinder
+{
     @Nullable
     Path iResultedPath = null;
 
     //Pathfinds using A* Algorithm
-    public PathFinder (@Nonnull IPathComponent pStartNode, @Nonnull IPathComponent pEndNode, @Nonnull IPathComponent pSkippableComponents) {
+    public PathFinder(@Nonnull IPathComponent pStartNode, @Nonnull IPathComponent pEndNode, @Nonnull IPathComponent pSkippableComponents)
+    {
         HashMap<IPathComponent, Float> tClosedNodes = new HashMap<IPathComponent, Float>();
         ArrayList<IPathComponent> tOpenNodes = new ArrayList<IPathComponent>();
         HashMap<IPathComponent, IPathComponent> tPreviousNodes = new HashMap<IPathComponent, IPathComponent>();
@@ -27,12 +29,14 @@ public class PathFinder {
         GScore.put(pStartNode, 0F);
         FScore.put(pStartNode, pStartNode.getLocation().getDistanceTo(pEndNode.getLocation()));
 
-        while (!tOpenNodes.isEmpty()) {
+        while (!tOpenNodes.isEmpty())
+        {
             SortedFScore.clear();
             SortedFScore.putAll(FScore);
 
             IPathComponent tCurrentComponent = SortedFScore.firstKey();
-            if (tCurrentComponent.getLocation().equals(pEndNode.getLocation())) {
+            if (tCurrentComponent.getLocation().equals(pEndNode.getLocation()))
+            {
                 reconstructPath(tPreviousNodes, pStartNode, pEndNode);
                 break;
             }
@@ -42,34 +46,44 @@ public class PathFinder {
 
             FScore.remove(tCurrentComponent);
 
-            for (IPathComponent tNeighborComponent : tCurrentComponent.getValidPathableNeighborComponents()) {
+            for (IPathComponent tNeighborComponent : tCurrentComponent.getValidPathableNeighborComponents())
+            {
                 if (tClosedNodes.containsKey(tNeighborComponent))
+                {
                     continue;
+                }
 
                 if (pSkippableComponents.getLocation().equals(tNeighborComponent.getLocation()))
+                {
                     continue;
+                }
 
                 float tTentative_GScore = GScore.get(tCurrentComponent) + 1;
 
-                if (!tOpenNodes.contains(tNeighborComponent) || ( tTentative_GScore < GScore.get(tNeighborComponent) )) {
+                if (!tOpenNodes.contains(tNeighborComponent) || (tTentative_GScore < GScore.get(tNeighborComponent)))
+                {
                     tPreviousNodes.put(tNeighborComponent, tCurrentComponent);
                     GScore.put(tNeighborComponent, tTentative_GScore);
                     FScore.put(tNeighborComponent, tTentative_GScore + tNeighborComponent.getLocation().getDistanceTo(pEndNode.getLocation()));
 
                     if (!tOpenNodes.contains(tNeighborComponent))
+                    {
                         tOpenNodes.add(tNeighborComponent);
+                    }
                 }
             }
         }
     }
 
-    private void reconstructPath(@Nonnull HashMap<IPathComponent, IPathComponent> pPreviousNodes, @Nonnull IPathComponent pStartNode, @Nonnull IPathComponent pEndNode) {
+    private void reconstructPath(@Nonnull HashMap<IPathComponent, IPathComponent> pPreviousNodes, @Nonnull IPathComponent pStartNode, @Nonnull IPathComponent pEndNode)
+    {
         iResultedPath = new Path(pStartNode, pEndNode);
         IPathComponent tCurrent = pEndNode;
 
         iResultedPath.startConstructingReversePath();
 
-        while (pPreviousNodes.containsKey(tCurrent)) {
+        while (pPreviousNodes.containsKey(tCurrent))
+        {
             tCurrent = pPreviousNodes.remove(tCurrent);
             iResultedPath.getComponents().add(tCurrent);
         }
@@ -77,27 +91,35 @@ public class PathFinder {
         iResultedPath.endConstructingReversePath();
     }
 
-    public boolean isConnected () {
+    public boolean isConnected()
+    {
         return iResultedPath != null;
     }
 
     @Nonnull
-    public Path getPath () {
+    public Path getPath()
+    {
         return iResultedPath;
     }
 
-    private class ValueComparator implements Comparator<IPathComponent> {
+    private class ValueComparator implements Comparator<IPathComponent>
+    {
 
         Map<IPathComponent, Float> base;
 
-        public ValueComparator(@Nonnull Map<IPathComponent, Float> base) {
+        public ValueComparator(@Nonnull Map<IPathComponent, Float> base)
+        {
             this.base = base;
         }
 
-        public int compare(@Nonnull IPathComponent a, @Nonnull IPathComponent b) {
-            if (base.get(a) >= base.get(b)) {
+        public int compare(@Nonnull IPathComponent a, @Nonnull IPathComponent b)
+        {
+            if (base.get(a) >= base.get(b))
+            {
                 return -1;
-            } else {
+            }
+            else
+            {
                 return 1;
             } // returning 0 would merge keys
         }

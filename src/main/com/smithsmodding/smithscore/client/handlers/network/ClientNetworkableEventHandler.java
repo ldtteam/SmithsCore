@@ -19,12 +19,17 @@ public class ClientNetworkableEventHandler extends CommonNetworkableEventHandler
 
     @Override
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onEvent(@Nonnull NetworkableEvent pEvent) {
+    public void onEvent(@Nonnull NetworkableEvent pEvent)
+    {
         if (pEvent.getCommunicationMessage(Side.SERVER) == null)
+        {
             return;
+        }
 
         if (pEvent.isCanceled())
+        {
             return;
+        }
 
         pEvent.handleClientToServerSide();
     }

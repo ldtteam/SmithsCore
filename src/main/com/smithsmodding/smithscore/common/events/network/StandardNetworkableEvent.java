@@ -19,26 +19,30 @@ import javax.annotation.Nonnull;
 /**
  * Standard implementation of the Networkable events.
  * It should be used for events that only handle a limited amount of data.
- *
+ * <p>
  * An implementing event has to have an Empty constructor as the IMessage Implementation uses Reflection to create a
  * new Instance of the implementing event and fires it on the NetworkRelayBus.
  */
-public abstract class StandardNetworkableEvent extends NetworkableEvent {
+public abstract class StandardNetworkableEvent extends NetworkableEvent
+{
 
     EntityPlayer player;
 
     /**
      * Standard empty Constructor.
      */
-    public StandardNetworkableEvent() {
+    public StandardNetworkableEvent()
+    {
     }
 
     @Nonnull
-    public EntityPlayer getPlayer () {
+    public EntityPlayer getPlayer()
+    {
         return player;
     }
 
-    public void setPlayer(@Nonnull EntityPlayer player) {
+    public void setPlayer(@Nonnull EntityPlayer player)
+    {
         this.player = player;
     }
 
@@ -77,17 +81,17 @@ public abstract class StandardNetworkableEvent extends NetworkableEvent {
     /**
      * Function used by the EventHandler to retrieve an IMessage that describes this events.
      * This IMessage is then send to the server or the client depending on the running side.
-     *
+     * <p>
      * A warning: You will have to register the IMessage and its handler to the EventNetworkManager.getInstance()
      * yourself
      *
      * @param side The side this event is synced TO!
-     *
      * @return An Instance of an IMessage class that describes this events.
      */
     @Nonnull
     @Override
-    public IMessage getCommunicationMessage (Side side) {
+    public IMessage getCommunicationMessage(Side side)
+    {
         return new StandardNetworkableEventSyncMessage(this);
     }
 }

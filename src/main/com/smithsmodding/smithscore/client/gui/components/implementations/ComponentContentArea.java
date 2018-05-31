@@ -18,13 +18,21 @@ import java.util.List;
 /**
  * Created by Marc on 11.02.2016.
  */
-public class ComponentContentArea extends CoreComponent implements IGUIBasedComponentHost {
+public class ComponentContentArea extends CoreComponent implements IGUIBasedComponentHost
+{
 
     private IContentAreaHost contentHost;
     @Nonnull
     private LinkedHashMap<String, IGUIComponent> componentHashMap = new LinkedHashMap<String, IGUIComponent>();
 
-    public ComponentContentArea (@Nonnull String uniqueID, @Nonnull IContentAreaHost parent, @Nonnull IGUIComponentState state, @Nonnull Coordinate2D rootAnchorPixel, int width, int height) {
+    public ComponentContentArea(
+                                 @Nonnull String uniqueID,
+                                 @Nonnull IContentAreaHost parent,
+                                 @Nonnull IGUIComponentState state,
+                                 @Nonnull Coordinate2D rootAnchorPixel,
+                                 int width,
+                                 int height)
+    {
         super(uniqueID, parent, state, rootAnchorPixel, width, height);
 
         this.contentHost = (IContentAreaHost) this.parent;
@@ -32,10 +40,12 @@ public class ComponentContentArea extends CoreComponent implements IGUIBasedComp
 
     @Nonnull
     @Override
-    public Plane getSize () {
+    public Plane getSize()
+    {
         Plane area = new Plane(0, 0, 0, 0);
 
-        for (IGUIComponent component : getAllComponents().values()) {
+        for (IGUIComponent component : getAllComponents().values())
+        {
             area.IncludeCoordinate(new Plane(component.getLocalCoordinate(), component.getSize().getWidth(), component.getSize().getHeigth()));
         }
 
@@ -43,17 +53,20 @@ public class ComponentContentArea extends CoreComponent implements IGUIBasedComp
     }
 
     @Override
-    public void update (int mouseX, int mouseY, float partialTickTime) {
+    public void update(int mouseX, int mouseY, float partialTickTime)
+    {
         //NOOP
     }
 
     @Override
-    public void drawBackground (int mouseX, int mouseY) {
+    public void drawBackground(int mouseX, int mouseY)
+    {
         //NOOP
     }
 
     @Override
-    public void drawForeground (int mouseX, int mouseY) {
+    public void drawForeground(int mouseX, int mouseY)
+    {
         //NOOP
     }
 
@@ -63,7 +76,8 @@ public class ComponentContentArea extends CoreComponent implements IGUIBasedComp
      * @param host This ComponentHosts host. For the Root GUIObject a reference to itself will be passed in..
      */
     @Override
-    public void registerComponents (IGUIBasedComponentHost host) {
+    public void registerComponents(IGUIBasedComponentHost host)
+    {
         contentHost.registerContentComponents(this);
     }
 
@@ -73,8 +87,14 @@ public class ComponentContentArea extends CoreComponent implements IGUIBasedComp
      * @param component The new component.
      */
     @Override
-    public void registerNewComponent (@Nonnull IGUIComponent component) {
+    public void registerNewComponent(@Nonnull IGUIComponent component)
+    {
         componentHashMap.put(component.getID(), component);
+
+        if (component instanceof IGUIBasedComponentHost)
+        {
+            ((IGUIBasedComponentHost) component).registerComponents((IGUIBasedComponentHost) component);
+        }
     }
 
     /**
@@ -83,7 +103,8 @@ public class ComponentContentArea extends CoreComponent implements IGUIBasedComp
      * @return The gui that this component is part of.
      */
     @Override
-    public IGUIBasedComponentHost getRootGuiObject() {
+    public IGUIBasedComponentHost getRootGuiObject()
+    {
         return parent.getRootGuiObject();
     }
 
@@ -93,7 +114,8 @@ public class ComponentContentArea extends CoreComponent implements IGUIBasedComp
      * @return The Manager that is at the root for the gui Tree.
      */
     @Override
-    public IGUIManager getRootManager () {
+    public IGUIManager getRootManager()
+    {
         return parent.getRootManager();
     }
 
@@ -104,7 +126,8 @@ public class ComponentContentArea extends CoreComponent implements IGUIBasedComp
      */
     @Nonnull
     @Override
-    public LinkedHashMap<String, IGUIComponent> getAllComponents () {
+    public LinkedHashMap<String, IGUIComponent> getAllComponents()
+    {
         return componentHashMap;
     }
 
@@ -112,24 +135,32 @@ public class ComponentContentArea extends CoreComponent implements IGUIBasedComp
      * Method for outside systems to retrieve a UI Component based of its ID.
      *
      * @param uniqueUIID The uniqueUIID that is being searched for.
-     *
      * @return A IGUIComponent with then given ID or null if no child components exists with that ID.
      */
     @Nullable
     @Override
-    public IGUIComponent getComponentByID (String uniqueUIID) {
+    public IGUIComponent getComponentByID(String uniqueUIID)
+    {
         if (getID().equals(uniqueUIID))
+        {
             return this;
+        }
 
         if (getAllComponents().get(uniqueUIID) != null)
+        {
             return getAllComponents().get(uniqueUIID);
+        }
 
-        for (IGUIComponent childComponent : getAllComponents().values()) {
-            if (childComponent instanceof IGUIBasedComponentHost) {
-                IGUIComponent foundComponent = ( (IGUIBasedComponentHost) childComponent ).getComponentByID(uniqueUIID);
+        for (IGUIComponent childComponent : getAllComponents().values())
+        {
+            if (childComponent instanceof IGUIBasedComponentHost)
+            {
+                IGUIComponent foundComponent = ((IGUIBasedComponentHost) childComponent).getComponentByID(uniqueUIID);
 
                 if (foundComponent != null)
+                {
                     return foundComponent;
+                }
             }
         }
 
@@ -137,17 +168,20 @@ public class ComponentContentArea extends CoreComponent implements IGUIBasedComp
     }
 
     @Override
-    public void drawHoveringText(List<String> textLines, int x, int y, FontRenderer font) {
+    public void drawHoveringText(List<String> textLines, int x, int y, FontRenderer font)
+    {
         getComponentHost().drawHoveringText(textLines, x, y, font);
     }
 
     @Override
-    public IRenderManager getRenderManager() {
+    public IRenderManager getRenderManager()
+    {
         return getComponentHost().getRenderManager();
     }
 
     @Override
-    public int getDefaultDisplayVerticalOffset() {
+    public int getDefaultDisplayVerticalOffset()
+    {
         return getComponentHost().getDefaultDisplayVerticalOffset();
     }
 
@@ -157,7 +191,8 @@ public class ComponentContentArea extends CoreComponent implements IGUIBasedComp
      * @return Returns the current GUIManager.
      */
     @Override
-    public IGUIManager getManager () {
+    public IGUIManager getManager()
+    {
         return parent.getManager();
     }
 
@@ -167,7 +202,8 @@ public class ComponentContentArea extends CoreComponent implements IGUIBasedComp
      * @param newManager THe new IGUIManager.
      */
     @Override
-    public void setManager (IGUIManager newManager) {
+    public void setManager(IGUIManager newManager)
+    {
         parent.setManager(newManager);
     }
 }

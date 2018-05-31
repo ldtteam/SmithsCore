@@ -23,77 +23,117 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.UUID;
 
-public class ItemStackHelper {
+public class ItemStackHelper
+{
     @Nullable
-    public static Comparator<ItemStack> COMPARATOR = new Comparator<ItemStack>() {
-        public int compare(@Nonnull ItemStack pItemStack1, @Nonnull ItemStack pItemStack2) {
-            if (!pItemStack1.isEmpty() && !pItemStack2.isEmpty()) {
+    public static Comparator<ItemStack> COMPARATOR = new Comparator<ItemStack>()
+    {
+        public int compare(@Nonnull ItemStack pItemStack1, @Nonnull ItemStack pItemStack2)
+        {
+            if (!pItemStack1.isEmpty() && !pItemStack2.isEmpty())
+            {
                 // Sort on itemID
-                if (Item.getIdFromItem(pItemStack1.getItem()) - Item.getIdFromItem(pItemStack2.getItem()) == 0) {
+                if (Item.getIdFromItem(pItemStack1.getItem()) - Item.getIdFromItem(pItemStack2.getItem()) == 0)
+                {
                     // Sort on item
-                    if (pItemStack1.getItem() == pItemStack2.getItem()) {
+                    if (pItemStack1.getItem() == pItemStack2.getItem())
+                    {
                         // Then sort on meta
-                        if (pItemStack1.getItemDamage() == pItemStack2.getItemDamage()) {
+                        if (pItemStack1.getItemDamage() == pItemStack2.getItemDamage())
+                        {
                             // Then sort on NBT
-                            if (pItemStack1.hasTagCompound() && pItemStack2.hasTagCompound()) {
+                            if (pItemStack1.hasTagCompound() && pItemStack2.hasTagCompound())
+                            {
                                 // Then sort on stack size
-                                if (ItemStack.areItemStackTagsEqual(pItemStack1, pItemStack2)) {
+                                if (ItemStack.areItemStackTagsEqual(pItemStack1, pItemStack2))
+                                {
                                     return (pItemStack1.getCount() - pItemStack2.getCount());
-                                } else {
+                                }
+                                else
+                                {
                                     return (pItemStack1.getTagCompound().hashCode() - pItemStack2.getTagCompound().hashCode());
                                 }
-                            } else if (!(pItemStack1.hasTagCompound()) && pItemStack2.hasTagCompound()) {
+                            }
+                            else if (!(pItemStack1.hasTagCompound()) && pItemStack2.hasTagCompound())
+                            {
                                 return -1;
-                            } else if (pItemStack1.hasTagCompound() && !(pItemStack2.hasTagCompound())) {
+                            }
+                            else if (pItemStack1.hasTagCompound() && !(pItemStack2.hasTagCompound()))
+                            {
                                 return 1;
-                            } else {
+                            }
+                            else
+                            {
                                 return (pItemStack1.getCount() - pItemStack2.getCount());
                             }
-                        } else {
+                        }
+                        else
+                        {
                             return (pItemStack1.getItemDamage() - pItemStack2.getItemDamage());
                         }
-                    } else {
+                    }
+                    else
+                    {
                         return pItemStack1.getItem().getUnlocalizedName(pItemStack1).compareToIgnoreCase(pItemStack2.getItem().getUnlocalizedName(pItemStack2));
                     }
-                } else {
+                }
+                else
+                {
                     return Item.getIdFromItem(pItemStack1.getItem()) - Item.getIdFromItem(pItemStack2.getItem());
                 }
-            } else if (!pItemStack1.isEmpty()) {
+            }
+            else if (!pItemStack1.isEmpty())
+            {
                 return -1;
-            } else if (!pItemStack2.isEmpty()) {
+            }
+            else if (!pItemStack2.isEmpty())
+            {
                 return 1;
-            } else {
+            }
+            else
+            {
                 return 0;
             }
         }
     };
 
     @Nonnull
-    public static ItemStack cloneItemStack(@Nonnull ItemStack pItemStack, int pStackSize) {
+    public static ItemStack cloneItemStack(@Nonnull ItemStack pItemStack, int pStackSize)
+    {
         ItemStack tClonedItemStack = pItemStack.copy();
         tClonedItemStack.setCount(pStackSize);
         return tClonedItemStack;
     }
 
-    public static boolean equals(@Nonnull ItemStack pItemStack1, @Nonnull ItemStack pItemStack2) {
+    public static boolean equals(@Nonnull ItemStack pItemStack1, @Nonnull ItemStack pItemStack2)
+    {
         return (COMPARATOR.compare(pItemStack1, pItemStack2) == 0);
     }
 
-    public static boolean equalsIgnoreStackSize(@Nonnull ItemStack itemStack1, @Nonnull ItemStack itemStack2) {
-        if (!itemStack1.isEmpty() && !itemStack2.isEmpty()) {
+    public static boolean equalsIgnoreStackSize(@Nonnull ItemStack itemStack1, @Nonnull ItemStack itemStack2)
+    {
+        if (!itemStack1.isEmpty() && !itemStack2.isEmpty())
+        {
             // Sort on itemID
-            if (Item.getIdFromItem(itemStack1.getItem()) - Item.getIdFromItem(itemStack2.getItem()) == 0) {
+            if (Item.getIdFromItem(itemStack1.getItem()) - Item.getIdFromItem(itemStack2.getItem()) == 0)
+            {
                 // Sort on item
-                if (itemStack1.getItem() == itemStack2.getItem()) {
+                if (itemStack1.getItem() == itemStack2.getItem())
+                {
                     // Then sort on meta
-                    if (itemStack1.getItemDamage() == itemStack2.getItemDamage()) {
+                    if (itemStack1.getItemDamage() == itemStack2.getItemDamage())
+                    {
                         // Then sort on NBT
-                        if (itemStack1.hasTagCompound() && itemStack2.hasTagCompound()) {
+                        if (itemStack1.hasTagCompound() && itemStack2.hasTagCompound())
+                        {
                             // Then sort on stack size
-                            if (ItemStack.areItemStackTagsEqual(itemStack1, itemStack2)) {
+                            if (ItemStack.areItemStackTagsEqual(itemStack1, itemStack2))
+                            {
                                 return true;
                             }
-                        } else {
+                        }
+                        else
+                        {
                             return true;
                         }
                     }
@@ -112,15 +152,19 @@ public class ItemStackHelper {
      * @param doMerge     - To actually do the merge
      * @return The number of items that was successfully merged.
      */
-    public static int mergeStacks(@Nonnull ItemStack mergeSource, @Nonnull ItemStack mergeTarget, boolean doMerge) {
-        if (!canStacksMerge(mergeSource, mergeTarget)) {
+    public static int mergeStacks(@Nonnull ItemStack mergeSource, @Nonnull ItemStack mergeTarget, boolean doMerge)
+    {
+        if (!canStacksMerge(mergeSource, mergeTarget))
+        {
             return 0;
         }
         int mergeCount = Math.min(mergeTarget.getMaxStackSize() - mergeTarget.getCount(), mergeSource.getAnimationsToGo());
-        if (mergeCount < 1) {
+        if (mergeCount < 1)
+        {
             return 0;
         }
-        if (doMerge) {
+        if (doMerge)
+        {
             mergeTarget.grow(mergeCount);
         }
         return mergeCount;
@@ -156,11 +200,14 @@ public class ItemStackHelper {
      * @return true if comparison should be considered a crafting equivalent for
      * base.
      */
-    public static boolean isCraftingEquivalent(@Nonnull ItemStack base, @Nonnull ItemStack comparison, boolean oreDictionary) {
-        if (isMatchingItem(base, comparison, true, false)) {
+    public static boolean isCraftingEquivalent(@Nonnull ItemStack base, @Nonnull ItemStack comparison, boolean oreDictionary)
+    {
+        if (isMatchingItem(base, comparison, true, false))
+        {
             return true;
         }
-        if (oreDictionary) {
+        if (oreDictionary)
+        {
             int[] idBase = OreDictionary.getOreIDs(base);
             return isCraftingEquivalent(idBase, comparison);
         }
@@ -178,22 +225,30 @@ public class ItemStackHelper {
      * @param matchNBT    Whether to check the NBT tags on the items
      * @return Whether the items match
      */
-    public static boolean isMatchingItem(@Nonnull final ItemStack a, @Nonnull final ItemStack b, final boolean matchDamage, final boolean matchNBT) {
-        if (a.isEmpty() || b.isEmpty()) {
+    public static boolean isMatchingItem(@Nonnull final ItemStack a, @Nonnull final ItemStack b, final boolean matchDamage, final boolean matchNBT)
+    {
+        if (a.isEmpty() || b.isEmpty())
+        {
             return false;
         }
-        if (a.getItem() != b.getItem()) {
+        if (a.getItem() != b.getItem())
+        {
             return false;
         }
-        if (matchDamage && a.getHasSubtypes()) {
-            if (!isWildcard(a) && !isWildcard(b)) {
-                if (a.getItemDamage() != b.getItemDamage()) {
+        if (matchDamage && a.getHasSubtypes())
+        {
+            if (!isWildcard(a) && !isWildcard(b))
+            {
+                if (a.getItemDamage() != b.getItemDamage())
+                {
                     return false;
                 }
             }
         }
-        if (matchNBT) {
-            if (a.getTagCompound() != null && !a.getTagCompound().equals(b.getTagCompound())) {
+        if (matchNBT)
+        {
+            if (a.getTagCompound() != null && !a.getTagCompound().equals(b.getTagCompound()))
+            {
                 return false;
             }
         }
@@ -219,11 +274,13 @@ public class ItemStackHelper {
         return false;
     }
 
-    public static boolean isWildcard(@Nonnull ItemStack stack) {
+    public static boolean isWildcard(@Nonnull ItemStack stack)
+    {
         return isWildcard(stack.getItemDamage());
     }
 
-    public static boolean isWildcard(int damage) {
+    public static boolean isWildcard(int damage)
+    {
         return damage == -1 || damage == OreDictionary.WILDCARD_VALUE;
     }
 
@@ -240,8 +297,10 @@ public class ItemStackHelper {
         return isMatchingItem(base, comparison, true, true);
     }
 
-    public static boolean isMatchingOreDict(@Nonnull final ItemStack a, @Nonnull final ItemStack b) {
-        if (hasOreDictEntry(a) && hasOreDictEntry(b)) {
+    public static boolean isMatchingOreDict(@Nonnull final ItemStack a, @Nonnull final ItemStack b)
+    {
+        if (hasOreDictEntry(a) && hasOreDictEntry(b))
+        {
             int[] idA = OreDictionary.getOreIDs(a);
             int[] idB = OreDictionary.getOreIDs(b);
             return Arrays.equals(idA, idB);
@@ -255,47 +314,64 @@ public class ItemStackHelper {
         return oreIDs != null;
     }
 
-    public static int compare(@Nonnull ItemStack pItemStack1, @Nonnull ItemStack pItemStack2) {
+    public static int compare(@Nonnull ItemStack pItemStack1, @Nonnull ItemStack pItemStack2)
+    {
         return COMPARATOR.compare(pItemStack1, pItemStack2);
     }
 
-    public static String toString(@Nonnull ItemStack pItemStack) {
-        if (!pItemStack.isEmpty()) {
-            return String.format("%sxitemStack[%s@%s]", pItemStack.getCount(), pItemStack.getUnlocalizedName(), pItemStack.getItemDamage());
+    public static String toString(@Nonnull ItemStack pItemStack)
+    {
+        if (!pItemStack.isEmpty())
+        {
+            return String.format("%sxitemStack[%s@%s][%s]",
+              pItemStack.getCount(),
+              pItemStack.getUnlocalizedName(),
+              pItemStack.getItemDamage(),
+              pItemStack.hasTagCompound() ? pItemStack.getTagCompound().toString() : "");
         }
 
         return "null";
     }
 
-    public static boolean hasOwner(@Nonnull ItemStack itemStack) {
-        return (NBTHelper.hasTag(itemStack, CoreReferences.NBT.OWNER_UUID_MOST_SIG) && NBTHelper.hasTag(itemStack, CoreReferences.NBT.OWNER_UUID_LEAST_SIG)) || NBTHelper.hasTag(itemStack, CoreReferences.NBT.OWNER);
+    public static boolean hasOwner(@Nonnull ItemStack itemStack)
+    {
+        return (NBTHelper.hasTag(itemStack, CoreReferences.NBT.OWNER_UUID_MOST_SIG) && NBTHelper.hasTag(itemStack, CoreReferences.NBT.OWNER_UUID_LEAST_SIG)) || NBTHelper.hasTag(
+          itemStack,
+          CoreReferences.NBT.OWNER);
     }
 
-    public static boolean hasOwnerUUID(@Nonnull ItemStack itemStack) {
+    public static boolean hasOwnerUUID(@Nonnull ItemStack itemStack)
+    {
         return NBTHelper.hasTag(itemStack, CoreReferences.NBT.OWNER_UUID_MOST_SIG) && NBTHelper.hasTag(itemStack, CoreReferences.NBT.OWNER_UUID_LEAST_SIG);
     }
 
-    public static boolean hasOwnerName(@Nonnull ItemStack itemStack) {
+    public static boolean hasOwnerName(@Nonnull ItemStack itemStack)
+    {
         return NBTHelper.hasTag(itemStack, CoreReferences.NBT.OWNER);
     }
 
-    public static String getOwnerName(@Nonnull ItemStack itemStack) {
-        if (NBTHelper.hasTag(itemStack, CoreReferences.NBT.OWNER)) {
+    public static String getOwnerName(@Nonnull ItemStack itemStack)
+    {
+        if (NBTHelper.hasTag(itemStack, CoreReferences.NBT.OWNER))
+        {
             return NBTHelper.getString(itemStack, CoreReferences.NBT.OWNER);
         }
 
         return null;
     }
 
-    public static UUID getOwnerUUID(@Nonnull ItemStack itemStack) {
-        if (NBTHelper.hasTag(itemStack, CoreReferences.NBT.OWNER_UUID_MOST_SIG) && NBTHelper.hasTag(itemStack, CoreReferences.NBT.OWNER_UUID_LEAST_SIG)) {
+    public static UUID getOwnerUUID(@Nonnull ItemStack itemStack)
+    {
+        if (NBTHelper.hasTag(itemStack, CoreReferences.NBT.OWNER_UUID_MOST_SIG) && NBTHelper.hasTag(itemStack, CoreReferences.NBT.OWNER_UUID_LEAST_SIG))
+        {
             return new UUID(NBTHelper.getLong(itemStack, CoreReferences.NBT.OWNER_UUID_MOST_SIG), NBTHelper.getLong(itemStack, CoreReferences.NBT.OWNER_UUID_LEAST_SIG));
         }
 
         return null;
     }
 
-    public static void setOwner(@Nonnull ItemStack itemStack, @Nonnull EntityPlayer entityPlayer) {
+    public static void setOwner(@Nonnull ItemStack itemStack, @Nonnull EntityPlayer entityPlayer)
+    {
         setOwnerName(itemStack, entityPlayer);
         setOwnerUUID(itemStack, entityPlayer);
     }
@@ -305,7 +381,8 @@ public class ItemStackHelper {
         NBTHelper.setString(itemStack, CoreReferences.NBT.OWNER, entityPlayer.getDisplayNameString());
     }
 
-    public static void setOwnerUUID(@Nonnull ItemStack itemStack, @Nonnull EntityPlayer entityPlayer) {
+    public static void setOwnerUUID(@Nonnull ItemStack itemStack, @Nonnull EntityPlayer entityPlayer)
+    {
         NBTHelper.setLong(itemStack, CoreReferences.NBT.OWNER_UUID_MOST_SIG, entityPlayer.getGameProfile().getId().getMostSignificantBits());
         NBTHelper.setLong(itemStack, CoreReferences.NBT.OWNER_UUID_LEAST_SIG, entityPlayer.getGameProfile().getId().getLeastSignificantBits());
     }

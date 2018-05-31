@@ -12,18 +12,21 @@ import net.minecraft.util.EnumFacing;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class Coordinate2D {
+public class Coordinate2D
+{
 
     int iXCoord;
     int iYCoord;
 
-    public Coordinate2D (int pXCoord, int pYCoord) {
+    public Coordinate2D(int pXCoord, int pYCoord)
+    {
         iXCoord = pXCoord;
         iYCoord = pYCoord;
     }
 
     @Nonnull
-    public static Coordinate2D fromBytes (@Nonnull ByteBuf pData) {
+    public static Coordinate2D fromBytes(@Nonnull ByteBuf pData)
+    {
         return new Coordinate2D(pData.readInt(), pData.readInt());
     }
 
@@ -34,15 +37,24 @@ public class Coordinate2D {
     }
 
     @Override
-    public boolean equals (@Nullable Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(@Nullable Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
 
         Coordinate2D that = (Coordinate2D) o;
 
-        if (iXCoord != that.iXCoord) return false;
+        if (iXCoord != that.iXCoord)
+        {
+            return false;
+        }
         return iYCoord == that.iYCoord;
-
     }
 
     @Nonnull
@@ -55,39 +67,46 @@ public class Coordinate2D {
                  '}';
     }
 
-    public int getXComponent () {
+    public int getXComponent()
+    {
         return iXCoord;
     }
 
-    public int getYComponent () {
+    public int getYComponent()
+    {
         return iYCoord;
     }
 
-    public void setYComponent (int newY) { iYCoord = newY; }
+    public void setYComponent(int newY) { iYCoord = newY; }
 
     public void setXComponent(int newX) { iXCoord = newX; }
 
     @Nonnull
-    public Coordinate2D moveCoordiante (@Nonnull EnumFacing pDirection, int pDistance) {
-        return new Coordinate2D(getXComponent() + ( pDistance * pDirection.getFrontOffsetX() ), getYComponent() + ( pDistance * pDirection.getFrontOffsetY() ));
+    public Coordinate2D moveCoordiante(@Nonnull EnumFacing pDirection, int pDistance)
+    {
+        return new Coordinate2D(getXComponent() + (pDistance * pDirection.getFrontOffsetX()), getYComponent() + (pDistance * pDirection.getFrontOffsetY()));
     }
 
-    public float getDistanceTo (@Nonnull Coordinate2D pCoordinate) {
+    public float getDistanceTo(@Nonnull Coordinate2D pCoordinate)
+    {
         return (float) Math.sqrt(Math.pow(getXComponent() - pCoordinate.getXComponent(), 2) + Math.pow(getYComponent() - pCoordinate.getYComponent(), 2));
     }
 
-    public void toBytes (@Nonnull ByteBuf pDataOut) {
+    public void toBytes(@Nonnull ByteBuf pDataOut)
+    {
         pDataOut.writeInt(getXComponent());
         pDataOut.writeInt(getYComponent());
     }
 
     @Nonnull
-    public Coordinate2D getTranslatedCoordinate (@Nonnull Coordinate2D distance) {
+    public Coordinate2D getTranslatedCoordinate(@Nonnull Coordinate2D distance)
+    {
         return new Coordinate2D(this.iXCoord + distance.iXCoord, this.iYCoord + distance.getYComponent());
     }
 
     @Nonnull
-    public Coordinate2D getInvertedCoordinate()  {
+    public Coordinate2D getInvertedCoordinate()
+    {
         return new Coordinate2D(-1 * getXComponent(), -1 * getYComponent());
     }
 }

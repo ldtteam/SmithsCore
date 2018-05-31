@@ -37,3 +37,4 @@ run/
 .gradle/2.9/
 .gradle/gradle.log/
 .gradle/minecraft/
+classes/

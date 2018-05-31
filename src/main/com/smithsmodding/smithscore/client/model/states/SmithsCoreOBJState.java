@@ -18,54 +18,77 @@ import java.util.Map;
  * Author Orion (Created on: 17.07.2016)
  * Replacement property for the old OBJProperty in MC Forge used until the ModelGroup hiding works.
  */
-public class SmithsCoreOBJState implements IModelState {
+public class SmithsCoreOBJState implements IModelState
+{
     @Nonnull
     private Map<String, Boolean> visibilityMap = Maps.newHashMap();
     private IModelState parent;
     private Operation operation = Operation.SET_TRUE;
 
-    public SmithsCoreOBJState(@Nonnull List<String> visibleGroups, boolean visibility) {
+    public SmithsCoreOBJState(@Nonnull List<String> visibleGroups, boolean visibility)
+    {
         this(visibleGroups, visibility, TRSRTransformation.identity());
     }
 
-    public SmithsCoreOBJState(@Nonnull List<String> visibleGroups, boolean visibility, @Nullable IModelState parent) {
+    public SmithsCoreOBJState(@Nonnull List<String> visibleGroups, boolean visibility, @Nullable IModelState parent)
+    {
         this.parent = parent;
-        for (String s : visibleGroups) this.visibilityMap.put(s, visibility);
+        for (String s : visibleGroups)
+        {
+            this.visibilityMap.put(s, visibility);
+        }
     }
 
     @Nullable
-    public IModelState getParent() {
+    public IModelState getParent()
+    {
         return parent;
     }
 
     @Nonnull
-    public Operation getOperation() {
+    public Operation getOperation()
+    {
         return operation;
     }
 
     @Nonnull
-    public Map<String, Boolean> getVisibilityMap() {
+    public Map<String, Boolean> getVisibilityMap()
+    {
         return this.visibilityMap;
     }
 
     @Nullable
-    public IModelState getParent(@Nullable IModelState parent) {
-        if (parent == null) return null;
-        else if (parent instanceof SmithsCoreOBJState) return ((SmithsCoreOBJState) parent).parent;
+    public IModelState getParent(@Nullable IModelState parent)
+    {
+        if (parent == null)
+        {
+            return null;
+        }
+        else if (parent instanceof SmithsCoreOBJState)
+        {
+            return ((SmithsCoreOBJState) parent).parent;
+        }
         return parent;
     }
 
     @Nonnull
-    public Optional<TRSRTransformation> apply(@Nonnull Optional<? extends IModelPart> part) {
-        if (parent != null) return parent.apply(part);
+    public Optional<TRSRTransformation> apply(@Nonnull Optional<? extends IModelPart> part)
+    {
+        if (parent != null)
+        {
+            return parent.apply(part);
+        }
         return Optional.absent();
     }
 
     @Nonnull
-    public List<String> getGroupsWithVisibility(boolean visibility) {
+    public List<String> getGroupsWithVisibility(boolean visibility)
+    {
         List<String> ret = Lists.newArrayList();
-        for (Map.Entry<String, Boolean> e : this.visibilityMap.entrySet()) {
-            if (e.getValue() == visibility) {
+        for (Map.Entry<String, Boolean> e : this.visibilityMap.entrySet())
+        {
+            if (e.getValue() == visibility)
+            {
                 ret.add(e.getKey());
             }
         }
@@ -73,47 +96,69 @@ public class SmithsCoreOBJState implements IModelState {
     }
 
     @Nonnull
-    public List<String> getGroupNamesFromMap() {
+    public List<String> getGroupNamesFromMap()
+    {
         return Lists.newArrayList(this.visibilityMap.keySet());
     }
 
-    public void changeGroupVisibilities(@Nullable List<String> names, @Nonnull Operation operation) {
-        if (names == null || names.isEmpty()) return;
+    public void changeGroupVisibilities(@Nullable List<String> names, @Nonnull Operation operation)
+    {
+        if (names == null || names.isEmpty())
+        {
+            return;
+        }
         this.operation = operation;
-        if (names.get(0).equals(SmithsCoreOBJGroup.ALL)) {
-            for (String s : this.visibilityMap.keySet()) {
+        if (names.get(0).equals(SmithsCoreOBJGroup.ALL))
+        {
+            for (String s : this.visibilityMap.keySet())
+            {
                 this.visibilityMap.put(s, this.operation.performOperation(this.visibilityMap.get(s)));
             }
-        } else if (names.get(0).equals(SmithsCoreOBJGroup.ALL_EXCEPT)) {
-            for (String s : this.visibilityMap.keySet()) {
-                if (!names.subList(1, names.size()).contains(s)) {
+        }
+        else if (names.get(0).equals(SmithsCoreOBJGroup.ALL_EXCEPT))
+        {
+            for (String s : this.visibilityMap.keySet())
+            {
+                if (!names.subList(1, names.size()).contains(s))
+                {
                     this.visibilityMap.put(s, this.operation.performOperation(this.visibilityMap.get(s)));
                 }
             }
-        } else {
-            for (String s : names) {
+        }
+        else
+        {
+            for (String s : names)
+            {
                 this.visibilityMap.put(s, this.operation.performOperation(this.visibilityMap.get(s)));
             }
         }
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hashCode(visibilityMap, parent, operation);
     }
 
     @Override
-    public boolean equals(@Nullable Object obj) {
+    public boolean equals(@Nullable Object obj)
+    {
         if (this == obj)
+        {
             return true;
+        }
         if (obj == null)
+        {
             return false;
+        }
         if (getClass() != obj.getClass())
+        {
             return false;
+        }
         SmithsCoreOBJState other = (SmithsCoreOBJState) obj;
         return Objects.equal(visibilityMap, other.visibilityMap) &&
-                Objects.equal(parent, other.parent) &&
-                operation == other.operation;
+                 Objects.equal(parent, other.parent) &&
+                 operation == other.operation;
     }
 
     @Nonnull
@@ -130,16 +175,20 @@ public class SmithsCoreOBJState implements IModelState {
         return builder.toString();
     }
 
-    public enum Operation {
+    public enum Operation
+    {
         SET_TRUE,
         SET_FALSE,
         TOGGLE;
 
-        Operation() {
+        Operation()
+        {
         }
 
-        public boolean performOperation(boolean valueToToggle) {
-            switch (this) {
+        public boolean performOperation(boolean valueToToggle)
+        {
+            switch (this)
+            {
                 default:
                 case SET_TRUE:
                     return true;

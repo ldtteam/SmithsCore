@@ -21,23 +21,30 @@ import java.util.ArrayList;
  */
 public class ComponentTextbox extends GuiTextField implements IGUIComponent
 {
-    protected String uniqueID;
-    protected TextboxComponentState state;
-    protected IGUIBasedComponentHost parent;
-    protected Coordinate2D rootAnchorPixel;
-    protected int width;
-    protected int height;
+    protected           String                 uniqueID;
+    protected           TextboxComponentState  state;
+    protected transient IGUIBasedComponentHost parent;
+    protected           Coordinate2D           rootAnchorPixel;
+    protected           int                    componentWidth;
+    protected           int                    componentHeight;
 
     protected CustomResource secondaryBackground;
 
-    public ComponentTextbox(@Nonnull String uniqueID, @Nonnull TextboxComponentState state, @Nonnull IGUIBasedComponentHost parent, @Nonnull Coordinate2D rootAnchorPixel, int width, int height) {
+    public ComponentTextbox(
+                             @Nonnull String uniqueID,
+                             @Nonnull TextboxComponentState state,
+                             @Nonnull IGUIBasedComponentHost parent,
+                             @Nonnull Coordinate2D rootAnchorPixel,
+                             int width,
+                             int height)
+    {
         super(state.getId(), state.getFontRendererInstance(), 0, 0, width, height);
         this.uniqueID = uniqueID;
         this.state = state;
         this.parent = parent;
         this.rootAnchorPixel = rootAnchorPixel;
-        this.width = width;
-        this.height = height;
+        this.componentWidth = width;
+        this.componentHeight = height;
 
         getState().setComponent(this);
         setText(state.getText());
@@ -45,96 +52,138 @@ public class ComponentTextbox extends GuiTextField implements IGUIComponent
 
     @Nonnull
     @Override
-    public String getID() {
+    public String getID()
+    {
         return uniqueID;
     }
 
     @Nonnull
     @Override
-    public IGUIComponentState getState() {
+    public IGUIComponentState getState()
+    {
         return state;
     }
 
     @Nonnull
     @Override
-    public IGUIBasedComponentHost getComponentHost() {
+    public IGUIBasedComponentHost getComponentHost()
+    {
         return parent;
+    }
+
+    @Override
+    public void setComponentHost(@Nonnull final IGUIBasedComponentHost host)
+    {
+        this.parent = host;
     }
 
     @Nonnull
     @Override
-    public Coordinate2D getGlobalCoordinate() {
+    public Coordinate2D getGlobalCoordinate()
+    {
         return parent.getGlobalCoordinate().getTranslatedCoordinate(getLocalCoordinate());
     }
 
     @Nonnull
     @Override
-    public Coordinate2D getLocalCoordinate() {
+    public Coordinate2D getLocalCoordinate()
+    {
         return rootAnchorPixel;
     }
 
-    @Nonnull
     @Override
-    public Plane getAreaOccupiedByComponent() {
-        return new Plane(getGlobalCoordinate(), width, height);
+    public void setLocalCoordinate(@Nonnull final Coordinate2D coordinate)
+    {
+        this.rootAnchorPixel = coordinate;
     }
 
     @Nonnull
     @Override
-    public Plane getSize() {
-        return new Plane(0, 0, width, height);
+    public Plane getAreaOccupiedByComponent()
+    {
+        return new Plane(getGlobalCoordinate(), componentWidth, componentHeight);
+    }
+
+    @Nonnull
+    @Override
+    public Plane getSize()
+    {
+        return new Plane(0, 0, componentWidth, componentHeight);
     }
 
     @Override
-    public void update(int mouseX, int mouseY, float partialTickTime) {
+    public void update(int mouseX, int mouseY, float partialTickTime)
+    {
         //NOOP
     }
 
     @Override
-    public void drawBackground(int mouseX, int mouseY) {
+    public void drawBackground(int mouseX, int mouseY)
+    {
         GlStateManager.disableLighting();
         GlStateManager.disableBlend();
         this.drawTextBox();
         GlStateManager.enableLighting();
         GlStateManager.enableBlend();
 
-        if (secondaryBackground == null) return;
+        if (secondaryBackground == null)
+        {
+            return;
+        }
 
         GlStateManager.enableAlpha();
         GlStateManager.enableBlend();
         GuiHelper.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-        GuiHelper.drawTexturedModelRectFromIcon(0, 0, 0, secondaryBackground.getIcon(), secondaryBackground.getIcon().getIconWidth(), secondaryBackground.getIcon().getIconHeight());
+        GuiHelper.drawTexturedModelRectFromIcon(0,
+          0,
+          0,
+          secondaryBackground.getIcon(),
+          secondaryBackground.getIcon().getIconWidth(),
+          secondaryBackground.getIcon().getIconHeight());
         GlStateManager.disableBlend();
         GlStateManager.disableAlpha();
     }
 
     @Override
-    public void drawForeground(int mouseX, int mouseY) {
+    public void drawForeground(int mouseX, int mouseY)
+    {
         //NOOP
     }
 
     @Override
-    public boolean handleMouseClickedInside(int relativeMouseX, int relativeMouseY, int mouseButton) {
+    public boolean handleMouseClickedInside(int relativeMouseX, int relativeMouseY, int mouseButton)
+    {
         this.mouseClicked(relativeMouseX, relativeMouseY, mouseButton);
         return getSize().ContainsCoordinate(relativeMouseX, relativeMouseY);
     }
 
     @Override
-    public boolean handleMouseClickedOutside(int relativeMouseX, int relativeMouseY, int mouseButton) {
+    public boolean handleMouseClickedOutside(int relativeMouseX, int relativeMouseY, int mouseButton)
+    {
         this.mouseClicked(relativeMouseX, relativeMouseY, mouseButton);
         return !getSize().ContainsCoordinate(relativeMouseX, relativeMouseY);
     }
 
+    @Nonnull
     @Override
-    public boolean requiresForcedMouseInput() {
+    public boolean handleMouseWheel(final int relativeMouseX, @Nonnull final int relativeMouseY, @Nonnull final int deltaWheel)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean requiresForcedMouseInput()
+    {
         return true;
     }
 
     @Override
-    public boolean handleKeyTyped(char key, int keyCode) {
+    public boolean handleKeyTyped(char key, int keyCode)
+    {
         boolean result = this.textboxKeyTyped(key, keyCode);
 
-        if (!state.getText().equals(getText())) {
+        if (!state.getText().equals(getText()))
+        {
             state.setText(getText());
             GuiInputEvent event = new GuiInputEvent(GuiInputEvent.InputTypes.TEXTCHANGED, uniqueID, getText());
             event.PostClient();
@@ -145,7 +194,8 @@ public class ComponentTextbox extends GuiTextField implements IGUIComponent
 
     @Nonnull
     @Override
-    public ArrayList<String> getToolTipContent() {
+    public ArrayList<String> getToolTipContent()
+    {
         return new ArrayList<>();
     }
 }

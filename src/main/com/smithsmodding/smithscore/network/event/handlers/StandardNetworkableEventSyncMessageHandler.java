@@ -17,7 +17,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class StandardNetworkableEventSyncMessageHandler implements IMessageHandler<StandardNetworkableEventSyncMessage, IMessage> {
+public class StandardNetworkableEventSyncMessageHandler implements IMessageHandler<StandardNetworkableEventSyncMessage, IMessage>
+{
 
     /**
      * Called when a message is received of the appropriate type. You can optionally return a reply message, or null if no reply
@@ -29,21 +30,29 @@ public class StandardNetworkableEventSyncMessageHandler implements IMessageHandl
      */
     @Nullable
     @Override
-    public IMessage onMessage (@Nonnull final StandardNetworkableEventSyncMessage pMessage, @Nonnull final MessageContext pContext) {
+    public IMessage onMessage(@Nonnull final StandardNetworkableEventSyncMessage pMessage, @Nonnull final MessageContext pContext)
+    {
         if (pMessage.EVENT == null)
+        {
             return null;
+        }
 
         IThreadListener runnable;
 
-        if (pContext.side == Side.CLIENT) {
+        if (pContext.side == Side.CLIENT)
+        {
             runnable = Minecraft.getMinecraft();
-        } else {
+        }
+        else
+        {
             runnable = (IThreadListener) pContext.getServerHandler().playerEntity.world;
         }
 
-        runnable.addScheduledTask(new Runnable() {
+        runnable.addScheduledTask(new Runnable()
+        {
             @Override
-            public void run () {
+            public void run()
+            {
                 pMessage.EVENT.handleCommunicationMessage(pMessage, pContext);
             }
         });

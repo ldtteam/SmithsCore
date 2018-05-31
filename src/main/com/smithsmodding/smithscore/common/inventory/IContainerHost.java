@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by Orion
  * Created on 01.12.2015
- *
+ * <p>
  * 18:20
  * Copyrighted according to Project specific license
  */
@@ -25,5 +25,5 @@ public interface IContainerHost<G extends IGUIManager> extends IGUIManagerProvid
     @Nonnull
     String getContainerID();
 
-    boolean isRemote ();
+    boolean isRemote();
 }

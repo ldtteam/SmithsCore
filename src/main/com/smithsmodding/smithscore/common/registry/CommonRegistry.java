@@ -14,7 +14,8 @@ import javax.annotation.Nonnull;
  * Central point of Data for the smithscore mod.
  * Also manages the Eventbusses for the different purposes.
  */
-public class CommonRegistry {
+public class CommonRegistry
+{
 
     //Eventbus used on the server side to handle events that are fired on the client side and then send through the network to be handled on the server side as well.
     //This is for example used when a User clicks a button.
@@ -31,7 +32,8 @@ public class CommonRegistry {
      * @return The EventBus that is used for network Relaying.
      */
     @Nonnull
-    public EventBus getNetworkBus() {
+    public EventBus getNetworkBus()
+    {
         return networkRelayBus;
     }
 
@@ -41,7 +43,8 @@ public class CommonRegistry {
      * @return The common EventBus.
      */
     @Nonnull
-    public EventBus getCommonBus() {
+    public EventBus getCommonBus()
+    {
         return commonEventBus;
     }
 
@@ -51,7 +54,8 @@ public class CommonRegistry {
      * @return The common EventBus
      */
     @Nonnull
-    public EventBus getClientBus() {
+    public EventBus getClientBus()
+    {
         return commonEventBus;
     }
 }

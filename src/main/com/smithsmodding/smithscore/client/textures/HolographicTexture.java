@@ -21,23 +21,26 @@ import java.util.Arrays;
 /**
  * Created by Marc on 22.12.2015.
  */
-public class HolographicTexture extends TextureAtlasSprite {
+public class HolographicTexture extends TextureAtlasSprite
+{
 
     boolean[] trans;
     boolean[] edge;
     @Nullable
     private TextureAtlasSprite baseTexture;
-    private String backupTextureLocation;
-    private String extra;
+    private String             backupTextureLocation;
+    private String             extra;
 
-    public HolographicTexture(@Nonnull String baseTextureLocation, @Nonnull String spriteName) {
+    public HolographicTexture(@Nonnull String baseTextureLocation, @Nonnull String spriteName)
+    {
         super(spriteName);
 
         this.baseTexture = null;
         this.backupTextureLocation = baseTextureLocation;
     }
 
-    public HolographicTexture (@Nonnull TextureAtlasSprite baseTexture, @Nonnull String spriteName) {
+    public HolographicTexture(@Nonnull TextureAtlasSprite baseTexture, @Nonnull String spriteName)
+    {
         super(spriteName);
 
         this.baseTexture = baseTexture;
@@ -46,14 +49,14 @@ public class HolographicTexture extends TextureAtlasSprite {
 
     /**
      * Function to get the perceptual brightness of a color in int form.
-     *
+     * <p>
      * Original code from: Physis, TTFTCUTS. (Probs were probs are due!)
      *
      * @param col The color to het the brightness for.
-     *
      * @return The brightness of the color.
      */
-    public static int getPerceptualBrightness (int col) {
+    public static int getPerceptualBrightness(int col)
+    {
         double r = red(col) / 255.0;
         double g = green(col) / 255.0;
         double b = blue(col) / 255.0;
@@ -78,44 +81,49 @@ public class HolographicTexture extends TextureAtlasSprite {
 
     /**
      * Function to get the perceptual brightness of a color in int form.
-     *
+     * <p>
      * Original code from: Physis, TTFTCUTS. (Probs were probs are due!)
      *
      * @param r The red channel of the color you want the brightness of
      * @param g The green channel of the color you want the brightness of
      * @param b The blue channel of the color you want the brightness of
-     *
      * @return The brightness of the color.
      */
-    public static int getPerceptualBrightness (double r, double g, double b) {
+    public static int getPerceptualBrightness(double r, double g, double b)
+    {
 
         double brightness = Math.sqrt(0.241 * r * r + 0.691 * g * g + 0.068 * b * b);
 
-        return (int) ( brightness * 255 );
+        return (int) (brightness * 255);
     }
 
-    public static int alpha (int c) {
-        return ( c >> 24 ) & 0xFF;
+    public static int alpha(int c)
+    {
+        return (c >> 24) & 0xFF;
     }
 
-    protected static int mult (int c1, int c2) {
-        return (int) ( (float) c1 * ( c2 / 255f ) );
+    protected static int mult(int c1, int c2)
+    {
+        return (int) ((float) c1 * (c2 / 255f));
     }
 
     @Nonnull
-    public TextureAtlasSprite setSuffix (String suffix) {
+    public TextureAtlasSprite setSuffix(String suffix)
+    {
         this.extra = suffix;
         this.baseTexture = null;
         return this;
     }
 
     @Override
-    public boolean hasCustomLoader(@Nullable IResourceManager manager, @Nullable ResourceLocation location) {
+    public boolean hasCustomLoader(@Nullable IResourceManager manager, @Nullable ResourceLocation location)
+    {
         return true;
     }
 
     @Override
-    public boolean load(@Nonnull IResourceManager manager, @Nonnull ResourceLocation location) {
+    public boolean load(@Nonnull IResourceManager manager, @Nonnull ResourceLocation location)
+    {
         this.framesTextureData = Lists.newArrayList();
         this.frameCounter = 0;
         this.tickCounter = 0;
@@ -125,23 +133,29 @@ public class HolographicTexture extends TextureAtlasSprite {
 
         //Check if the basetexture is present and loaded
         //Then copy and prepare for modification.
-        if (baseTexture != null && baseTexture.getFrameCount() > 0) {
+        if (baseTexture != null && baseTexture.getFrameCount() > 0)
+        {
             this.copyFrom(baseTexture);
             int[][] original = baseTexture.getFrameTextureData(0);
             data = new int[original.length][];
-            for (int i = 0; i < original.length; i++) {
-                if (original[i] != null) {
+            for (int i = 0; i < original.length; i++)
+            {
+                if (original[i] != null)
+                {
                     data[i] = Arrays.copyOf(original[i], original[i].length);
                 }
             }
         }
         //Whew not the base texture is not loaded or does not exist load the backup texture.
-        else {
+        else
+        {
             data = null;
-            if (extra != null && !extra.isEmpty()) {
+            if (extra != null && !extra.isEmpty())
+            {
                 data = backupLoadTexture(new ResourceLocation(backupTextureLocation + "_" + extra), manager);
             }
-            if (data == null) {
+            if (data == null)
+            {
                 data = backupLoadTexture(new ResourceLocation(backupTextureLocation), manager);
             }
         }
@@ -151,7 +165,8 @@ public class HolographicTexture extends TextureAtlasSprite {
 
         //If no data has been loaded before then add the new set of data.
         //Else skip the loaded data as one is already present.
-        if (this.framesTextureData.isEmpty()) {
+        if (this.framesTextureData.isEmpty())
+        {
             this.framesTextureData.add(data);
         }
 
@@ -213,7 +228,8 @@ public class HolographicTexture extends TextureAtlasSprite {
         return null;
     }
 
-    protected void processData (@Nonnull int[][] data) {
+    protected void processData(@Nonnull int[][] data)
+    {
         // preprocess
         DirectColorModel color = new DirectColorModel(32, 16711680, '\uff00', 255, -16777216);
 
@@ -222,28 +238,36 @@ public class HolographicTexture extends TextureAtlasSprite {
 
         int y;
         int c;
-        for (int x = 0; x < width; ++x) {
-            for (y = 0; y < height; ++y) {
-                if (x == 0 || y == 0 || x == width - 1 || y == height - 1) {
+        for (int x = 0; x < width; ++x)
+        {
+            for (y = 0; y < height; ++y)
+            {
+                if (x == 0 || y == 0 || x == width - 1 || y == height - 1)
+                {
                     edge[coord(x, y)] = true;
                 }
 
                 c = data[0][coord(x, y)];
-                if (c == 0 || color.getAlpha(c) < 64) {
+                if (c == 0 || color.getAlpha(c) < 64)
+                {
                     trans[coord(x, y)] = true;
-                    if (x > 0) {
+                    if (x > 0)
+                    {
                         edge[coord(x - 1, y)] = true;
                     }
 
-                    if (y > 0) {
+                    if (y > 0)
+                    {
                         edge[coord(x, y - 1)] = true;
                     }
 
-                    if (x < width - 1) {
+                    if (x < width - 1)
+                    {
                         edge[coord(x + 1, y)] = true;
                     }
 
-                    if (y < height - 1) {
+                    if (y < height - 1)
+                    {
                         edge[coord(x, y + 1)] = true;
                     }
                 }
@@ -251,14 +275,17 @@ public class HolographicTexture extends TextureAtlasSprite {
         }
 
         //Use the mipmap levels to color the pixels.
-        for (int mipmap = 0; mipmap < data.length; mipmap++) {
+        for (int mipmap = 0; mipmap < data.length; mipmap++)
+        {
             //If no data exists for that MipMap level skip it.
-            if (data[mipmap] == null) {
+            if (data[mipmap] == null)
+            {
                 continue;
             }
 
             //Iterate over all pixels in the MipMap level and color them.
-            for (int pxCoord = 0; pxCoord < data[mipmap].length; pxCoord++) {
+            for (int pxCoord = 0; pxCoord < data[mipmap].length; pxCoord++)
+            {
                 data[mipmap][pxCoord] = colorPixel(data[mipmap][pxCoord], mipmap, pxCoord);
             }
         }
@@ -269,19 +296,20 @@ public class HolographicTexture extends TextureAtlasSprite {
      *
      * @param location    The original location
      * @param mipmapLevel The mipmap level to get the modified version for.
-     *
      * @return A location in the root textures directory if 0 is passed in as location or: a location in the mipmaps sub
      * directory with the {mipmaplevel}.png as ending
      */
     @Nonnull
-    protected ResourceLocation completeResourceLocation (@Nonnull ResourceLocation location, int mipmapLevel) {
-        if (mipmapLevel == 0) {
+    protected ResourceLocation completeResourceLocation(@Nonnull ResourceLocation location, int mipmapLevel)
+    {
+        if (mipmapLevel == 0)
+        {
             return new ResourceLocation(location.getResourceDomain(),
-                    String.format("%s/%s%s", "textures", location.getResourcePath(), ".png"));
+                                         String.format("%s/%s%s", "textures", location.getResourcePath(), ".png"));
         }
 
         return new ResourceLocation(location.getResourceDomain(), String
-                .format("%s/mipmaps/%s.%d%s", "textures", location.getResourcePath(), mipmapLevel, ".png"));
+                                                                    .format("%s/mipmaps/%s.%d%s", "textures", location.getResourcePath(), mipmapLevel, ".png"));
     }
 
     protected int coord(int x, int y)
@@ -325,37 +353,44 @@ public class HolographicTexture extends TextureAtlasSprite {
     }
 
     // Get coordinates from index and vice versa
-    protected int getX (int pxCoord) {
+    protected int getX(int pxCoord)
+    {
         return pxCoord % width;
     }
 
-    protected int getY (int pxCoord) {
+    protected int getY(int pxCoord)
+    {
         return pxCoord / width;
     }
 
-    public static class HolographicTextureController implements ITextureController {
+    public static class HolographicTextureController implements ITextureController
+    {
 
         public static final String IDENTIFIER = "holographic";
 
         @Nonnull
         @Override
-        public TextureAtlasSprite getTexture(@Nonnull TextureAtlasSprite baseTexture, @Nonnull String location) {
+        public TextureAtlasSprite getTexture(@Nonnull TextureAtlasSprite baseTexture, @Nonnull String location)
+        {
             return new HolographicTexture(baseTexture, location);
         }
 
         @Override
-        public boolean isStitched() {
+        public boolean isStitched()
+        {
             return true;
         }
 
         @Override
-        public boolean useVertexColoring() {
+        public boolean useVertexColoring()
+        {
             return false;
         }
 
         @Nonnull
         @Override
-        public MinecraftColor getVertexColor() {
+        public MinecraftColor getVertexColor()
+        {
             return new MinecraftColor(MinecraftColor.white);
         }
 
@@ -366,31 +401,36 @@ public class HolographicTexture extends TextureAtlasSprite {
          */
         @Nonnull
         @Override
-        public MinecraftColor getLiquidColor() {
+        public MinecraftColor getLiquidColor()
+        {
             return getVertexColor();
         }
 
         @Nonnull
         @Override
-        public String getTextureSuffix() {
+        public String getTextureSuffix()
+        {
             return IDENTIFIER;
         }
 
         @Nonnull
         @Override
-        public ITextureController setTextureSuffix(String suffix) {
+        public ITextureController setTextureSuffix(String suffix)
+        {
             return this;
         }
 
         @Nonnull
         @Override
-        public String getCreationIdentifier() {
+        public String getCreationIdentifier()
+        {
             return IDENTIFIER;
         }
 
         @Nonnull
         @Override
-        public ITextureController setCreationIdentifier(String identifier) {
+        public ITextureController setCreationIdentifier(String identifier)
+        {
             return this;
         }
     }

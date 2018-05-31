@@ -16,5 +16,5 @@ public interface IAnimatibleGuiComponent extends IGUIComponent
      *
      * @param partialTickTime The current partial tick time.
      */
-    void performAnimation (@Nonnull float partialTickTime);
+    void performAnimation(@Nonnull float partialTickTime);
 }

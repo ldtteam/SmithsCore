@@ -12,7 +12,8 @@ import java.io.IOException;
 /**
  * Created by Marc on 06.12.2015.
  */
-public class ResourceHelper {
+public class ResourceHelper
+{
 
     /**
      * Function to check if a given location for a texture actually exists.
@@ -31,12 +32,16 @@ public class ResourceHelper {
      * @param resource The ResourceLocation to check.
      * @return True when the file exists, false when not
      */
-    public static boolean exists (@Nonnull ResourceLocation resource) {
-        try {
+    public static boolean exists(@Nonnull ResourceLocation resource)
+    {
+        try
+        {
             ResourceLocation loc = new ResourceLocation(resource.getResourceDomain(), "textures/" + resource.getResourcePath() + ".png");
             Minecraft.getMinecraft().getResourceManager().getAllResources(loc);
             return true;
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             return false;
         }
     }
@@ -48,12 +53,14 @@ public class ResourceHelper {
      * @return The uniform ResourceLocation for the given Item.
      */
     @Nullable
-    public static ResourceLocation getItemLocation (@Nonnull Item item) {
+    public static ResourceLocation getItemLocation(@Nonnull Item item)
+    {
         // get the registered name for the object
         ResourceLocation o = item.getRegistryName();
 
         // are you trying to add an unregistered item...?
-        if (o == null) {
+        if (o == null)
+        {
             SmithsCore.getLogger().error("Item %s is not registered!" + item.getUnlocalizedName());
             // bad boi
             return null;

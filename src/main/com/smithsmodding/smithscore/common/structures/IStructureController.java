@@ -15,22 +15,30 @@ import java.util.LinkedHashSet;
 /**
  * Author Orion (Created on: 25.06.2016)
  */
-public interface IStructureController<S extends IStructure, P extends IStructurePart<S>> {
+public interface IStructureController<S extends IStructure, P extends IStructurePart<S>>
+{
 
-    default void onPartPlaced(@Nonnull P part) {
+    default void onPartPlaced(@Nonnull P part)
+    {
         S joinedStructure = null;
 
-        for (EnumFacing facing : getPossibleConnectionSides()) {
+        for (EnumFacing facing : getPossibleConnectionSides())
+        {
             Coordinate3D facingLocation = part.getLocation().moveCoordinate(facing, 1);
             TileEntity tileEntity = part.getEnvironment().getTileEntity(facingLocation.toBlockPos());
 
             if (!(tileEntity instanceof IStructurePart))
+            {
                 continue;
+            }
 
             if (!((IStructurePart) tileEntity).getStructure().canPartJoin(part))
+            {
                 continue;
+            }
 
-            if (joinedStructure == null) {
+            if (joinedStructure == null)
+            {
                 joinedStructure = ((P) tileEntity).getStructure();
 
                 new StructureEvent.Destroyed(part.getStructure(), part.getEnvironment().provider.getDimension()).PostCommon();
@@ -43,17 +51,18 @@ public interface IStructureController<S extends IStructure, P extends IStructure
                 continue;
             }
 
-            if (!((IStructurePart) tileEntity).getStructure().getMasterLocation().equals(joinedStructure.getMasterLocation())) {
+            if (!((IStructurePart) tileEntity).getStructure().getMasterLocation().equals(joinedStructure.getMasterLocation()))
+            {
                 IStructure oldStructure = ((IStructurePart) tileEntity).getStructure();
 
                 joinedStructure.getController().onStructureMerge(part, oldStructure);
                 new StructureEvent.Destroyed(oldStructure, tileEntity.getWorld().provider.getDimension()).PostCommon();
                 continue;
             }
-
         }
 
-        if (joinedStructure == null) {
+        if (joinedStructure == null)
+        {
             part.getStructure().registerPart(part);
             part.getStructure().setMasterLocation(part.getLocation());
             new StructureEvent.Create(part.getStructure(), part.getEnvironment().provider.getDimension()).PostCommon();
@@ -84,14 +93,19 @@ public interface IStructureController<S extends IStructure, P extends IStructure
         new StructureEvent.Updated(structure, connectingPart.getEnvironment().provider.getDimension()).PostCommon();
     }
 
-    default void onPartDestroyed(@Nonnull P part) {
+    default void onPartDestroyed(@Nonnull P part)
+    {
         S structure = part.getStructure();
 
-        if (structure.getMasterLocation().equals(part.getLocation())) {
-            if (structure.getPartLocations().size() == 1) {
+        if (structure.getMasterLocation().equals(part.getLocation()))
+        {
+            if (structure.getPartLocations().size() == 1)
+            {
                 new StructureEvent.Destroyed(structure, part.getEnvironment().provider.getDimension()).PostCommon();
                 return;
-            } else {
+            }
+            else
+            {
                 Iterator<Coordinate3D> iterator = structure.getPartLocations().iterator();
                 iterator.next();
 
@@ -100,14 +114,17 @@ public interface IStructureController<S extends IStructure, P extends IStructure
 
                 structure.removePart(part);
 
-                for (Object obj : structure.getPartLocations()) {
+                for (Object obj : structure.getPartLocations())
+                {
                     Coordinate3D coordinate3D = (Coordinate3D) obj;
                     ((P) part.getEnvironment().getTileEntity(coordinate3D.toBlockPos())).setStructure(structure);
                 }
 
                 new StructureEvent.MasterBlockChanged(structure, part.getLocation(), part.getEnvironment().provider.getDimension()).PostCommon();
             }
-        } else {
+        }
+        else
+        {
             structure.removePart(part);
             new StructureEvent.Updated(structure, part.getEnvironment().provider.getDimension()).PostCommon();
         }
@@ -116,7 +133,8 @@ public interface IStructureController<S extends IStructure, P extends IStructure
         structure.removePart(part);
 
         IStructure newStructure = structure;
-        while (!notConnectedComponents.isEmpty()) {
+        while (!notConnectedComponents.isEmpty())
+        {
             newStructure = splitStructure(newStructure, notConnectedComponents);
             notConnectedComponents = validateStructureIntegrity(newStructure, part);
         }
@@ -155,7 +173,8 @@ public interface IStructureController<S extends IStructure, P extends IStructure
 
 
         //Let all the Slaves join the new handlers
-        while (iterator.hasNext()) {
+        while (iterator.hasNext())
+        {
             IStructurePart slavePart = iterator.next();
             iterator.remove();
 
@@ -173,7 +192,7 @@ public interface IStructureController<S extends IStructure, P extends IStructure
 
     static boolean checkIfComponentStillConnected(@Nonnull IStructure structure, @Nonnull IStructurePart target, @Nonnull IStructurePart splitter)
     {
-        if (SmithsCore.isInDevenvironment())
+        if (SmithsCore.isInDevEnvironment())
         {
             SmithsCore.getLogger().info("Starting connection search between: " + structure.getMasterLocation().toString() + " to " + target.getLocation().toString());
         }

@@ -12,14 +12,16 @@ import java.util.LinkedHashMap;
 /**
  * Created by Marc on 18.01.2016.
  */
-public class StandardTabManager implements ITabManager {
+public class StandardTabManager implements ITabManager
+{
 
-    IGUIBasedTabHost host;
+    transient IGUIBasedTabHost host;
     String           activeTabId;
     @Nonnull
     LinkedHashMap<String, IGUITab> tabs = new LinkedHashMap<String, IGUITab>();
 
-    public StandardTabManager (IGUIBasedTabHost host) {
+    public StandardTabManager(IGUIBasedTabHost host)
+    {
         this.host = host;
     }
 
@@ -30,18 +32,27 @@ public class StandardTabManager implements ITabManager {
      */
     @Nonnull
     @Override
-    public IGUIBasedTabHost getHost () {
+    public IGUIBasedTabHost getHost()
+    {
         return host;
+    }
+
+    @Override
+    public void setHost(@Nonnull final IGUIBasedTabHost host)
+    {
+        this.host = host;
     }
 
     /**
      * Method called by the Host.
-     *
+     * <p>
      * To notify the Manager that all tabs have been registered.
      */
     @Override
-    public void onTabRegistrationComplete () {
-        for (IGUITab tab : tabs.values()) {
+    public void onTabRegistrationComplete()
+    {
+        for (IGUITab tab : tabs.values())
+        {
             host.getManager().onTabChanged(tab.getID());
             tab.registerComponents(tab);
         }
@@ -56,9 +67,9 @@ public class StandardTabManager implements ITabManager {
      *
      * @return The currently displayed Tab.
      */
-    @Nonnull
     @Override
-    public IGUITab getCurrentTab () {
+    public IGUITab getCurrentTab()
+    {
         return tabs.get(activeTabId);
     }
 
@@ -68,23 +79,27 @@ public class StandardTabManager implements ITabManager {
      * @return The index of the currently displayed Index.
      */
     @Override
-    public int getCurrentTabIndex () {
-        return ( new ArrayList<String>(tabs.keySet()) ).indexOf(activeTabId);
+    public int getCurrentTabIndex()
+    {
+        return (new ArrayList<String>(tabs.keySet())).indexOf(activeTabId);
     }
 
     /**
      * Method used to get the tab from a Selector index.
      *
      * @param selectorIndex The index you want the tab for.
-     *
      * @return The tab for the requested selector index.
+     *
      * @throws IllegalArgumentException is the given selectorIndex is not Valid.
      */
     @Nonnull
     @Override
-    public IGUITab getTabFromSelectorIndex (int selectorIndex) throws IllegalArgumentException {
+    public IGUITab getTabFromSelectorIndex(int selectorIndex) throws IllegalArgumentException
+    {
         if (selectorIndex < 0 || selectorIndex > getTabSelectorCount())
+        {
             throw new IllegalArgumentException("The given selectorCount is not within a valid range.");
+        }
 
         int tabIndex = getCurrentTabIndex();
         int selectedSelectorIndex = tabIndex % getTabSelectorCount();
@@ -94,7 +109,9 @@ public class StandardTabManager implements ITabManager {
         ArrayList<IGUITab> tabList = new ArrayList<>(tabs.values());
 
         if (tabList.size() < tabIndex + selectorIndex || tabIndex + selectorIndex < 0)
+        {
             throw new IllegalArgumentException("The given selectorIndex is not available");
+        }
 
         return tabList.get(tabIndex + selectorIndex);
     }
@@ -105,9 +122,12 @@ public class StandardTabManager implements ITabManager {
      * @param newTab The new tab.
      */
     @Override
-    public void registerNewTab (@Nonnull IGUITab newTab) {
+    public void registerNewTab(@Nonnull IGUITab newTab)
+    {
         if (tabs.size() == 0)
+        {
             activeTabId = newTab.getID();
+        }
 
         tabs.put(newTab.getID(), newTab);
     }
@@ -120,7 +140,8 @@ public class StandardTabManager implements ITabManager {
      */
     @Nonnull
     @Override
-    public LinkedHashMap<String, IGUITab> getTabs () {
+    public LinkedHashMap<String, IGUITab> getTabs()
+    {
         return tabs;
     }
 
@@ -130,32 +151,37 @@ public class StandardTabManager implements ITabManager {
      * @return The total amount of tab selectors that could fit on the host.
      */
     @Override
-    public int getTabSelectorCount () {
-        int maxCount = ( host.getSize().getWidth() - 2 * getSelectorsHorizontalOffset() ) / getTabSelectorWidth();
+    public int getTabSelectorCount()
+    {
+        int maxCount = (host.getSize().getWidth() - 2 * getSelectorsHorizontalOffset()) / getTabSelectorWidth();
 
         if (maxCount > getTabs().size())
+        {
             return getTabs().size();
+        }
 
         return maxCount;
     }
 
     /**
-     * Method to get the width of a Tab Selector
+     * Method to get the componentWidth of a Tab Selector
      *
-     * @return The width of a Tab Selector. Vanilla standard is 28.
+     * @return The componentWidth of a Tab Selector. Vanilla standard is 28.
      */
     @Override
-    public int getTabSelectorWidth () {
+    public int getTabSelectorWidth()
+    {
         return 24;
     }
 
     /**
-     * Method to get the height of a Tab Selector.
+     * Method to get the componentHeight of a Tab Selector.
      *
-     * @return The height of a Tab Selector. Vanilla standard is 30. Due to border mechanics default is 33.
+     * @return The componentHeight of a Tab Selector. Vanilla standard is 30. Due to border mechanics default is 33.
      */
     @Override
-    public int getTabSelectorHeight () {
+    public int getTabSelectorHeight()
+    {
         return 27;
     }
 
@@ -165,7 +191,8 @@ public class StandardTabManager implements ITabManager {
      * @return The amount of pixels a InActive Tab Selector is placed lower then a Active one.
      */
     @Override
-    public int getInActiveSelectorVerticalOffset () {
+    public int getInActiveSelectorVerticalOffset()
+    {
         return 4;
     }
 
@@ -175,7 +202,8 @@ public class StandardTabManager implements ITabManager {
      * @return The horizontal offset of the Selectors.
      */
     @Override
-    public int getSelectorsHorizontalOffset () {
+    public int getSelectorsHorizontalOffset()
+    {
         return 4;
     }
 
@@ -185,9 +213,12 @@ public class StandardTabManager implements ITabManager {
      * @return The vertical offset of the DisplayArea
      */
     @Override
-    public int getDisplayAreaVerticalOffset () {
+    public int getDisplayAreaVerticalOffset()
+    {
         if (this.getTabs().size() < 2)
+        {
             return 0;
+        }
 
         return getTabSelectorHeight() - 3;
     }
@@ -198,12 +229,12 @@ public class StandardTabManager implements ITabManager {
      * @param tab The tab to be displayed.
      */
     @Override
-    public void setActiveTab (@Nonnull IGUITab tab) {
+    public void setActiveTab(@Nonnull IGUITab tab)
+    {
         activeTabId = tab.getID();
 
         host.onTabChanged(tab.getID());
         host.getManager().onTabChanged(tab.getID());
         SmithsCore.getRegistry().getClientBus().post(new GuiInputEvent(GuiInputEvent.InputTypes.TABCHANGED, host.getID(), tab.getID()));
     }
-
 }

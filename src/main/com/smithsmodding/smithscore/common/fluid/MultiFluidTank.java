@@ -21,31 +21,38 @@ import java.util.List;
 /**
  * Author Orion (Created on: 22.07.2016)
  */
-public class MultiFluidTank implements IFluidTank, net.minecraftforge.fluids.capability.IFluidHandler, INBTSerializable<NBTTagCompound> {
+public class MultiFluidTank implements IFluidTank, net.minecraftforge.fluids.capability.IFluidHandler, INBTSerializable<NBTTagCompound>
+{
 
     private List<FluidStack> fluidStacks;
-    private int capacity;
+    private int              capacity;
 
-    public MultiFluidTank(int capacity) {
+    public MultiFluidTank(int capacity)
+    {
         this.fluidStacks = Lists.newArrayList();
         this.capacity = capacity;
     }
 
-    public MultiFluidTank(int capacity, FluidStack... fluidStacks) {
+    public MultiFluidTank(int capacity, FluidStack... fluidStacks)
+    {
         this(capacity, Arrays.asList(fluidStacks));
     }
 
-    public MultiFluidTank(int capacity, @Nonnull List<FluidStack> fluidStacks) {
+    public MultiFluidTank(int capacity, @Nonnull List<FluidStack> fluidStacks)
+    {
         this.fluidStacks = fluidStacks;
         this.capacity = capacity;
 
-        if (capacity < getFluidAmount()) {
+        if (capacity < getFluidAmount())
+        {
             int count = 0;
 
             Iterator<FluidStack> iterator = this.fluidStacks.iterator();
-            while (iterator.hasNext()) {
+            while (iterator.hasNext())
+            {
                 FluidStack stack = iterator.next();
-                if (count + stack.amount > capacity) {
+                if (count + stack.amount > capacity)
+                {
                     iterator.remove();
                     continue;
                 }
@@ -57,46 +64,61 @@ public class MultiFluidTank implements IFluidTank, net.minecraftforge.fluids.cap
 
     @Nullable
     @Override
-    public FluidStack getFluid() {
+    public FluidStack getFluid()
+    {
         if (fluidStacks.size() == 0)
+        {
             return null;
+        }
 
         return fluidStacks.get(0);
     }
 
     @Override
-    public int getFluidAmount() {
+    public int getFluidAmount()
+    {
         int count = 0;
 
         for (FluidStack stack : fluidStacks)
+        {
             count += stack.amount;
+        }
 
         return count;
     }
 
     @Override
-    public int getCapacity() {
+    public int getCapacity()
+    {
         return capacity;
     }
 
     @Nullable
     @Override
-    public FluidTankInfo getInfo() {
+    public FluidTankInfo getInfo()
+    {
         return null;
     }
 
     @Override
-    public int fill(@Nonnull FluidStack resource, boolean doFill) {
+    public int fill(@Nonnull FluidStack resource, boolean doFill)
+    {
         int usage = Math.min(getCapacity() - getFluidAmount(), resource.amount);
 
         if (usage == 0)
+        {
             return usage;
+        }
 
         if (!doFill)
+        {
             return usage;
+        }
 
-        for (FluidStack stack : fluidStacks) {
-            if (stack.isFluidEqual(resource)) {
+        for (FluidStack stack : fluidStacks)
+        {
+            if (stack.isFluidEqual(resource))
+            {
                 stack.amount += usage;
                 return usage;
             }
@@ -141,18 +163,24 @@ public class MultiFluidTank implements IFluidTank, net.minecraftforge.fluids.cap
 
     @Nullable
     @Override
-    public FluidStack drain(@Nonnull FluidStack resource, boolean doDrain) {
+    public FluidStack drain(@Nonnull FluidStack resource, boolean doDrain)
+    {
         Iterator<FluidStack> iterator = fluidStacks.iterator();
-        while (iterator.hasNext()) {
+        while (iterator.hasNext())
+        {
             FluidStack stack = iterator.next();
 
-            if (stack.isFluidEqual(resource)) {
+            if (stack.isFluidEqual(resource))
+            {
                 FluidStack usage = new FluidStack(resource, Math.min(stack.amount, resource.amount));
 
-                if (doDrain) {
+                if (doDrain)
+                {
                     stack.amount -= usage.amount;
                     if (stack.amount == 0)
+                    {
                         iterator.remove();
+                    }
                 }
 
                 return usage;
@@ -164,11 +192,13 @@ public class MultiFluidTank implements IFluidTank, net.minecraftforge.fluids.cap
 
     @Nonnull
     @Override
-    public NBTTagCompound serializeNBT() {
+    public NBTTagCompound serializeNBT()
+    {
         NBTTagCompound compound = new NBTTagCompound();
         NBTTagList contents = new NBTTagList();
 
-        for (FluidStack stack : fluidStacks) {
+        for (FluidStack stack : fluidStacks)
+        {
             contents.appendTag(stack.writeToNBT(new NBTTagCompound()));
         }
 
@@ -178,23 +208,28 @@ public class MultiFluidTank implements IFluidTank, net.minecraftforge.fluids.cap
     }
 
     @Override
-    public void deserializeNBT(@Nonnull NBTTagCompound nbt) {
+    public void deserializeNBT(@Nonnull NBTTagCompound nbt)
+    {
         fluidStacks = new ArrayList<>();
 
         capacity = nbt.getInteger(CoreReferences.NBT.MultiFluidTank.CAPACITY);
 
         NBTTagList contents = nbt.getTagList(CoreReferences.NBT.MultiFluidTank.CONTENTS, Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < contents.tagCount(); i++) {
+        for (int i = 0; i < contents.tagCount(); i++)
+        {
             fluidStacks.add(FluidStack.loadFluidStackFromNBT(contents.getCompoundTagAt(i)));
         }
 
-        if (capacity < getFluidAmount()) {
+        if (capacity < getFluidAmount())
+        {
             int count = 0;
 
             Iterator<FluidStack> iterator = this.fluidStacks.iterator();
-            while (iterator.hasNext()) {
+            while (iterator.hasNext())
+            {
                 FluidStack stack = iterator.next();
-                if (count + stack.amount > capacity) {
+                if (count + stack.amount > capacity)
+                {
                     iterator.remove();
                     continue;
                 }
@@ -205,7 +240,8 @@ public class MultiFluidTank implements IFluidTank, net.minecraftforge.fluids.cap
     }
 
     @Nonnull
-    public List<FluidStack> getFluidStacks() {
+    public List<FluidStack> getFluidStacks()
+    {
         return fluidStacks;
     }
 }

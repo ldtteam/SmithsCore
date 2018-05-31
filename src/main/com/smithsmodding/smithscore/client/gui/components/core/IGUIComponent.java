@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Created by Orion
  * Created on 02.12.2015
  * 10:44
- *
+ * <p>
  * Copyrighted according to Project specific license
  */
 public interface IGUIComponent
@@ -47,12 +47,19 @@ public interface IGUIComponent
     IGUIBasedComponentHost getComponentHost();
 
     /**
+     * Method used to set the component host of this component.
+     *
+     * @param host The new host.
+     */
+    void setComponentHost(@Nonnull IGUIBasedComponentHost host);
+
+    /**
      * Method to get the rootAnchorPixel location as seen globally by the render system of OpenGL.
      *
      * @return The location of the top left pixel of this component
      */
     @Nonnull
-    Coordinate2D getGlobalCoordinate ();
+    Coordinate2D getGlobalCoordinate();
 
     /**
      * Returns to location of the most top left rendered Pixel of this Component relative to its parent.
@@ -60,7 +67,13 @@ public interface IGUIComponent
      * @return A Coordinate representing the Location of the most top left Pixel relative to its parent.
      */
     @Nonnull
-    Coordinate2D getLocalCoordinate ();
+    Coordinate2D getLocalCoordinate();
+
+    /**
+     * Method to set the local coordinate of the component from the outside.
+     * @param coordinate The new local coordinate
+     */
+    void setLocalCoordinate(@Nonnull final Coordinate2D coordinate);
 
     /**
      * Gets the Area Occupied by this Component, is locally oriented.
@@ -76,13 +89,13 @@ public interface IGUIComponent
      * @return The size of this component.
      */
     @Nonnull
-    Plane getSize ();
+    Plane getSize();
 
     /**
      * Method gets called before the component gets rendered, allows for animations to calculate through.
      *
-     * @param mouseX The X-Coordinate of the mouse.
-     * @param mouseY The Y-Coordinate of the mouse.
+     * @param mouseX          The X-Coordinate of the mouse.
+     * @param mouseY          The Y-Coordinate of the mouse.
      * @param partialTickTime The partial tick time, used to calculate fluent animations.
      */
     @Nonnull
@@ -115,17 +128,16 @@ public interface IGUIComponent
      * Either it should pass this function to its SubComponents
      * (making sure that it recalculates the location and checks if it is inside before hand,
      * handle the Click them self or both.
-     *
+     * <p>
      * When this Component or one of its SubComponents handles the Click it should return True.
      *
      * @param relativeMouseX The relative (to the Coordinate returned by @see #getLocalCoordinate) X-Coordinate of the mouseclick.
      * @param relativeMouseY The relative (to the Coordinate returned by @see #getLocalCoordinate) Y-Coordinate of the mouseclick.
-     * @param mouseButton The 0-BasedIndex of the mouse button that was pressed.
-     *
+     * @param mouseButton    The 0-BasedIndex of the mouse button that was pressed.
      * @return True when the click has been handled, false when it did not.
      */
     @Nonnull
-    boolean handleMouseClickedInside (@Nonnull int relativeMouseX, @Nonnull int relativeMouseY, @Nonnull int mouseButton);
+    boolean handleMouseClickedInside(@Nonnull int relativeMouseX, @Nonnull int relativeMouseY, @Nonnull int mouseButton);
 
     /**
      * Function called when the mouse was clicked outside of this component.
@@ -133,17 +145,27 @@ public interface IGUIComponent
      * Either it should pass this function to its SubComponents
      * (making sure that it recalculates the location and checks if it is inside before hand,
      * handle the Click them self or both.
-     *
+     * <p>
      * When this Component or one of its SubComponents handles the Click it should return True.
      *
      * @param relativeMouseX The relative (to the Coordinate returned by @see #getLocalCoordinate) X-Coordinate of the mouseclick.
      * @param relativeMouseY The relative (to the Coordinate returned by @see #getLocalCoordinate) Y-Coordinate of the mouseclick.
-     * @param mouseButton The 0-BasedIndex of the mouse button that was pressed.
-     *
+     * @param mouseButton    The 0-BasedIndex of the mouse button that was pressed.
      * @return True when the click has been handled, false when it did not.
      */
     @Nonnull
-    boolean handleMouseClickedOutside (@Nonnull int relativeMouseX, @Nonnull int relativeMouseY, @Nonnull int mouseButton);
+    boolean handleMouseClickedOutside(@Nonnull int relativeMouseX, @Nonnull int relativeMouseY, @Nonnull int mouseButton);
+
+    /**
+     * Called when the mousewheel is is used.
+     *
+     * @param relativeMouseX The position of the mouse.
+     * @param relativeMouseY The position of the mouse.
+     * @param deltaWheel     The amount the wheel was turned.
+     * @return True when wheel event was used, false when not.
+     */
+    @Nonnull
+    boolean handleMouseWheel(@Nonnull int relativeMouseX, @Nonnull int relativeMouseY, @Nonnull int deltaWheel);
 
     /**
      * Method to check if this function should capture all of the buttons pressed on the mouse
@@ -157,7 +179,7 @@ public interface IGUIComponent
     /**
      * Function called when a Key is typed.
      *
-     * @param key The key that was typed.
+     * @param key     The key that was typed.
      * @param keyCode The vanilla Minecraft keycode.
      * @return True when handled, false when not.
      */
@@ -165,5 +187,5 @@ public interface IGUIComponent
     boolean handleKeyTyped(@Nonnull char key, @Nonnull int keyCode);
 
     @Nullable
-    ArrayList<String> getToolTipContent ();
+    ArrayList<String> getToolTipContent();
 }

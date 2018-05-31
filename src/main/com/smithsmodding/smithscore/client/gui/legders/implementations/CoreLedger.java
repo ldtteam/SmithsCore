@@ -33,19 +33,27 @@ import java.util.List;
 public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
 {
 
-    protected CustomResource       ledgerIcon;
-    protected String               translatedLedgerHeader;
-    protected int                  closedLedgerHeight;
-    protected int                  closedLedgerWidth;
-    private   String               uniqueID;
-    private   LedgerComponentState state;
-    private   IGUIBasedLedgerHost  root;
-    private   LedgerConnectionSide side;
+    protected         CustomResource       ledgerIcon;
+    protected         String               translatedLedgerHeader;
+    protected         int                  closedLedgerHeight;
+    protected         int                  closedLedgerWidth;
+    private           String               uniqueID;
+    private           LedgerComponentState state;
+    private transient IGUIBasedLedgerHost  root;
+    private           LedgerConnectionSide side;
     @Nonnull
     private LinkedHashMap<String, IGUIComponent> components = new LinkedHashMap<String, IGUIComponent>();
     private MinecraftColor color;
 
-    public CoreLedger (@Nonnull String uniqueID, @Nonnull  LedgerComponentState state, @Nonnull  IGUIBasedLedgerHost root, LedgerConnectionSide side, @Nonnull CustomResource ledgerIcon, @Nonnull  String translatedLedgerHeader, @Nonnull  MinecraftColor color) {
+    public CoreLedger(
+                       @Nonnull String uniqueID,
+                       @Nonnull LedgerComponentState state,
+                       @Nonnull IGUIBasedLedgerHost root,
+                       LedgerConnectionSide side,
+                       @Nonnull CustomResource ledgerIcon,
+                       @Nonnull String translatedLedgerHeader,
+                       @Nonnull MinecraftColor color)
+    {
         this.uniqueID = uniqueID;
         this.state = state;
         this.state.setComponent(this);
@@ -96,7 +104,8 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
      */
     @Nonnull
     @Override
-    public String getID () {
+    public String getID()
+    {
         return uniqueID;
     }
 
@@ -109,7 +118,8 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
      */
     @Nonnull
     @Override
-    public IGUIComponentState getState () {
+    public IGUIComponentState getState()
+    {
         return state;
     }
 
@@ -120,8 +130,18 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
      */
     @Nonnull
     @Override
-    public IGUIBasedComponentHost getComponentHost () {
+    public IGUIBasedComponentHost getComponentHost()
+    {
         return root;
+    }
+
+    @Override
+    public void setComponentHost(@Nonnull final IGUIBasedComponentHost host)
+    {
+        if (host instanceof IGUIBasedLedgerHost)
+        {
+            this.root = (IGUIBasedLedgerHost) host;
+        }
     }
 
     /**
@@ -131,7 +151,8 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
      */
     @Nonnull
     @Override
-    public Coordinate2D getGlobalCoordinate () {
+    public Coordinate2D getGlobalCoordinate()
+    {
         return root.getGlobalCoordinate().getTranslatedCoordinate(getLocalCoordinate());
     }
 
@@ -142,14 +163,24 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
      */
     @Nonnull
     @Override
-    public Coordinate2D getLocalCoordinate () {
+    public Coordinate2D getLocalCoordinate()
+    {
         Coordinate2D primaryCorner = getLedgerHost().getLedgerManager().getLedgerLocalCoordinate(getPrimarySide(), getID());
 
-        if (getPrimarySide() == LedgerConnectionSide.LEFT) {
-            return primaryCorner.getTranslatedCoordinate(new Coordinate2D(-1 * ( getSize().getWidth() - 4 ), 0));
-        } else {
+        if (getPrimarySide() == LedgerConnectionSide.LEFT)
+        {
+            return primaryCorner.getTranslatedCoordinate(new Coordinate2D(-1 * (getSize().getWidth() - 4), 0));
+        }
+        else
+        {
             return primaryCorner.getTranslatedCoordinate(new Coordinate2D(-4, 0));
         }
+    }
+
+    @Override
+    public void setLocalCoordinate(@Nonnull final Coordinate2D coordinate)
+    {
+        //Noop local coords of ledgers are dynamically calculated.
     }
 
     /**
@@ -159,7 +190,8 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
      */
     @Nonnull
     @Override
-    public Plane getAreaOccupiedByComponent () {
+    public Plane getAreaOccupiedByComponent()
+    {
         return new Plane(getGlobalCoordinate(), getSize().getWidth(), getSize().getHeigth());
     }
 
@@ -170,8 +202,12 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
      */
     @Nonnull
     @Override
-    public Plane getSize () {
-        return new Plane(0, 0, (int) Math.ceil(closedLedgerWidth + ( getMaxWidth() - closedLedgerWidth ) * state.getOpenProgress()), (int) Math.ceil(closedLedgerHeight + ( getMaxHeight() - closedLedgerHeight ) * state.getOpenProgress()));
+    public Plane getSize()
+    {
+        return new Plane(0,
+                          0,
+                          (int) Math.ceil(closedLedgerWidth + (getMaxWidth() - closedLedgerWidth) * state.getOpenProgress()),
+                          (int) Math.ceil(closedLedgerHeight + (getMaxHeight() - closedLedgerHeight) * state.getOpenProgress()));
     }
 
     /**
@@ -182,7 +218,8 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
      * @param partialTickTime The partial tick time, used to calculate fluent animations.
      */
     @Override
-    public void update (int mouseX, int mouseY, float partialTickTime) {
+    public void update(int mouseX, int mouseY, float partialTickTime)
+    {
         //The ledger it self has no update only an animation.
     }
 
@@ -228,7 +265,7 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
      * Function called when the mouse was clicked inside of this component. Either it should pass this function to its
      * SubComponents (making sure that it recalculates the location and checks if it is inside before hand, handle the
      * Click them self or both.
-     *
+     * <p>
      * When this Component or one of its SubComponents handles the Click it should return True.
      *
      * @param relativeMouseX The relative (to the Coordinate returned by @see #getLocalCoordinate) X-Coordinate of the
@@ -236,20 +273,25 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
      * @param relativeMouseY The relative (to the Coordinate returned by @see #getLocalCoordinate) Y-Coordinate of the
      *                       mouseclick.
      * @param mouseButton    The 0-BasedIndex of the mouse button that was pressed.
-     *
      * @return True when the click has been handled, false when it did not.
      */
     @Override
-    public boolean handleMouseClickedInside (int relativeMouseX, int relativeMouseY, int mouseButton) {
-        for (IGUIComponent component : components.values()) {
+    public boolean handleMouseClickedInside(int relativeMouseX, int relativeMouseY, int mouseButton)
+    {
+        for (IGUIComponent component : components.values())
+        {
             Coordinate2D location = component.getLocalCoordinate();
             Plane localOccupiedArea = component.getSize().Move(location.getXComponent(), location.getYComponent());
 
             if (!localOccupiedArea.ContainsCoordinate(relativeMouseX, relativeMouseY))
+            {
                 continue;
+            }
 
             if (component.handleMouseClickedInside(relativeMouseX - location.getXComponent(), relativeMouseY - location.getYComponent(), mouseButton))
+            {
                 return true;
+            }
         }
 
         getLedgerHost().getLedgerManager().onLedgerClickedInside(this);
@@ -269,6 +311,12 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
         return root;
     }
 
+    @Override
+    public void setLedgerHost(@Nonnull final IGUIBasedLedgerHost host)
+    {
+        this.root = host;
+    }
+
     /**
      * Method to get the primary rendered side of the Ledger.
      *
@@ -276,7 +324,8 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
      */
     @Nonnull
     @Override
-    public LedgerConnectionSide getPrimarySide () {
+    public LedgerConnectionSide getPrimarySide()
+    {
         return side;
     }
 
@@ -287,7 +336,8 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
      */
     @Nonnull
     @Override
-    public ArrayList<String> getIconToolTipText () {
+    public ArrayList<String> getIconToolTipText()
+    {
         ArrayList<String> result = new ArrayList<String>();
 
         result.add(translatedLedgerHeader);
@@ -365,10 +415,46 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
 
     @Nonnull
     @Override
+    public boolean handleMouseWheel(final int relativeMouseX, @Nonnull final int relativeMouseY, @Nonnull final int deltaWheel)
+    {
+        for (IGUIComponent component : components.values())
+        {
+            final Plane plane = component.getSize().Move(component.getLocalCoordinate().getXComponent(), component.getLocalCoordinate().getYComponent());
+
+            if (plane.ContainsCoordinate(relativeMouseX, relativeMouseY))
+            {
+                if (component.handleMouseWheel(relativeMouseX - component.getLocalCoordinate().getXComponent(),
+                  relativeMouseY - component.getLocalCoordinate().getYComponent(),
+                  deltaWheel))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    @Nonnull
+    @Override
     public ArrayList<String> getToolTipContent()
     {
         return new ArrayList<String>();
     }
+
+    /**
+     * Method used by the rendering and animation system to determine the max size of the Ledger.
+     *
+     * @return An int bigger then 16 plus the icon componentWidth that describes the maximum componentWidth of the Ledger when expanded.
+     */
+    public abstract int getMaxWidth();
+
+    /**
+     * Method used by the rendering and animation system to determine the max size of the Ledger.
+     *
+     * @return An int bigger then 16 plus the icon componentHeight that describes the maximum componentHeight of the Ledger when expanded.
+     */
+    public abstract int getMaxHeight();
 
     /**
      * Method used to register a new Component to this host.
@@ -393,7 +479,8 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
      */
     @Nonnull
     @Override
-    public IGUIBasedComponentHost getRootGuiObject() {
+    public IGUIBasedComponentHost getRootGuiObject()
+    {
         return getComponentHost().getRootGuiObject();
     }
 
@@ -404,7 +491,8 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
      */
     @Nonnull
     @Override
-    public IGUIManager getRootManager () {
+    public IGUIManager getRootManager()
+    {
         return root.getRootManager();
     }
 
@@ -415,24 +503,34 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
      */
     @Nonnull
     @Override
-    public LinkedHashMap<String, IGUIComponent> getAllComponents () {
+    public LinkedHashMap<String, IGUIComponent> getAllComponents()
+    {
         return components;
     }
 
     @Nullable
-    public IGUIComponent getComponentByID (String uniqueUIID) {
+    public IGUIComponent getComponentByID(String uniqueUIID)
+    {
         if (getID().equals(uniqueUIID))
+        {
             return this;
+        }
 
         if (getAllComponents().get(uniqueUIID) != null)
+        {
             return getAllComponents().get(uniqueUIID);
+        }
 
-        for (IGUIComponent childComponent : getAllComponents().values()) {
-            if (childComponent instanceof IGUIBasedComponentHost) {
-                IGUIComponent foundComponent = ( (IGUIBasedComponentHost) childComponent ).getComponentByID(uniqueUIID);
+        for (IGUIComponent childComponent : getAllComponents().values())
+        {
+            if (childComponent instanceof IGUIBasedComponentHost)
+            {
+                IGUIComponent foundComponent = ((IGUIBasedComponentHost) childComponent).getComponentByID(uniqueUIID);
 
                 if (foundComponent != null)
+                {
                     return foundComponent;
+                }
             }
         }
 
@@ -508,20 +606,6 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
         return getMaxHeight() / 4 + 1;
     }
 
-    /**
-     * Method used by the rendering and animation system to determine the max size of the Ledger.
-     *
-     * @return An int bigger then 16 plus the icon width that describes the maximum width of the Ledger when expanded.
-     */
-    public abstract int getMaxWidth();
-
-    /**
-     * Method used by the rendering and animation system to determine the max size of the Ledger.
-     *
-     * @return An int bigger then 16 plus the icon height that describes the maximum height of the Ledger when expanded.
-     */
-    public abstract int getMaxHeight();
-
     @Override
     public boolean shouldScissor()
     {
@@ -542,7 +626,8 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
      */
     @Override
     @Nonnull
-    public IGUIManager getManager () {
+    public IGUIManager getManager()
+    {
         return root.getManager();
     }
 
@@ -552,7 +637,8 @@ public abstract class CoreLedger implements IGUILedger, IAnimatibleGuiComponent
      * @param newManager THe new IGUIManager.
      */
     @Override
-    public void setManager (@Nonnull IGUIManager newManager) {
+    public void setManager(@Nonnull IGUIManager newManager)
+    {
         root.setManager(newManager);
     }
 }

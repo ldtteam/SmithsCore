@@ -9,7 +9,8 @@ package com.smithsmodding.smithscore.util.client.gui;
 /**
  * Enum to determine movement on the gui
  */
-public enum GuiDirection {
+public enum GuiDirection
+{
     HORIZONTAL,
     VERTICAL
 }

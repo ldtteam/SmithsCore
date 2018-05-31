@@ -25,13 +25,15 @@ public class ContainerGuiOpenedEvent extends StandardNetworkableEvent
 {
 
     EntityPlayer player;
-    UUID playerID;
-    String containerID;
+    UUID         playerID;
+    String       containerID;
 
-    public ContainerGuiOpenedEvent() {
+    public ContainerGuiOpenedEvent()
+    {
     }
 
-    public ContainerGuiOpenedEvent(@Nonnull EntityPlayer pPlayer, @Nonnull ContainerSmithsCore containerSmithsCore) {
+    public ContainerGuiOpenedEvent(@Nonnull EntityPlayer pPlayer, @Nonnull ContainerSmithsCore containerSmithsCore)
+    {
         this.player = pPlayer;
         this.playerID = player.getUniqueID();
         this.containerID = containerSmithsCore.getContainerID();
@@ -43,7 +45,8 @@ public class ContainerGuiOpenedEvent extends StandardNetworkableEvent
      * @return The entity opening the UI.
      */
     @Nonnull
-    public EntityPlayer getPlayer() {
+    public EntityPlayer getPlayer()
+    {
         return player;
     }
 
@@ -54,7 +57,8 @@ public class ContainerGuiOpenedEvent extends StandardNetworkableEvent
      * @param pMessageBuffer The ByteBuffer from the IMessage used to Synchronize the implementing events.
      */
     @Override
-    public void readFromMessageBuffer(@Nonnull ByteBuf pMessageBuffer) {
+    public void readFromMessageBuffer(@Nonnull ByteBuf pMessageBuffer)
+    {
         playerID = new UUID(pMessageBuffer.readLong(), pMessageBuffer.readLong());
         containerID = ByteBufUtils.readUTF8String(pMessageBuffer);
     }
@@ -66,7 +70,8 @@ public class ContainerGuiOpenedEvent extends StandardNetworkableEvent
      * @param pMessageBuffer The buffer from the IMessage
      */
     @Override
-    public void writeToMessageBuffer(@Nonnull ByteBuf pMessageBuffer) {
+    public void writeToMessageBuffer(@Nonnull ByteBuf pMessageBuffer)
+    {
         pMessageBuffer.writeLong(playerID.getMostSignificantBits());
         pMessageBuffer.writeLong(playerID.getLeastSignificantBits());
         ByteBufUtils.writeUTF8String(pMessageBuffer, containerID);
@@ -76,21 +81,24 @@ public class ContainerGuiOpenedEvent extends StandardNetworkableEvent
      * This function is called on the reinstated event on the receiving side.
      * This allows you to act upon the arrival of the IMessage, as long as you have the IMessageHandler call this
      * function. A good idea is the Post this event to the NetworkRelayBus from here.
-     *
+     * <p>
      * In this case, some additional values are reconstructed based of the Side this Message is received on.
      *
      * @param pMessage The instance of IMessage received by the EventNetworkManager that describes this events.
      * @param pContext The messages Context.
-     *
      */
     @Override
-    public void handleCommunicationMessage (@Nonnull IMessage pMessage, @Nonnull MessageContext pContext) {
+    public void handleCommunicationMessage(@Nonnull IMessage pMessage, @Nonnull MessageContext pContext)
+    {
         //Retrieve the player from the Context.
-        if (pContext.side == Side.SERVER) {
+        if (pContext.side == Side.SERVER)
+        {
             player = pContext.getServerHandler().playerEntity;
 
             super.handleCommunicationMessage(pMessage, pContext);
-        } else {
+        }
+        else
+        {
             super.handleCommunicationMessage(pMessage, pContext);
         }
     }

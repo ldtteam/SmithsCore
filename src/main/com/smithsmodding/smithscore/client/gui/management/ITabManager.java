@@ -19,19 +19,20 @@ public interface ITabManager
     @Nonnull
     IGUIBasedTabHost getHost();
 
+    void setHost(@Nonnull IGUIBasedTabHost host);
+
     /**
      * Method called by the Host.
-     *
+     * <p>
      * To notify the Manager that all tabs have been registered.
      */
-    void onTabRegistrationComplete ();
+    void onTabRegistrationComplete();
 
     /**
      * Method used to get the currently displayed Tab.
      *
      * @return The currently displayed Tab.
      */
-    @Nonnull
     IGUITab getCurrentTab();
 
     /**
@@ -45,19 +46,19 @@ public interface ITabManager
      * Method used to get the tab from a Selector index.
      *
      * @param selectorIndex The index you want the tab for.
-     *
      * @return The tab for the requested selector index.
+     *
      * @throws IllegalArgumentException is the given selectorIndex is not Valid.
      */
     @Nonnull
-    IGUITab getTabFromSelectorIndex (@Nonnull int selectorIndex) throws IllegalArgumentException;
+    IGUITab getTabFromSelectorIndex(@Nonnull int selectorIndex) throws IllegalArgumentException;
 
     /**
      * Method used to register a new Tab
      *
      * @param newTab The new tab.
      */
-    void registerNewTab (@Nonnull IGUITab newTab);
+    void registerNewTab(@Nonnull IGUITab newTab);
 
     /**
      * Method used to retrieve all the possible tabs for this TabManager.
@@ -104,6 +105,7 @@ public interface ITabManager
 
     /**
      * Method used to get the vertical offset of the Display area of a Ta
+     *
      * @return The vertical offset of the DisplayArea.
      */
     int getDisplayAreaVerticalOffset();
@@ -113,5 +115,5 @@ public interface ITabManager
      *
      * @param tab The tab to be displayed.
      */
-    void setActiveTab (@Nonnull IGUITab tab);
+    void setActiveTab(@Nonnull IGUITab tab);
 }

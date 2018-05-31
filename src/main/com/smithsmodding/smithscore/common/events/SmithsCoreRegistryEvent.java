@@ -13,20 +13,23 @@ import java.util.Map;
  *
  * @param <V> The type of the registry
  */
-public abstract class SmithsCoreRegistryEvent<V extends IForgeRegistryEntry<V>> extends SmithsCoreEvent {
+public abstract class SmithsCoreRegistryEvent<V extends IForgeRegistryEntry<V>> extends SmithsCoreEvent
+{
 
     /**
      * Event fired when an Object is added to one of the registries.
      *
      * @param <V> The type of the registry
      */
-    public static final class Add<V extends IForgeRegistryEntry<V>> extends SmithsCoreRegistryEvent<V> {
+    public static final class Add<V extends IForgeRegistryEntry<V>> extends SmithsCoreRegistryEvent<V>
+    {
         @Nonnull
-        private final V objectAdded;
+        private final V   objectAdded;
         @Nonnull
         private final int id;
 
-        public Add(@Nonnull V objectAdded, @Nonnull int id, @Nonnull Map<ResourceLocation, ?> slaveset) {
+        public Add(@Nonnull V objectAdded, @Nonnull int id, @Nonnull Map<ResourceLocation, ?> slaveset)
+        {
             super(slaveset);
             this.objectAdded = objectAdded;
             this.id = id;
@@ -38,7 +41,8 @@ public abstract class SmithsCoreRegistryEvent<V extends IForgeRegistryEntry<V>> 
          * @return The object that has been added to the registry.
          */
         @Nonnull
-        public V getObjectAdded() {
+        public V getObjectAdded()
+        {
             return objectAdded;
         }
 
@@ -48,10 +52,10 @@ public abstract class SmithsCoreRegistryEvent<V extends IForgeRegistryEntry<V>> 
          * @return the ic of the newly registered object.
          */
         @Nonnull
-        public int getId() {
+        public int getId()
+        {
             return id;
         }
-
     }
 
     /**
@@ -60,12 +64,14 @@ public abstract class SmithsCoreRegistryEvent<V extends IForgeRegistryEntry<V>> 
      *
      * @param <V> The type of the registry.
      */
-    public static final class Clear<V extends IForgeRegistryEntry<V>> extends SmithsCoreRegistryEvent<V> {
+    public static final class Clear<V extends IForgeRegistryEntry<V>> extends SmithsCoreRegistryEvent<V>
+    {
 
         @Nonnull
         private final IForgeRegistry<V> registry;
 
-        public Clear(@Nonnull Map<ResourceLocation, ?> slaveset, @Nonnull IForgeRegistry<V> registry) {
+        public Clear(@Nonnull Map<ResourceLocation, ?> slaveset, @Nonnull IForgeRegistry<V> registry)
+        {
             super(slaveset);
             this.registry = registry;
         }
@@ -76,7 +82,8 @@ public abstract class SmithsCoreRegistryEvent<V extends IForgeRegistryEntry<V>> 
          * @return The registry that is being cleared.
          */
         @Nonnull
-        public IForgeRegistry<V> getRegistry() {
+        public IForgeRegistry<V> getRegistry()
+        {
             return registry;
         }
     }
@@ -86,12 +93,14 @@ public abstract class SmithsCoreRegistryEvent<V extends IForgeRegistryEntry<V>> 
      *
      * @param <V> The type of the registry.
      */
-    public static final class Create<V extends IForgeRegistryEntry<V>> extends SmithsCoreRegistryEvent<V> {
+    public static final class Create<V extends IForgeRegistryEntry<V>> extends SmithsCoreRegistryEvent<V>
+    {
 
         @Nonnull
         private final BiMap<ResourceLocation, ? extends IForgeRegistry<?>> registries;
 
-        public Create(@Nonnull Map<ResourceLocation, ?> slaveset, @Nonnull BiMap<ResourceLocation, ? extends IForgeRegistry<?>> registries) {
+        public Create(@Nonnull Map<ResourceLocation, ?> slaveset, @Nonnull BiMap<ResourceLocation, ? extends IForgeRegistry<?>> registries)
+        {
             super(slaveset);
             this.registries = registries;
         }
@@ -102,7 +111,8 @@ public abstract class SmithsCoreRegistryEvent<V extends IForgeRegistryEntry<V>> 
          * @return A BiMap containing all the registries that are registered and their names.
          */
         @Nonnull
-        public BiMap<ResourceLocation, ? extends IForgeRegistry<?>> getRegistries() {
+        public BiMap<ResourceLocation, ? extends IForgeRegistry<?>> getRegistries()
+        {
             return registries;
         }
     }
@@ -112,15 +122,17 @@ public abstract class SmithsCoreRegistryEvent<V extends IForgeRegistryEntry<V>> 
      *
      * @param <V> The type of the registry in which the substitution happens.
      */
-    public static final class Substitute<V extends IForgeRegistryEntry<V>> extends SmithsCoreRegistryEvent<V> {
+    public static final class Substitute<V extends IForgeRegistryEntry<V>> extends SmithsCoreRegistryEvent<V>
+    {
         @Nonnull
-        private final V original;
+        private final V                original;
         @Nonnull
-        private final V replacement;
+        private final V                replacement;
         @Nonnull
         private final ResourceLocation name;
 
-        public Substitute(@Nonnull Map<ResourceLocation, ?> slaveset, @Nonnull V original, @Nonnull V replacement, @Nonnull ResourceLocation name) {
+        public Substitute(@Nonnull Map<ResourceLocation, ?> slaveset, @Nonnull V original, @Nonnull V replacement, @Nonnull ResourceLocation name)
+        {
             super(slaveset);
             this.original = original;
             this.replacement = replacement;
@@ -133,7 +145,8 @@ public abstract class SmithsCoreRegistryEvent<V extends IForgeRegistryEntry<V>> 
          * @return the originally registered object.
          */
         @Nonnull
-        public V getOriginal() {
+        public V getOriginal()
+        {
             return original;
         }
 
@@ -143,7 +156,8 @@ public abstract class SmithsCoreRegistryEvent<V extends IForgeRegistryEntry<V>> 
          * @return the replacement object.
          */
         @Nonnull
-        public V getReplacement() {
+        public V getReplacement()
+        {
             return replacement;
         }
 
@@ -153,7 +167,8 @@ public abstract class SmithsCoreRegistryEvent<V extends IForgeRegistryEntry<V>> 
          * @return the unique name.
          */
         @Nonnull
-        public ResourceLocation getName() {
+        public ResourceLocation getName()
+        {
             return name;
         }
     }

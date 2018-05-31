@@ -4,24 +4,68 @@ import com.smithsmodding.smithscore.client.gui.hosts.IGUIBasedComponentHost;
 import com.smithsmodding.smithscore.client.gui.state.IGUIComponentState;
 import com.smithsmodding.smithscore.util.client.color.MinecraftColor;
 import com.smithsmodding.smithscore.util.common.positioning.Coordinate2D;
+import com.smithsmodding.smithscore.util.common.positioning.Plane;
 import net.minecraft.client.gui.FontRenderer;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
  * Created by marcf on 12/28/2015.
  */
-public class ComponentLabel extends CoreComponent {
+public class ComponentLabel extends CoreComponent
+{
     protected String         displayedText;
     protected MinecraftColor color;
     private   FontRenderer   renderer;
 
-    public ComponentLabel(@Nonnull String uniqueID, @Nonnull IGUIBasedComponentHost root, @Nonnull IGUIComponentState state, @Nonnull Coordinate2D localCoordinate, @Nonnull MinecraftColor color, @Nonnull FontRenderer renderer, @Nonnull String displayedText) {
+    private final boolean autoWrap;
+
+    public ComponentLabel(
+                           @Nonnull String uniqueID,
+                           @Nonnull IGUIBasedComponentHost root,
+                           @Nonnull IGUIComponentState state,
+                           @Nonnull Coordinate2D localCoordinate,
+                           @Nonnull MinecraftColor color,
+                           @Nonnull FontRenderer renderer,
+                           @Nonnull String displayedText)
+    {
         super(uniqueID, root, state, localCoordinate, renderer.getStringWidth(displayedText), renderer.FONT_HEIGHT);
 
         this.displayedText = displayedText;
         this.color = color;
         this.renderer = renderer;
+        this.autoWrap = false;
+    }
+
+    public ComponentLabel(
+      @Nonnull String uniqueID,
+      @Nonnull IGUIBasedComponentHost root,
+      @Nonnull IGUIComponentState state,
+      @Nonnull Coordinate2D localCoordinate,
+      @Nonnull MinecraftColor color,
+      @Nonnull FontRenderer renderer,
+      @Nonnull String displayedText,
+      final int maxWidth)
+    {
+        super(uniqueID, root, state, localCoordinate, maxWidth, renderer.FONT_HEIGHT);
+        this.displayedText = displayedText;
+        this.color = color;
+        this.renderer = renderer;
+        this.autoWrap = true;
+    }
+
+    @Nonnull
+    @Override
+    public Plane getSize()
+    {
+        if (!autoWrap)
+            return super.getSize();
+
+        final List<String> split = renderer.listFormattedStringToWidth(displayedText, super.getSize().getWidth());
+        final int height = split.size() * (renderer.FONT_HEIGHT);
+
+        return new Plane(0,0, super.getSize().getWidth(), height);
     }
 
     /**
@@ -32,7 +76,8 @@ public class ComponentLabel extends CoreComponent {
      * @param partialTickTime The partial tick time, used to calculate fluent animations.
      */
     @Override
-    public void update(int mouseX, int mouseY, float partialTickTime) {
+    public void update(int mouseX, int mouseY, float partialTickTime)
+    {
         //NOOP
     }
 
@@ -46,8 +91,12 @@ public class ComponentLabel extends CoreComponent {
      * @param mouseY The current Y-Coordinate of the mouse
      */
     @Override
-    public void drawBackground(int mouseX, int mouseY) {
-        renderer.drawStringWithShadow(displayedText, 0,0, color.getRGB());
+    public void drawBackground(int mouseX, int mouseY)
+    {
+        if (!autoWrap)
+            renderer.drawString(displayedText, 0,0, color.getRGB());
+        else
+            renderer.drawSplitString(displayedText, 0, 0, super.getSize().getWidth(), color.getRGB());
     }
 
     /**
@@ -60,7 +109,8 @@ public class ComponentLabel extends CoreComponent {
      * @param mouseY The current Y-Coordinate of the mouse
      */
     @Override
-    public void drawForeground(int mouseX, int mouseY) {
+    public void drawForeground(int mouseX, int mouseY)
+    {
         //NOOP
     }
 }

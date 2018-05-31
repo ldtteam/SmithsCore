@@ -6,12 +6,18 @@ buildscript{
 			url = "http://files.minecraftforge.net/maven"
 		}
         maven {
+            name = 'sponge'
+            url = 'https://repo.spongepowered.org/maven'
+        }
+        maven {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
  	} 
 	dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'gradle.plugin.org.spongepowered:spongegradle:0.8.1'
+        classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
 	}
 }
 
@@ -30,10 +36,15 @@ repositories {
         name 'DVS1 Maven FS'
         url 'http://dvs1.progwml6.com/files/maven'
     }
+    maven {
+        name = 'sponge'
+        url = 'https://repo.spongepowered.org/maven'
+    }
 }
 
 apply plugin: 'java'
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: "org.spongepowered.mixin"
 apply plugin: 'maven'
 
 //Buildscript: SmithsCore
@@ -66,6 +77,7 @@ group = "com.smithsmodding.smithscore"
 archivesBaseName = "smithscore"
 
 minecraft {
+    coreMod="com.smithsmodding.core.SmithsCoreFMLPlugin"
     version = config.minecraft_version+ "-" + config.forge_version
     runDir = "run"
 
@@ -79,9 +91,19 @@ minecraft {
     replace "@APIVERSION@", apiversion
 }
 
+configurations {
+    embed
+    compile.extendsFrom(embed)
+}
+
 dependencies {
 	//Mod dependencies
     deobfCompile "mezz.jei:jei_" + config.minecraft_version + ":" + config.jei_version
+
+    //Mixins
+    embed('org.spongepowered:mixin:0.7.5-SNAPSHOT') {
+        exclude module: 'launchwrapper'
+    }
 
     //Test dependencies
     testCompile 'junit:junit:4.11'
@@ -127,7 +149,19 @@ processResources
 
 jar {
     manifest {
+        attributes 'FMLCorePlugin': 'com.smithsmodding.smithscore.core.SmithsCoreFMLPlugin'
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
         attributes 'FMLAT': 'SmithsCore_at.cfg'
+        attributes 'MixinConfigs': 'mixins.smitshcore.json'
+        attributes 'TweakClass': 'com.smithsmodding.shading.mixin.launch.MixinTweaker'
+        attributes 'TweakOrder': 0
+        attributes 'ForceLoadAsMod': true
+    }
+
+    configurations.embed.each { dep ->
+        from(project.zipTree(dep)){
+            exclude 'META-INF', 'META-INF/**'
+        }
     }
 }
 
@@ -145,18 +179,28 @@ task javadocJar(type: Jar, dependsOn: 'javadoc') {
     classifier "javadoc"
 }
 
+//Shade it.
+reobf {
+    jar {
+        extraLines 'PK: org/spongepowered/asm com/smithsmodding/shading/mixin'
+    }
+}
+
 artifacts {
     archives devJar
     archives javadocJar
 }
 
 curseforge {
-    if (System.getenv().CURSEAPIKEY != null || System.getenv().CURSERELEASETYPE != null)
+    if (System.getenv().CURSEAPIKEY != null && release != null)
     {
         apiKey = System.getenv().CURSEAPIKEY
 
         project {
             id = '246525'
+
+            changelog = file("build/changelog.md")
+            changelogType = "markdown"
 
             releaseType = release
 
@@ -169,4 +213,40 @@ curseforge {
         logger.lifecycle("Cannot run the CurseUpload sequence. No API-Key or release type has been provided.")
     }
 }
+
+task("createChangelog") {
+    group = 'upload'
+
+    doLast {
+        def teamCityURL = "https://teamcity.minecolonies.com/"
+        def file = new FileOutputStream("build/changelog.md")
+        def out = new BufferedOutputStream(file)
+
+        println("Retrieving changes from: " + teamCityURL + "guestAuth/app/rest/changes?locator=build:(id:" + teamcity["teamcity.build.id"] + ")")
+        def changesXML = new XmlSlurper().parse(teamCityURL + "guestAuth/app/rest/changes?locator=build:(id:" + teamcity["teamcity.build.id"] + ")")
+
+        def changes = changesXML.change
+        println("createChangelog: Identified " + changes.size() + " changes to be written into the changelog.")
+
+        out << "# SmithsCore Changelog \n"
+        out << "## Version: _" + version + "_ \n"
+
+        if (changes.size() > 0) {
+            for (int i = 0; i < changes.size(); i++) {
+                def changeDetailsURL = teamCityURL + "guestAuth/app/rest/changes/id:" + changes[i].@id.text()
+                def changeDetailsXml = new XmlSlurper().parse(changeDetailsURL)
+                def changeComment = changeDetailsXml.comment.text().trim().split("\n")[0]
+
+                out << "* " + changeComment + "\n"
+            }
+        } else {
+            out << "No Changes detected!"
+        }
+
+        out.close()
+    }
+}
+
+
+idea { module { inheritOutputDirs = true; } }
 

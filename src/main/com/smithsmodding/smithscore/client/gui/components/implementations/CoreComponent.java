@@ -15,14 +15,21 @@ import java.util.ArrayList;
  */
 public abstract class CoreComponent implements IGUIComponent
 {
-    protected String                 uniqueID;
-    protected IGUIComponentState     state;
-    protected IGUIBasedComponentHost parent;
-    protected Coordinate2D           rootAnchorPixel;
-    protected int                    width;
-    protected int                    height;
+    protected           String                 uniqueID;
+    protected           IGUIComponentState     state;
+    protected transient IGUIBasedComponentHost parent;
+    protected           Coordinate2D           rootAnchorPixel;
+    protected           int                    width;
+    protected           int                    height;
 
-    public CoreComponent (@Nonnull String uniqueID, @Nonnull IGUIBasedComponentHost parent, @Nonnull IGUIComponentState state, @Nonnull Coordinate2D rootAnchorPixel, @Nonnull int width, @Nonnull int height) {
+    public CoreComponent(
+                          @Nonnull String uniqueID,
+                          @Nonnull IGUIBasedComponentHost parent,
+                          @Nonnull IGUIComponentState state,
+                          @Nonnull Coordinate2D rootAnchorPixel,
+                          @Nonnull int width,
+                          @Nonnull int height)
+    {
         this.rootAnchorPixel = rootAnchorPixel;
         this.height = height;
         this.uniqueID = uniqueID;
@@ -35,43 +42,62 @@ public abstract class CoreComponent implements IGUIComponent
 
     @Nonnull
     @Override
-    public String getID () {
+    public String getID()
+    {
         return uniqueID;
     }
 
     @Nonnull
     @Override
-    public IGUIComponentState getState () {
+    public IGUIComponentState getState()
+    {
         return state;
     }
 
     @Nonnull
     @Override
-    public IGUIBasedComponentHost getComponentHost() {
+    public IGUIBasedComponentHost getComponentHost()
+    {
         return parent;
+    }
+
+    @Override
+    public void setComponentHost(@Nonnull final IGUIBasedComponentHost host)
+    {
+        this.parent = host;
     }
 
     @Nonnull
     @Override
-    public Coordinate2D getGlobalCoordinate () {
+    public Coordinate2D getGlobalCoordinate()
+    {
         return parent.getGlobalCoordinate().getTranslatedCoordinate(getLocalCoordinate());
     }
 
     @Nonnull
     @Override
-    public Coordinate2D getLocalCoordinate () {
+    public Coordinate2D getLocalCoordinate()
+    {
         return rootAnchorPixel;
+    }
+
+    @Override
+    public void setLocalCoordinate(@Nonnull final Coordinate2D coordinate)
+    {
+        this.rootAnchorPixel = coordinate;
     }
 
     @Nonnull
     @Override
-    public Plane getAreaOccupiedByComponent () {
+    public Plane getAreaOccupiedByComponent()
+    {
         return new Plane(getGlobalCoordinate(), width, height);
     }
 
     @Nonnull
     @Override
-    public Plane getSize () {
+    public Plane getSize()
+    {
         return new Plane(0, 0, width, height);
     }
 
@@ -86,31 +112,43 @@ public abstract class CoreComponent implements IGUIComponent
 
     @Override
     @Nonnull
-    public boolean handleMouseClickedInside (@Nonnull int relativeMouseX, @Nonnull int relativeMouseY, @Nonnull int mouseButton) {
+    public boolean handleMouseClickedInside(@Nonnull int relativeMouseX, @Nonnull int relativeMouseY, @Nonnull int mouseButton)
+    {
         return false;
     }
 
     @Override
     @Nonnull
-    public boolean handleMouseClickedOutside (@Nonnull int relativeMouseX, @Nonnull int relativeMouseY, @Nonnull int mouseButton) {
+    public boolean handleMouseClickedOutside(@Nonnull int relativeMouseX, @Nonnull int relativeMouseY, @Nonnull int mouseButton)
+    {
         return false;
     }
 
     @Override
     @Nonnull
-    public boolean requiresForcedMouseInput () {
+    public boolean requiresForcedMouseInput()
+    {
         return false;
     }
 
     @Override
     @Nonnull
-    public boolean handleKeyTyped(@Nonnull char key, @Nonnull int keyCode) {
+    public boolean handleKeyTyped(@Nonnull char key, @Nonnull int keyCode)
+    {
+        return false;
+    }
+
+    @Nonnull
+    @Override
+    public boolean handleMouseWheel(final int relativeMouseX, @Nonnull final int relativeMouseY, @Nonnull final int deltaWheel)
+    {
         return false;
     }
 
     @Nullable
     @Override
-    public ArrayList<String> getToolTipContent () {
+    public ArrayList<String> getToolTipContent()
+    {
         return new ArrayList<String>();
     }
 }

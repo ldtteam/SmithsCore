@@ -39,24 +39,36 @@ import java.util.Set;
 /**
  * Author Orion (Created on: 17.07.2016)
  */
-public class BakedSmithsCoreOBJModel implements IPerspectiveAwareModel {
+public class BakedSmithsCoreOBJModel implements IPerspectiveAwareModel
+{
     private final SmithsCoreOBJModel                       model;
     private final VertexFormat                             format;
     private       IModelState                              state;
     private       ImmutableList<BakedQuad>                 quads;
     private       ImmutableMap<String, TextureAtlasSprite> textures;
-    private final LoadingCache<IModelState, BakedSmithsCoreOBJModel> cache = CacheBuilder.newBuilder().maximumSize(20).build(new CacheLoader<IModelState, BakedSmithsCoreOBJModel>() {
-        @Nonnull
-        public BakedSmithsCoreOBJModel load(IModelState state) throws Exception {
-            return new BakedSmithsCoreOBJModel(model, state, format, textures);
-        }
-    });
-    private TextureAtlasSprite sprite = ModelLoader.White.INSTANCE;
+    private final LoadingCache<IModelState, BakedSmithsCoreOBJModel> cache  =
+      CacheBuilder.newBuilder().maximumSize(20).build(new CacheLoader<IModelState, BakedSmithsCoreOBJModel>()
+      {
+          @Nonnull
+          public BakedSmithsCoreOBJModel load(IModelState state) throws Exception
+          {
+              return new BakedSmithsCoreOBJModel(model, state, format, textures);
+          }
+      });
+    private       TextureAtlasSprite                                 sprite = ModelLoader.White.INSTANCE;
 
-    public BakedSmithsCoreOBJModel(@Nonnull SmithsCoreOBJModel model, @Nonnull IModelState state, @Nonnull VertexFormat format, @Nonnull ImmutableMap<String, TextureAtlasSprite> textures) {
+    public BakedSmithsCoreOBJModel(
+                                    @Nonnull SmithsCoreOBJModel model,
+                                    @Nonnull IModelState state,
+                                    @Nonnull VertexFormat format,
+                                    @Nonnull ImmutableMap<String, TextureAtlasSprite> textures)
+    {
         this.model = model;
         this.state = state;
-        if (this.state instanceof SmithsCoreOBJState) this.updateStateVisibilityMap((SmithsCoreOBJState) this.state);
+        if (this.state instanceof SmithsCoreOBJState)
+        {
+            this.updateStateVisibilityMap((SmithsCoreOBJState) this.state);
+        }
         this.format = format;
         this.textures = textures;
     }
@@ -90,22 +102,31 @@ public class BakedSmithsCoreOBJModel implements IPerspectiveAwareModel {
         }
     }
 
-    public void scheduleRebake() {
+    public void scheduleRebake()
+    {
     }
 
     @Override
     @Nonnull
-    public List<BakedQuad> getQuads(IBlockState blockState, @Nullable EnumFacing side, long rand) {
-        if (side != null) return ImmutableList.of();
-        if (quads == null) {
+    public List<BakedQuad> getQuads(IBlockState blockState, @Nullable EnumFacing side, long rand)
+    {
+        if (side != null)
+        {
+            return ImmutableList.of();
+        }
+        if (quads == null)
+        {
             quads = buildQuads(this.state);
         }
-        if (blockState instanceof IExtendedBlockState) {
+        if (blockState instanceof IExtendedBlockState)
+        {
             IExtendedBlockState exState = (IExtendedBlockState) blockState;
-            if (exState.getUnlistedNames().contains(CoreReferences.BlockStateProperties.Unlisted.OBJSTATE)) {
+            if (exState.getUnlistedNames().contains(CoreReferences.BlockStateProperties.Unlisted.OBJSTATE))
+            {
 
                 SmithsCoreOBJState newState = exState.getValue(CoreReferences.BlockStateProperties.Unlisted.OBJSTATE);
-                if (newState != null) {
+                if (newState != null)
+                {
                     return buildQuads(newState);
                 }
             }
@@ -114,58 +135,82 @@ public class BakedSmithsCoreOBJModel implements IPerspectiveAwareModel {
     }
 
     @Nonnull
-    private ImmutableList<BakedQuad> buildQuads(@Nonnull IModelState modelState) {
+    private ImmutableList<BakedQuad> buildQuads(@Nonnull IModelState modelState)
+    {
         List<BakedQuad> quads = Lists.newArrayList();
         Collections.synchronizedSet(new LinkedHashSet<BakedQuad>());
         Set<SmithsCoreOBJFace> faces = Collections.synchronizedSet(new LinkedHashSet<SmithsCoreOBJFace>());
         Optional<TRSRTransformation> transform = Optional.absent();
-        for (SmithsCoreOBJGroup g : this.model.getMatLib().getGroups().values()) {
+        for (SmithsCoreOBJGroup g : this.model.getMatLib().getGroups().values())
+        {
 //                g.minUVBounds = this.model.getMatLib().minUVBounds;
 //                g.maxUVBounds = this.model.getMatLib().maxUVBounds;
 //                FMLLog.info("Group: %s u: [%f, %f] v: [%f, %f]", g.name, g.minUVBounds[0], g.maxUVBounds[0], g.minUVBounds[1], g.maxUVBounds[1]);
 
-            if (modelState.apply(Optional.of(Models.getHiddenModelPart(ImmutableList.of(g.getName())))).isPresent()) {
+            if (modelState.apply(Optional.of(Models.getHiddenModelPart(ImmutableList.of(g.getName())))).isPresent())
+            {
                 continue;
             }
-            if (modelState instanceof SmithsCoreOBJState) {
+            if (modelState instanceof SmithsCoreOBJState)
+            {
                 SmithsCoreOBJState state = (SmithsCoreOBJState) modelState;
-                if (state.getParent() != null) {
+                if (state.getParent() != null)
+                {
                     transform = state.getParent().apply(Optional.absent());
                 }
                 //TODO: can this be replaced by updateStateVisibilityMap(OBJState)?
-                if (state.getGroupNamesFromMap().contains(SmithsCoreOBJGroup.ALL)) {
+                if (state.getGroupNamesFromMap().contains(SmithsCoreOBJGroup.ALL))
+                {
                     state.getVisibilityMap().clear();
-                    for (String s : this.model.getMatLib().getGroups().keySet()) {
+                    for (String s : this.model.getMatLib().getGroups().keySet())
+                    {
                         state.getVisibilityMap().put(s, state.getOperation().performOperation(true));
                     }
-                } else if (state.getGroupNamesFromMap().contains(SmithsCoreOBJGroup.ALL_EXCEPT)) {
+                }
+                else if (state.getGroupNamesFromMap().contains(SmithsCoreOBJGroup.ALL_EXCEPT))
+                {
                     List<String> exceptList = state.getGroupNamesFromMap().subList(1, state.getGroupNamesFromMap().size());
                     state.getVisibilityMap().clear();
-                    this.model.getMatLib().getGroups().keySet().stream().filter(s -> !exceptList.contains(s)).forEachOrdered(s -> {
+                    this.model.getMatLib().getGroups().keySet().stream().filter(s -> !exceptList.contains(s)).forEachOrdered(s ->
+                    {
                         state.getVisibilityMap().put(s, state.getOperation().performOperation(true));
                     });
-                } else {
-                    for (String s : state.getVisibilityMap().keySet()) {
+                }
+                else
+                {
+                    for (String s : state.getVisibilityMap().keySet())
+                    {
                         state.getVisibilityMap().put(s, state.getOperation().performOperation(state.getVisibilityMap().get(s)));
                     }
                 }
-                if (state.getGroupsWithVisibility(true).contains(g.getName())) {
+                if (state.getGroupsWithVisibility(true).contains(g.getName()))
+                {
                     faces.addAll(g.applyTransform(transform));
                 }
-            } else {
+            }
+            else
+            {
                 transform = modelState.apply(Optional.absent());
                 faces.addAll(g.applyTransform(transform));
             }
         }
-        for (SmithsCoreOBJFace f : faces) {
-            if (this.model.getMatLib().getMaterials().get(f.getMaterialName()).isWhite()) {
-                for (SmithsCoreOBJVertex v : f.getVertices()) {//update material in each vertex
-                    if (!v.getMaterial().equals(this.model.getMatLib().getMaterial(v.getMaterial().getName()))) {
+        for (SmithsCoreOBJFace f : faces)
+        {
+            if (this.model.getMatLib().getMaterials().get(f.getMaterialName()).isWhite())
+            {
+                for (SmithsCoreOBJVertex v : f.getVertices())
+                {//update material in each vertex
+                    if (!v.getMaterial().equals(this.model.getMatLib().getMaterial(v.getMaterial().getName())))
+                    {
                         v.setMaterial(this.model.getMatLib().getMaterial(v.getMaterial().getName()));
                     }
                 }
                 sprite = ModelLoader.White.INSTANCE;
-            } else sprite = this.textures.get(f.getMaterialName());
+            }
+            else
+            {
+                sprite = this.textures.get(f.getMaterialName());
+            }
             UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(format);
             builder.setContractUVs(true);
             builder.setQuadOrientation(EnumFacing.getFacingFromVector(f.getNormal().x, f.getNormal().y, f.getNormal().z));
@@ -180,39 +225,59 @@ public class BakedSmithsCoreOBJModel implements IPerspectiveAwareModel {
         return ImmutableList.copyOf(quads);
     }
 
-    private final void putVertexData(@Nonnull UnpackedBakedQuad.Builder builder, @Nonnull SmithsCoreOBJVertex v, @Nonnull SmithsCoreOBJNormal faceNormal, @Nonnull SmithsCoreOBJTextureCoordinate defUV, @Nonnull TextureAtlasSprite sprite) {
-        for (int e = 0; e < format.getElementCount(); e++) {
-            switch (format.getElement(e).getUsage()) {
+    private final void putVertexData(
+                                      @Nonnull UnpackedBakedQuad.Builder builder,
+                                      @Nonnull SmithsCoreOBJVertex v,
+                                      @Nonnull SmithsCoreOBJNormal faceNormal,
+                                      @Nonnull SmithsCoreOBJTextureCoordinate defUV,
+                                      @Nonnull TextureAtlasSprite sprite)
+    {
+        for (int e = 0; e < format.getElementCount(); e++)
+        {
+            switch (format.getElement(e).getUsage())
+            {
                 case POSITION:
                     builder.put(e, v.getPos().x, v.getPos().y, v.getPos().z, v.getPos().w);
                     break;
                 case COLOR:
                     if (v.getMaterial() != null)
+                    {
                         builder.put(e,
-                                v.getMaterial().getColor().x,
-                                v.getMaterial().getColor().y,
-                                v.getMaterial().getColor().z,
-                                v.getMaterial().getColor().w);
+                          v.getMaterial().getColor().x,
+                          v.getMaterial().getColor().y,
+                          v.getMaterial().getColor().z,
+                          v.getMaterial().getColor().w);
+                    }
                     else
+                    {
                         builder.put(e, 1, 1, 1, 1);
+                    }
                     break;
                 case UV:
                     if (!v.hasTextureCoordinate())
+                    {
                         builder.put(e,
-                                sprite.getInterpolatedU(defUV.u * 16),
-                                sprite.getInterpolatedV((model.getCustomData().flipV ? 1 - defUV.v : defUV.v) * 16),
-                                0, 1);
+                          sprite.getInterpolatedU(defUV.u * 16),
+                          sprite.getInterpolatedV((model.getCustomData().flipV ? 1 - defUV.v : defUV.v) * 16),
+                          0, 1);
+                    }
                     else
+                    {
                         builder.put(e,
-                                sprite.getInterpolatedU(v.getTextureCoordinate().u * 16),
-                                sprite.getInterpolatedV((model.getCustomData().flipV ? 1 - v.getTextureCoordinate().v : v.getTextureCoordinate().v) * 16),
-                                0, 1);
+                          sprite.getInterpolatedU(v.getTextureCoordinate().u * 16),
+                          sprite.getInterpolatedV((model.getCustomData().flipV ? 1 - v.getTextureCoordinate().v : v.getTextureCoordinate().v) * 16),
+                          0, 1);
+                    }
                     break;
                 case NORMAL:
                     if (!v.hasNormal())
+                    {
                         builder.put(e, faceNormal.x, faceNormal.y, faceNormal.z, 0);
+                    }
                     else
+                    {
                         builder.put(e, v.getNormal().x, v.getNormal().y, v.getNormal().z, 0);
+                    }
                     break;
                 default:
                     builder.put(e);
@@ -221,17 +286,20 @@ public class BakedSmithsCoreOBJModel implements IPerspectiveAwareModel {
     }
 
     @Override
-    public boolean isAmbientOcclusion() {
+    public boolean isAmbientOcclusion()
+    {
         return model == null || model.getCustomData().ambientOcclusion;
     }
 
     @Override
-    public boolean isGui3d() {
+    public boolean isGui3d()
+    {
         return model == null || model.getCustomData().gui3d;
     }
 
     @Override
-    public boolean isBuiltInRenderer() {
+    public boolean isBuiltInRenderer()
+    {
         return false;
     }
 
@@ -267,7 +335,8 @@ public class BakedSmithsCoreOBJModel implements IPerspectiveAwareModel {
 
     @Override
     @Nonnull
-    public ItemCameraTransforms getItemCameraTransforms() {
+    public ItemCameraTransforms getItemCameraTransforms()
+    {
         return ItemCameraTransforms.DEFAULT;
     }
 
@@ -279,34 +348,40 @@ public class BakedSmithsCoreOBJModel implements IPerspectiveAwareModel {
     }
 
     @Nullable
-    public BakedSmithsCoreOBJModel getCachedModel(@Nonnull IModelState state) {
+    public BakedSmithsCoreOBJModel getCachedModel(@Nonnull IModelState state)
+    {
         return cache.getUnchecked(state);
     }
 
     @Nonnull
-    public SmithsCoreOBJModel getModel() {
+    public SmithsCoreOBJModel getModel()
+    {
         return this.model;
     }
 
     @Nonnull
-    public IModelState getState() {
+    public IModelState getState()
+    {
         return this.state;
     }
 
     @Nonnull
-    public BakedSmithsCoreOBJModel getBakedModel() {
+    public BakedSmithsCoreOBJModel getBakedModel()
+    {
         return new BakedSmithsCoreOBJModel(this.model, this.state, this.format, this.textures);
     }
 
     @Nonnull
     @Override
-    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(@Nonnull ItemCameraTransforms.TransformType cameraTransformType) {
+    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(@Nonnull ItemCameraTransforms.TransformType cameraTransformType)
+    {
         return IPerspectiveAwareModel.MapWrapper.handlePerspective(this, state, cameraTransformType);
     }
 
     @Nonnull
     @Override
-    public String toString() {
+    public String toString()
+    {
         return this.model.getModelLocation().toString();
     }
 }

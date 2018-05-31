@@ -16,18 +16,20 @@ import java.util.Map;
 
 /**
  * En StateMapper for States that can be extended to multiple files.
- *
+ * <p>
  * Author Orion (Created on: 11.10.2016)
  */
-public class ExtendedStateMap implements IStateMapper {
+public class ExtendedStateMap implements IStateMapper
+{
 
-    private final char[] camelCase;
+    private final char[]   camelCase;
     private final StateMap map;
-    private final String prefix;
+    private final String   prefix;
 
     private Map<IBlockState, ModelResourceLocation> cache;
 
-    public ExtendedStateMap(StateMap map, String prefix, char[] camelCase) {
+    public ExtendedStateMap(StateMap map, String prefix, char[] camelCase)
+    {
         this.camelCase = camelCase;
         this.map = map;
         this.prefix = prefix;
@@ -35,8 +37,10 @@ public class ExtendedStateMap implements IStateMapper {
 
     @Nonnull
     @Override
-    public Map<IBlockState, ModelResourceLocation> putStateModelLocations(@Nonnull Block blockIn) {
-        if (cache == null) {
+    public Map<IBlockState, ModelResourceLocation> putStateModelLocations(@Nonnull Block blockIn)
+    {
+        if (cache == null)
+        {
             cache = Maps.newLinkedHashMap();
             cache = buildCache(blockIn);
         }
@@ -45,19 +49,23 @@ public class ExtendedStateMap implements IStateMapper {
     }
 
     @Nonnull
-    private Map<IBlockState, ModelResourceLocation> buildCache(@Nonnull Block block) {
+    private Map<IBlockState, ModelResourceLocation> buildCache(@Nonnull Block block)
+    {
         Map<IBlockState, ModelResourceLocation> originalMap = map.putStateModelLocations(block);
 
-        for (Map.Entry<IBlockState, ModelResourceLocation> entry : originalMap.entrySet()) {
+        for (Map.Entry<IBlockState, ModelResourceLocation> entry : originalMap.entrySet())
+        {
             String domain = entry.getValue().getResourceDomain();
             String path = entry.getValue().getResourcePath();
             String variant = entry.getValue().getVariant();
 
-            if (prefix != "") {
+            if (prefix != "")
+            {
                 path = prefix + path;
             }
 
-            if (camelCase != null) {
+            if (camelCase != null)
+            {
                 path = WordUtils.capitalizeFully(path, camelCase);
             }
 
@@ -68,7 +76,8 @@ public class ExtendedStateMap implements IStateMapper {
         return cache;
     }
 
-    public static class Builder {
+    public static class Builder
+    {
 
         @Nonnull
         private final StateMap.Builder stateBuilder;
@@ -77,44 +86,51 @@ public class ExtendedStateMap implements IStateMapper {
         private char[] camelCase;
         private String preFix;
 
-        public Builder() {
+        public Builder()
+        {
             stateBuilder = new StateMap.Builder();
             camelCase = null;
             preFix = "";
         }
 
         @Nonnull
-        public ExtendedStateMap.Builder withName(@Nonnull IProperty<?> builderProperty) {
+        public ExtendedStateMap.Builder withName(@Nonnull IProperty<?> builderProperty)
+        {
             stateBuilder.withName(builderProperty);
             return this;
         }
 
         @Nonnull
-        public ExtendedStateMap.Builder withSuffix(@Nonnull String builderSuffix) {
+        public ExtendedStateMap.Builder withSuffix(@Nonnull String builderSuffix)
+        {
             stateBuilder.withSuffix(builderSuffix);
             return this;
         }
 
         @Nonnull
-        public ExtendedStateMap.Builder withPrefix(@Nonnull String builderPrefix) {
+        public ExtendedStateMap.Builder withPrefix(@Nonnull String builderPrefix)
+        {
             this.preFix = builderPrefix;
             return this;
         }
 
         @Nonnull
-        public ExtendedStateMap.Builder withCamelCase(@Nonnull char[] delimeters) {
+        public ExtendedStateMap.Builder withCamelCase(@Nonnull char[] delimeters)
+        {
             this.camelCase = delimeters;
             return this;
         }
 
         @Nonnull
-        public ExtendedStateMap.Builder ignore(@Nonnull IProperty<?>... ignorable) {
+        public ExtendedStateMap.Builder ignore(@Nonnull IProperty<?>... ignorable)
+        {
             stateBuilder.ignore(ignorable);
             return this;
         }
 
         @Nonnull
-        public ExtendedStateMap build() {
+        public ExtendedStateMap build()
+        {
             return new ExtendedStateMap(stateBuilder.build(), preFix, camelCase);
         }
     }

@@ -13,6 +13,7 @@ import com.smithsmodding.smithscore.util.common.positioning.Plane;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -96,8 +97,10 @@ public class GuiBookSmithsCore extends GuiScreen implements IGUIBasedComponentHo
      * window resizes, the buttonList is cleared beforehand.
      */
     @Override
-    public void initGui() {
-        if (!isInitialized()) {
+    public void initGui()
+    {
+        if (!isInitialized())
+        {
             registerComponents(this);
         }
 
@@ -115,14 +118,16 @@ public class GuiBookSmithsCore extends GuiScreen implements IGUIBasedComponentHo
     }
 
     @Override
-    public void onGuiClosed() {
+    public void onGuiClosed()
+    {
         super.onGuiClosed();
 
         Keyboard.enableRepeatEvents(false);
     }
 
     @Nonnull
-    public boolean isInitialized() {
+    public boolean isInitialized()
+    {
         return isInitialized;
     }
 
@@ -140,7 +145,8 @@ public class GuiBookSmithsCore extends GuiScreen implements IGUIBasedComponentHo
         }
     }
 
-    private void setIsInitialized(@Nonnull boolean isInitialized) {
+    private void setIsInitialized(@Nonnull boolean isInitialized)
+    {
         this.isInitialized = isInitialized;
     }
 
@@ -166,12 +172,14 @@ public class GuiBookSmithsCore extends GuiScreen implements IGUIBasedComponentHo
 
     @Override
     @Nonnull
-    public IGUIManager getManager() {
+    public IGUIManager getManager()
+    {
         return guiManager;
     }
 
     @Override
-    public void setManager(@Nonnull IGUIManager newManager) {
+    public void setManager(@Nonnull IGUIManager newManager)
+    {
         this.guiManager = newManager;
     }
 
@@ -213,20 +221,29 @@ public class GuiBookSmithsCore extends GuiScreen implements IGUIBasedComponentHo
 
     @Nonnull
     @Override
-    public String getID() {
+    public String getID()
+    {
         return book.getBookLocation().toString();
     }
 
     @Nonnull
     @Override
-    public IGUIComponentState getState() {
+    public IGUIComponentState getState()
+    {
         return state;
     }
 
     @Nonnull
     @Override
-    public IGUIBasedComponentHost getComponentHost() {
+    public IGUIBasedComponentHost getComponentHost()
+    {
         return this;
+    }
+
+    @Override
+    public void setComponentHost(@Nonnull final IGUIBasedComponentHost host)
+    {
+        //NOOP, This is the root of the component tree.
     }
 
     @Override
@@ -249,6 +266,12 @@ public class GuiBookSmithsCore extends GuiScreen implements IGUIBasedComponentHo
     }
 
     @Override
+    public void setLocalCoordinate(@Nonnull final Coordinate2D coordinate)
+    {
+        //Noop guis can not be moved.
+    }
+
+    @Override
     @Nonnull
     public Plane getAreaOccupiedByComponent()
     {
@@ -266,7 +289,8 @@ public class GuiBookSmithsCore extends GuiScreen implements IGUIBasedComponentHo
     {
         Plane area = new Plane(0, 0, 0, 0);
 
-        for (IGUIComponent component : getAllComponents().values()) {
+        for (IGUIComponent component : getAllComponents().values())
+        {
             area.IncludeCoordinate(new Plane(component.getLocalCoordinate(), component.getSize().getWidth(), component.getSize().getHeigth()));
         }
 
@@ -314,16 +338,22 @@ public class GuiBookSmithsCore extends GuiScreen implements IGUIBasedComponentHo
      * @return True when the click has been handled, false when it did not.
      */
     @Override
-    public boolean handleMouseClickedInside(@Nonnull int relativeMouseX, @Nonnull int relativeMouseY, @Nonnull int mouseButton) {
-        for (IGUIComponent component : getAllComponents().values()) {
+    public boolean handleMouseClickedInside(@Nonnull int relativeMouseX, @Nonnull int relativeMouseY, @Nonnull int mouseButton)
+    {
+        for (IGUIComponent component : getAllComponents().values())
+        {
             Coordinate2D location = component.getLocalCoordinate();
             Plane localOccupiedArea = component.getSize().Move(location.getXComponent(), location.getYComponent());
 
             if (!localOccupiedArea.ContainsCoordinate(relativeMouseX, relativeMouseY))
+            {
                 continue;
+            }
 
             if (component.handleMouseClickedInside(relativeMouseX - location.getXComponent(), relativeMouseY - location.getYComponent(), mouseButton))
+            {
                 return true;
+            }
         }
 
         return true;
@@ -358,6 +388,35 @@ public class GuiBookSmithsCore extends GuiScreen implements IGUIBasedComponentHo
         return false;
     }
 
+    @Override
+    public void handleMouseInput() throws IOException
+    {
+        int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+        int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+
+        int delta = Mouse.getEventDWheel();
+        if (delta != 0)
+        {
+            final Plane plane = getSize().Move(getLocalCoordinate().getXComponent(), getLocalCoordinate().getYComponent());
+            if (plane.ContainsCoordinate(x, y))
+            {
+                x -= getLocalCoordinate().getXComponent();
+                y -= getLocalCoordinate().getYComponent();
+
+                handleMouseWheel(x, y, delta);
+            }
+        }
+        super.handleMouseInput();
+    }
+
+    @Nonnull
+    @Override
+    public boolean handleMouseWheel(final int relativeMouseX, @Nonnull final int relativeMouseY, @Nonnull final int deltaWheel)
+    {
+        //TODO!
+        return false;
+    }
+
     /**
      * Method to check if this function should capture all of the buttons pressed on the mouse regardless of the press
      * location was inside or outside of the Component.
@@ -367,7 +426,8 @@ public class GuiBookSmithsCore extends GuiScreen implements IGUIBasedComponentHo
     @Override
     public boolean requiresForcedMouseInput()
     {
-        for (IGUIComponent component : getAllComponents().values()) {
+        for (IGUIComponent component : getAllComponents().values())
+        {
             if (component.requiresForcedMouseInput())
             {
                 return true;
@@ -409,13 +469,15 @@ public class GuiBookSmithsCore extends GuiScreen implements IGUIBasedComponentHo
      * @return The currently used StandardRenderManager.
      */
     @Nonnull
-    public IRenderManager getRenderManager() {
+    public IRenderManager getRenderManager()
+    {
         return renderer;
     }
 
     @Override
     @Nonnull
-    public int getDefaultDisplayVerticalOffset() {
+    public int getDefaultDisplayVerticalOffset()
+    {
         return 0;
     }
 }

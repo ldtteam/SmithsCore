@@ -15,20 +15,24 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
-public class ContainerGUIOpenedEventHandler {
+public class ContainerGUIOpenedEventHandler
+{
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public void onPlayerOpenenedContainerGUIClientSide (@Nonnull ContainerGuiOpenedEvent event) {
+    public void onPlayerOpenenedContainerGUIClientSide(@Nonnull ContainerGuiOpenedEvent event)
+    {
         if (!(FMLClientHandler.instance().getClientPlayerEntity().openContainer instanceof ContainerSmithsCore))
+        {
             return;
+        }
 
-        if (!event.getContainerID().equals(( (ContainerSmithsCore) FMLClientHandler.instance().getClientPlayerEntity().openContainer ).getContainerID()))
+        if (!event.getContainerID().equals(((ContainerSmithsCore) FMLClientHandler.instance().getClientPlayerEntity().openContainer).getContainerID()))
+        {
             return;
+        }
 
-        ContainerSmithsCore container = ( (ContainerSmithsCore) FMLClientHandler.instance().getClientPlayerEntity().openContainer );
+        ContainerSmithsCore container = ((ContainerSmithsCore) FMLClientHandler.instance().getClientPlayerEntity().openContainer);
         container.getManager().onGuiOpened(event.getPlayerID());
     }
-
-
 }

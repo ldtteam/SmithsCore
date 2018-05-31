@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "com.smithsmodding.smithscore.core.hooks",
+  "refmap": "mixins.common.refmap.json",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "TextureMapHook"
+  ],
+  "mixins": [
+    "EntityLivingHook",
+    "ItemHook",
+    "ItemStackHook"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

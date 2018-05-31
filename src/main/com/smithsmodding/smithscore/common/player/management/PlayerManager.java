@@ -26,19 +26,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class PlayerManager {
+public class PlayerManager
+{
 
     //Instance of the Manager
-    private static final PlayerManager INSTANCE = new PlayerManager();
+    private static final PlayerManager               INSTANCE             = new PlayerManager();
     //Variable that gets filled with the list of players that have ever played on the server.
     //Gets synchronised over to the client.
-    private HashMap<UUID, String> commonSidedJoinedMap = new HashMap<UUID, String>();
+    private              HashMap<UUID, String>       commonSidedJoinedMap = new HashMap<UUID, String>();
     //Variable gets filled with the list of players that are currently connected to the server. Prevents tempering with the global list.
     //Gets synchronised over to the server.
-    private List<UUID> commonSidedOnlineMap = new ArrayList<UUID>();
+    private              List<UUID>                  commonSidedOnlineMap = new ArrayList<UUID>();
     //Server side only lookup list for UUID -> EntityPlayer;
     @Nonnull
-    private HashMap<UUID, EntityPlayer> serverSidedJoinedMap = new HashMap<UUID, EntityPlayer>();
+    private              HashMap<UUID, EntityPlayer> serverSidedJoinedMap = new HashMap<UUID, EntityPlayer>();
 
     /**
      * Method to get the current Instance of the PlayerManager
@@ -46,7 +47,8 @@ public class PlayerManager {
      * @return The current Instance of the Manager.
      */
     @Nonnull
-    public static PlayerManager getInstance() {
+    public static PlayerManager getInstance()
+    {
         return INSTANCE;
     }
 
@@ -57,7 +59,8 @@ public class PlayerManager {
      * @return The map that contais a UUID to Username mapping for all the player that ever connected to this server based on the world save.
      */
     @Nonnull
-    public HashMap<UUID, String> getCommonSidedJoinedMap() {
+    public HashMap<UUID, String> getCommonSidedJoinedMap()
+    {
         return commonSidedJoinedMap;
     }
 
@@ -67,7 +70,8 @@ public class PlayerManager {
      *
      * @param commonSidedJoinedMap The map that contais a UUID to Username mapping for all the player that ever connected to this Server based on the world save.
      */
-    public void setCommonSidedJoinedMap(@Nonnull HashMap<UUID, String> commonSidedJoinedMap) {
+    public void setCommonSidedJoinedMap(@Nonnull HashMap<UUID, String> commonSidedJoinedMap)
+    {
         this.commonSidedJoinedMap = commonSidedJoinedMap;
     }
 
@@ -77,7 +81,8 @@ public class PlayerManager {
      * @return The list of online Players
      */
     @Nonnull
-    public List<UUID> getCommonSidedOnlineMap() {
+    public List<UUID> getCommonSidedOnlineMap()
+    {
         return commonSidedOnlineMap;
     }
 
@@ -86,7 +91,8 @@ public class PlayerManager {
      *
      * @param commonSidedOnlineMap The list of online Players
      */
-    public void setCommonSidedOnlineMap(@Nonnull List<UUID> commonSidedOnlineMap) {
+    public void setCommonSidedOnlineMap(@Nonnull List<UUID> commonSidedOnlineMap)
+    {
         this.commonSidedOnlineMap = commonSidedOnlineMap;
     }
 
@@ -96,17 +102,18 @@ public class PlayerManager {
      * @return A LookUp map that allows UUID to Entity Conversion without iteration.
      */
     @Nonnull
-    public HashMap<UUID, EntityPlayer> getServerSidedJoinedMap() {
+    public HashMap<UUID, EntityPlayer> getServerSidedJoinedMap()
+    {
         return serverSidedJoinedMap;
     }
-
 
     /**
      * Method that handles the event for the Server Starting
      *
      * @param event FMLServerStarting event.
      */
-    public void onServerStart(@Nonnull FMLServerStartingEvent event) {
+    public void onServerStart(@Nonnull FMLServerStartingEvent event)
+    {
         refreshPlayerUUIDList();
 
         SmithsCore.getRegistry().getCommonBus().post(new PlayersConnectedUpdatedEvent(this));
@@ -120,8 +127,8 @@ public class PlayerManager {
     {
         File file = new File(FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getSaveHandler().getWorldDirectory(), "playerdata");
 
-        commonSidedJoinedMap = new HashMap<UUID, String>();
-        serverSidedJoinedMap = new HashMap<UUID, EntityPlayer>();
+        commonSidedJoinedMap = new HashMap<>();
+        serverSidedJoinedMap = new HashMap<>();
 
         if (file.isDirectory())
         {
@@ -151,19 +158,23 @@ public class PlayerManager {
      * @param event The event fired when a player logs in.
      */
     @SubscribeEvent
-    public void onPlayerJoinServer(@Nonnull PlayerEvent.PlayerLoggedInEvent event) {
+    public void onPlayerJoinServer(@Nonnull PlayerEvent.PlayerLoggedInEvent event)
+    {
         SmithsCore.getLogger().info("Updating player UUID list");
         EntityPlayer player = event.player;
 
-        if (!commonSidedJoinedMap.containsKey(player.getGameProfile().getId())) {
+        if (!commonSidedJoinedMap.containsKey(player.getGameProfile().getId()))
+        {
             commonSidedJoinedMap.put(player.getGameProfile().getId(), UsernameCache.getLastKnownUsername(player.getGameProfile().getId()));
             SmithsCore.getRegistry().getCommonBus().post(new PlayersConnectedUpdatedEvent(this));
         }
 
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
+        {
             serverSidedJoinedMap.put(player.getGameProfile().getId(), player);
         }
-        else {
+        else
+        {
             commonSidedOnlineMap.add(player.getGameProfile().getId());
         }
 
@@ -176,7 +187,8 @@ public class PlayerManager {
      * @param event The event fired when a player logs of.
      */
     @SubscribeEvent
-    public void onPlayerLeaveServer(@Nonnull PlayerEvent.PlayerLoggedOutEvent event) {
+    public void onPlayerLeaveServer(@Nonnull PlayerEvent.PlayerLoggedOutEvent event)
+    {
         commonSidedOnlineMap.remove(event.player.getGameProfile().getId());
         SmithsCore.getRegistry().getCommonBus().post(new PlayersOnlineUpdatedEvent(this));
     }
@@ -189,7 +201,8 @@ public class PlayerManager {
      */
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public void onClientDisconnectServer(@Nonnull FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+    public void onClientDisconnectServer(@Nonnull FMLNetworkEvent.ClientDisconnectionFromServerEvent event)
+    {
         SmithsCore.getLogger().info("Disconnect: Clearing cached connected player list.");
         commonSidedJoinedMap.clear();
         commonSidedOnlineMap.clear();

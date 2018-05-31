@@ -7,12 +7,14 @@ import javax.annotation.Nonnull;
 /**
  * Created by marcf on 1/2/2017.
  */
-public class ItemStackArrayWrapper implements IItemStackStorageWrapper<ItemStack[]> {
+public class ItemStackArrayWrapper implements IItemStackStorageWrapper<ItemStack[]>
+{
 
     @Nonnull
     private final ItemStack[] storage;
 
-    public ItemStackArrayWrapper(int size) {
+    public ItemStackArrayWrapper(int size)
+    {
         storage = new ItemStack[size];
     }
 
@@ -21,18 +23,24 @@ public class ItemStackArrayWrapper implements IItemStackStorageWrapper<ItemStack
      *
      * @param index The index to get the Strack From.
      * @return The currently stored ItemStack on that Index. Or ItemStack.EMTPY if none is stored there.
+     *
      * @throws IndexOutOfBoundsException if index is not in the valid Range. Index smallter then 0 or Index bigger or equal size.
      */
     @Override
     @Nonnull
-    public ItemStack get(int index) throws IndexOutOfBoundsException {
+    public ItemStack get(int index) throws IndexOutOfBoundsException
+    {
         if (index < 0 || index >= storage.length)
+        {
             throw new IndexOutOfBoundsException("Index is not in the valid Range. Index < 0 or Index >= size.");
+        }
 
         ItemStack result = storage[index];
 
         if (result == null)
+        {
             result = ItemStack.EMPTY;
+        }
 
         return result;
     }
@@ -45,13 +53,19 @@ public class ItemStackArrayWrapper implements IItemStackStorageWrapper<ItemStack
      * @throws IndexOutOfBoundsException if index is not in the valid Range. Index smallter then 0 or Index bigger or equal size.
      */
     @Override
-    public void set(int index, @Nonnull ItemStack stack) throws IndexOutOfBoundsException {
+    public void set(int index, @Nonnull ItemStack stack) throws IndexOutOfBoundsException
+    {
         if (index < 0 || index >= storage.length)
+        {
             throw new IndexOutOfBoundsException("Index is not in the valid Range. Index < 0 or Index >= size.");
+        }
 
-        if (!stack.isEmpty()) {
+        if (!stack.isEmpty())
+        {
             storage[index] = stack;
-        } else {
+        }
+        else
+        {
             storage[index] = null;
         }
     }
@@ -62,7 +76,8 @@ public class ItemStackArrayWrapper implements IItemStackStorageWrapper<ItemStack
      * @return The amount of ItemStacks the wrapper can store.
      */
     @Override
-    public int getSize() {
+    public int getSize()
+    {
         return storage.length;
     }
 
@@ -73,8 +88,8 @@ public class ItemStackArrayWrapper implements IItemStackStorageWrapper<ItemStack
      */
     @Nonnull
     @Override
-    public ItemStack[] getInterStorage() {
+    public ItemStack[] getInterStorage()
+    {
         return storage;
     }
-
 }

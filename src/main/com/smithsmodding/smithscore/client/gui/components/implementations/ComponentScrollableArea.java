@@ -22,20 +22,28 @@ import java.util.List;
 /**
  * Created by Marc on 08.02.2016.
  */
-public abstract class ComponentScrollableArea implements IGUIComponent, IContentAreaHost, IScissoredGuiComponent {
+public abstract class ComponentScrollableArea implements IGUIComponent, IContentAreaHost, IScissoredGuiComponent
+{
 
     ComponentContentArea contentArea;
-    ComponentScrollBar scrollbar;
+    ComponentScrollBar   scrollbar;
     private String uniqueID;
     @Nonnull
     private LinkedHashMap<String, IGUIComponent> componentHashMap = new LinkedHashMap<String, IGUIComponent>();
-    private IGUIBasedComponentHost parent;
-    private IGUIComponentState     state;
-    private Coordinate2D           rootAnchorPixel;
-    private int                    height;
-    private int                    width;
+    private transient IGUIBasedComponentHost parent;
+    private           IGUIComponentState     state;
+    private           Coordinate2D           rootAnchorPixel;
+    private           int                    height;
+    private           int                    width;
 
-    public ComponentScrollableArea (@Nonnull String uniqueID, @Nonnull IGUIBasedComponentHost parent, @Nonnull IGUIComponentState state, @Nonnull Coordinate2D rootAnchorPixel, int width, int height) {
+    public ComponentScrollableArea(
+                                    @Nonnull String uniqueID,
+                                    @Nonnull IGUIBasedComponentHost parent,
+                                    @Nonnull IGUIComponentState state,
+                                    @Nonnull Coordinate2D rootAnchorPixel,
+                                    int width,
+                                    int height)
+    {
         this.uniqueID = uniqueID;
         this.parent = parent;
 
@@ -46,8 +54,8 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
         this.width = width;
         this.height = height;
 
-        contentArea = new ComponentContentArea(getID() + ".Contents", this, new CoreComponentState(), new Coordinate2D(0,0), width - ComponentScrollBar.WIDTH, height);
-        scrollbar = new ComponentScrollBar(getID() + ".ScrollBar", new ScrollBarComponentState(4,0,100), this, new Coordinate2D(width - ComponentScrollBar.WIDTH, 0), height);
+        contentArea = new ComponentContentArea(getID() + ".Contents", this, new CoreComponentState(), new Coordinate2D(0, 0), width - ComponentScrollBar.WIDTH, height);
+        scrollbar = new ComponentScrollBar(getID() + ".ScrollBar", new ScrollBarComponentState(4, 0, 100), this, new Coordinate2D(width - ComponentScrollBar.WIDTH, 0), height);
     }
 
     /**
@@ -57,7 +65,8 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
      */
     @Nonnull
     @Override
-    public String getID () {
+    public String getID()
+    {
         return uniqueID;
     }
 
@@ -70,7 +79,8 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
      */
     @Nonnull
     @Override
-    public IGUIComponentState getState () {
+    public IGUIComponentState getState()
+    {
         return state;
     }
 
@@ -81,8 +91,15 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
      */
     @Nonnull
     @Override
-    public IGUIBasedComponentHost getComponentHost () {
+    public IGUIBasedComponentHost getComponentHost()
+    {
         return parent;
+    }
+
+    @Override
+    public void setComponentHost(@Nonnull final IGUIBasedComponentHost host)
+    {
+        this.parent = host;
     }
 
     /**
@@ -92,7 +109,8 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
      */
     @Nonnull
     @Override
-    public Coordinate2D getGlobalCoordinate () {
+    public Coordinate2D getGlobalCoordinate()
+    {
         return getComponentHost().getGlobalCoordinate().getTranslatedCoordinate(getLocalCoordinate());
     }
 
@@ -103,8 +121,15 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
      */
     @Nonnull
     @Override
-    public Coordinate2D getLocalCoordinate () {
+    public Coordinate2D getLocalCoordinate()
+    {
         return rootAnchorPixel;
+    }
+
+    @Override
+    public void setLocalCoordinate(@Nonnull final Coordinate2D coordinate)
+    {
+        this.rootAnchorPixel = coordinate;
     }
 
     /**
@@ -114,7 +139,8 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
      */
     @Nonnull
     @Override
-    public Plane getAreaOccupiedByComponent () {
+    public Plane getAreaOccupiedByComponent()
+    {
         return new Plane(getGlobalCoordinate(), width, height);
     }
 
@@ -125,8 +151,9 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
      */
     @Nonnull
     @Override
-    public Plane getSize () {
-        return new Plane(0,0,width, height);
+    public Plane getSize()
+    {
+        return new Plane(0, 0, width, height);
     }
 
     /**
@@ -137,8 +164,9 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
      * @param partialTickTime The partial tick time, used to calculate fluent animations.
      */
     @Override
-    public void update (int mouseX, int mouseY, float partialTickTime) {
-        contentArea.getLocalCoordinate().setYComponent(-1 * ((int)((ScrollBarComponentState) scrollbar.getState()).getCurrent()));
+    public void update(int mouseX, int mouseY, float partialTickTime)
+    {
+        contentArea.getLocalCoordinate().setYComponent(-1 * ((int) ((ScrollBarComponentState) scrollbar.getState()).getCurrent()));
     }
 
     /**
@@ -149,7 +177,8 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
      * @param mouseY The current Y-Coordinate of the mouse
      */
     @Override
-    public void drawBackground (int mouseX, int mouseY) {
+    public void drawBackground(int mouseX, int mouseY)
+    {
         //NOOP
     }
 
@@ -162,7 +191,8 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
      * @param mouseY The current Y-Coordinate of the mouse
      */
     @Override
-    public void drawForeground (int mouseX, int mouseY) {
+    public void drawForeground(int mouseX, int mouseY)
+    {
         //NOOP
     }
 
@@ -170,7 +200,7 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
      * Function called when the mouse was clicked inside of this component. Either it should pass this function to its
      * SubComponents (making sure that it recalculates the location and checks if it is inside before hand, handle the
      * Click them self or both.
-     *
+     * <p>
      * When this Component or one of its SubComponents handles the Click it should return True.
      *
      * @param relativeMouseX The relative (to the Coordinate returned by @see #getLocalCoordinate) X-Coordinate of the
@@ -178,20 +208,25 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
      * @param relativeMouseY The relative (to the Coordinate returned by @see #getLocalCoordinate) Y-Coordinate of the
      *                       mouseclick.
      * @param mouseButton    The 0-BasedIndex of the mouse button that was pressed.
-     *
      * @return True when the click has been handled, false when it did not.
      */
     @Override
-    public boolean handleMouseClickedInside (int relativeMouseX, int relativeMouseY, int mouseButton) {
-        for (IGUIComponent component : componentHashMap.values()) {
+    public boolean handleMouseClickedInside(int relativeMouseX, int relativeMouseY, int mouseButton)
+    {
+        for (IGUIComponent component : componentHashMap.values())
+        {
             Coordinate2D location = component.getLocalCoordinate();
             Plane localOccupiedArea = component.getSize().Move(location.getXComponent(), location.getYComponent());
 
             if (!localOccupiedArea.ContainsCoordinate(relativeMouseX, relativeMouseY))
+            {
                 continue;
+            }
 
             if (component.handleMouseClickedInside(relativeMouseX - location.getXComponent(), relativeMouseY - location.getYComponent(), mouseButton))
+            {
                 return true;
+            }
         }
 
         return false;
@@ -201,7 +236,7 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
      * Function called when the mouse was clicked outside of this component. It is only called when the function Either
      * it should pass this function to its SubComponents (making sure that it recalculates the location and checks if it
      * is inside before hand, handle the Click them self or both.
-     *
+     * <p>
      * When this Component or one of its SubComponents handles the Click it should return True.
      *
      * @param relativeMouseX The relative (to the Coordinate returned by @see #getLocalCoordinate) X-Coordinate of the
@@ -209,13 +244,15 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
      * @param relativeMouseY The relative (to the Coordinate returned by @see #getLocalCoordinate) Y-Coordinate of the
      *                       mouseclick.
      * @param mouseButton    The 0-BasedIndex of the mouse button that was pressed.
-     *
      * @return True when the click has been handled, false when it did not.
      */
     @Override
-    public boolean handleMouseClickedOutside (int relativeMouseX, int relativeMouseY, int mouseButton) {
-        for (IGUIComponent component : componentHashMap.values()) {
-            if (component.requiresForcedMouseInput()) {
+    public boolean handleMouseClickedOutside(int relativeMouseX, int relativeMouseY, int mouseButton)
+    {
+        for (IGUIComponent component : componentHashMap.values())
+        {
+            if (component.requiresForcedMouseInput())
+            {
                 Coordinate2D location = component.getLocalCoordinate();
                 component.handleMouseClickedOutside(relativeMouseX - location.getXComponent(), relativeMouseY - location.getYComponent(), mouseButton);
             }
@@ -231,10 +268,14 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
      * @return True when all the mouse clicks should be captured by this component.
      */
     @Override
-    public boolean requiresForcedMouseInput () {
-        for (IGUIComponent component : componentHashMap.values()) {
+    public boolean requiresForcedMouseInput()
+    {
+        for (IGUIComponent component : componentHashMap.values())
+        {
             if (component.requiresForcedMouseInput())
+            {
                 return true;
+            }
         }
 
         return false;
@@ -246,18 +287,30 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
      * @param key The key that was typed.
      */
     @Override
-    public boolean handleKeyTyped(char key, int keyCode) {
-        for (IGUIComponent component : componentHashMap.values()) {
+    public boolean handleKeyTyped(char key, int keyCode)
+    {
+        for (IGUIComponent component : componentHashMap.values())
+        {
             if (component.handleKeyTyped(key, keyCode))
+            {
                 return true;
+            }
         }
 
         return false;
     }
 
+    @Nonnull
+    @Override
+    public boolean handleMouseWheel(final int relativeMouseX, @Nonnull final int relativeMouseY, @Nonnull final int deltaWheel)
+    {
+        return scrollbar.handleMouseWheel(0, 0, deltaWheel);
+    }
+
     @Nullable
     @Override
-    public ArrayList<String> getToolTipContent () {
+    public ArrayList<String> getToolTipContent()
+    {
         return null;
     }
 
@@ -397,7 +450,8 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
      */
     @Override
     @Nonnull
-    public IGUIManager getManager () {
+    public IGUIManager getManager()
+    {
         return parent.getManager();
     }
 
@@ -407,21 +461,24 @@ public abstract class ComponentScrollableArea implements IGUIComponent, IContent
      * @param newManager THe new IGUIManager.
      */
     @Override
-    public void setManager (@Nonnull IGUIManager newManager) {
+    public void setManager(@Nonnull IGUIManager newManager)
+    {
         parent.setManager(newManager);
     }
 
     @Override
-    public boolean shouldScissor () {
+    public boolean shouldScissor()
+    {
         return true;
     }
 
     @Nonnull
     @Override
-    public Plane getGlobalScissorLocation () {
+    public Plane getGlobalScissorLocation()
+    {
         return getAreaOccupiedByComponent();
     }
 
     @Override
-    public abstract void registerContentComponents (@Nonnull ComponentContentArea host);
+    public abstract void registerContentComponents(@Nonnull ComponentContentArea host);
 }

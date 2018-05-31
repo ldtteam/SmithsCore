@@ -10,21 +10,23 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import javax.annotation.Nonnull;
 
-public class XPUtil {
+public class XPUtil
+{
 
     //CREDITS: crazypants and the EnderIO Team: https://raw.githubusercontent.com/SleepyTrousers/EnderIO/master/src/main/java/crazypants/enderio/xp/XpUtil.java
     //Values taken from OpenBlocks to ensure compatibility
 
-    public static final int XP_PER_BOTTLE = 8;
-    public static final int RATIO = 20;
+    public static final int XP_PER_BOTTLE        = 8;
+    public static final int RATIO                = 20;
     public static final int LIQUID_PER_XP_BOTTLE = XP_PER_BOTTLE * RATIO;
 
-
-    public static int liquidToExperience(int pLiquidAmount) {
+    public static int liquidToExperience(int pLiquidAmount)
+    {
         return pLiquidAmount / RATIO;
     }
 
-    public static int getLiquidForLevel(int pLevelAmount) {
+    public static int getLiquidForLevel(int pLevelAmount)
+    {
         return experienceToLiquid(getExperienceForLevel(pLevelAmount));
     }
 
@@ -33,24 +35,33 @@ public class XPUtil {
         return pXPAmount * RATIO;
     }
 
-    public static int getExperienceForLevel(int pLevel) {
-        if (pLevel == 0) {
+    public static int getExperienceForLevel(int pLevel)
+    {
+        if (pLevel == 0)
+        {
             return 0;
         }
-        if (pLevel > 0 && pLevel < 16) {
+        if (pLevel > 0 && pLevel < 16)
+        {
             return pLevel * 17;
-        } else if (pLevel > 15 && pLevel < 31) {
+        }
+        else if (pLevel > 15 && pLevel < 31)
+        {
             return (int) (1.5 * Math.pow(pLevel, 2) - 29.5 * pLevel + 360);
-        } else {
+        }
+        else
+        {
             return (int) (3.5 * Math.pow(pLevel, 2) - 151.5 * pLevel + 2220);
         }
     }
 
-    public static int getXpBarCapacity(int pLevel) {
+    public static int getXpBarCapacity(int pLevel)
+    {
         return pLevel >= 30 ? 62 + (pLevel - 30) * 7 : (pLevel >= 15 ? 17 + (pLevel - 15) * 3 : 17);
     }
 
-    public static void addPlayerXP(@Nonnull EntityPlayer pPlayer, int pDelta) {
+    public static void addPlayerXP(@Nonnull EntityPlayer pPlayer, int pDelta)
+    {
         int experience = getPlayerXP(pPlayer) + pDelta;
         pPlayer.experienceTotal = experience;
         pPlayer.experienceLevel = getLevelForExperience(experience);

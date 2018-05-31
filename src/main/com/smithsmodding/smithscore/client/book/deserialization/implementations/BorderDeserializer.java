@@ -15,11 +15,13 @@ import javax.annotation.Nonnull;
 /**
  * Created by marcf on 8/3/2016.
  */
-public class BorderDeserializer implements IPageComponentDeserializer<ComponentBorder> {
+public class BorderDeserializer implements IPageComponentDeserializer<ComponentBorder>
+{
 
     @Nonnull
     @Override
-    public ComponentBorder deserialize(@Nonnull JsonElement element, @Nonnull PageDeserializationContext context) {
+    public ComponentBorder deserialize(@Nonnull JsonElement element, @Nonnull PageDeserializationContext context)
+    {
         JsonObject borderObject = element.getAsJsonObject();
 
         MinecraftColor backGroundColor = (MinecraftColor) context.getContextData(CoreReferences.BookData.General.BACKGROUND);
@@ -53,8 +55,10 @@ public class BorderDeserializer implements IPageComponentDeserializer<ComponentB
     }
 
     @Nonnull
-    private ComponentBorder.CornerTypes getCornerTypeFromString(@Nonnull String cornerType) {
-        switch (cornerType.toLowerCase()){
+    private ComponentBorder.CornerTypes getCornerTypeFromString(@Nonnull String cornerType)
+    {
+        switch (cornerType.toLowerCase())
+        {
             case "inwards":
                 return ComponentBorder.CornerTypes.Inwards;
             case "outwards":

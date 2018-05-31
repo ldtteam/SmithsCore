@@ -9,7 +9,8 @@ import java.util.HashMap;
 /**
  * Created by marcf on 7/30/2016.
  */
-public interface IBookPage {
+public interface IBookPage
+{
     @Nonnull
     ResourceLocation getId();
 

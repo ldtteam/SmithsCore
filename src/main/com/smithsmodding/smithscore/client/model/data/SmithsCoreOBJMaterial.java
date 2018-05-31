@@ -8,23 +8,27 @@ import javax.vecmath.Vector4f;
  * Author Orion (Created on: 17.07.2016)
  * Replacement version of the old OBJ System in MC Forge used until the ModelGroup hiding works.
  */
-public class SmithsCoreOBJMaterial {
-    public static final String WHITE_NAME = "OBJModel.White.Texture.Name";
+public class SmithsCoreOBJMaterial
+{
+    public static final String WHITE_NAME   = "OBJModel.White.Texture.Name";
     public static final String DEFAULT_NAME = "OBJModel.Default.Texture.Name";
     private Vector4f color;
     private SmithsCoreOBJTexture texture = SmithsCoreOBJTexture.WHITE;
     @Nonnull
-    private String name = DEFAULT_NAME;
+    private String               name    = DEFAULT_NAME;
 
-    public SmithsCoreOBJMaterial() {
+    public SmithsCoreOBJMaterial()
+    {
         this(new Vector4f(1f, 1f, 1f, 1f));
     }
 
-    public SmithsCoreOBJMaterial(@Nonnull Vector4f color) {
+    public SmithsCoreOBJMaterial(@Nonnull Vector4f color)
+    {
         this(color, SmithsCoreOBJTexture.WHITE, WHITE_NAME);
     }
 
-    public SmithsCoreOBJMaterial(@Nonnull Vector4f color, @Nonnull SmithsCoreOBJTexture texture, @Nullable String name) {
+    public SmithsCoreOBJMaterial(@Nonnull Vector4f color, @Nonnull SmithsCoreOBJTexture texture, @Nullable String name)
+    {
         this.color = color;
         this.texture = texture;
         this.name = name != null ? name : DEFAULT_NAME;
@@ -36,35 +40,42 @@ public class SmithsCoreOBJMaterial {
     }
 
     @Nonnull
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
 
-    public void setName(@Nullable String name) {
+    public void setName(@Nullable String name)
+    {
         this.name = name != null ? name : DEFAULT_NAME;
     }
 
     @Nonnull
-    public Vector4f getColor() {
+    public Vector4f getColor()
+    {
         return this.color;
     }
 
-    public void setColor(@Nonnull Vector4f color) {
+    public void setColor(@Nonnull Vector4f color)
+    {
         this.color = color;
     }
 
     @Nonnull
-    public SmithsCoreOBJTexture getTexture() {
+    public SmithsCoreOBJTexture getTexture()
+    {
         return this.texture;
     }
 
-    public void setTexture(@Nonnull SmithsCoreOBJTexture texture) {
+    public void setTexture(@Nonnull SmithsCoreOBJTexture texture)
+    {
         this.texture = texture;
     }
 
     @Nonnull
     @Override
-    public String toString() {
+    public String toString()
+    {
         StringBuilder builder = new StringBuilder(String.format("%nMaterial:%n"));
         builder.append(String.format("    Name: %s%n", this.name));
         builder.append(String.format("    Color: %s%n", this.color.toString()));
