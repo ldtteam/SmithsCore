@@ -1,5 +1,6 @@
 package com.smithsmodding.smithscore.client.gui.components.implementations;
 
+import com.google.common.collect.Lists;
 import com.smithsmodding.smithscore.client.gui.hosts.IGUIBasedComponentHost;
 import com.smithsmodding.smithscore.client.gui.management.StandardRenderManager;
 import com.smithsmodding.smithscore.client.gui.state.SlotComponentState;
@@ -10,9 +11,13 @@ import com.smithsmodding.smithscore.util.client.gui.MultiComponentTexture;
 import com.smithsmodding.smithscore.util.common.positioning.Coordinate2D;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 /**
  * Created by Marc on 22.12.2015.
@@ -86,5 +91,25 @@ public class ComponentSlot extends CoreComponent
     public void drawForeground(int mouseX, int mouseY)
     {
         //NOOP
+    }
+
+    @Nullable
+    @Override
+    public ArrayList<String> getToolTipContent()
+    {
+        final SlotComponentState state = (SlotComponentState) getState();
+        final ItemStack stack = state.getItemStackInSlot();
+
+        if (stack == null || stack.isEmpty())
+        {
+            return Lists.newArrayList();
+        }
+
+        final ArrayList<String> data = new ArrayList<>();
+        data.add(stack.getDisplayName());
+
+        stack.getItem().addInformation(stack, null, data, ITooltipFlag.TooltipFlags.NORMAL);
+
+        return data;
     }
 }
