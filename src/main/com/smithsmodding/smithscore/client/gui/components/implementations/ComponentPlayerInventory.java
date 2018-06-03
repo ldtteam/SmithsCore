@@ -136,7 +136,7 @@ public class ComponentPlayerInventory implements IGUIBasedComponentHost
             for (int c = 0; c < ContainerSmithsCore.PLAYER_INVENTORY_COLUMNS; c++)
             {
                 registerNewComponent(new ComponentSlot(uniqueID + ".Slot.inventory." + (r * 9 + c),
-                                                        new SlotComponentState(null, (r * 9 + c), playerInventory, null),
+                  new SlotComponentState(null, 9 + (r * 9 + c), playerInventory, null),
                                                         this,
                                                         new Coordinate2D(c * 18 + 7, r * 18 + 7),
                                                         color));
@@ -146,7 +146,7 @@ public class ComponentPlayerInventory implements IGUIBasedComponentHost
         for (int c = 0; c < ContainerSmithsCore.PLAYER_INVENTORY_COLUMNS; c++)
         {
             registerNewComponent(new ComponentSlot(uniqueID + ".Slot.Hotbar." + (c),
-                                                    new SlotComponentState(null, (3 * 9 + c), playerInventory, null),
+              new SlotComponentState(null, (c), playerInventory, null),
                                                     this,
                                                     new Coordinate2D(c * 18 + 7, 3 * 18 + 5 + 7),
                                                     color));

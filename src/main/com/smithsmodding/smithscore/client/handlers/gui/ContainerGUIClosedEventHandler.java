@@ -32,7 +32,7 @@ public class ContainerGUIClosedEventHandler
             return;
         }
 
-        ContainerSmithsCore container = (ContainerSmithsCore) event.getPlayer().openContainer;
+        ContainerSmithsCore container = (ContainerSmithsCore) event.getClosingPlayer().openContainer;
         container.getManager().onGuiOpened(event.getPlayerID());
     }
 }

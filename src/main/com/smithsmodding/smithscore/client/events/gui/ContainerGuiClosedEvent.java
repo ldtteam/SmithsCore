@@ -24,7 +24,7 @@ import java.util.UUID;
 public class ContainerGuiClosedEvent extends StandardNetworkableEvent
 {
 
-    EntityPlayer player;
+    EntityPlayer closingPlayer;
     UUID         playerID;
     String       containerID;
 
@@ -34,8 +34,8 @@ public class ContainerGuiClosedEvent extends StandardNetworkableEvent
 
     public ContainerGuiClosedEvent(@Nonnull EntityPlayer pPlayer, @Nonnull ContainerSmithsCore containerSmithsCore)
     {
-        this.player = pPlayer;
-        this.playerID = player.getUniqueID();
+        this.closingPlayer = pPlayer;
+        this.playerID = closingPlayer.getUniqueID();
         this.containerID = containerSmithsCore.getContainerID();
     }
 
@@ -45,9 +45,9 @@ public class ContainerGuiClosedEvent extends StandardNetworkableEvent
      * @return The entity opening the UI.
      */
     @Nonnull
-    public EntityPlayer getPlayer()
+    public EntityPlayer getClosingPlayer()
     {
-        return player;
+        return closingPlayer;
     }
 
     /**
@@ -93,7 +93,7 @@ public class ContainerGuiClosedEvent extends StandardNetworkableEvent
         //Retrieve the player from the Context.
         if (pContext.side == Side.SERVER)
         {
-            player = pContext.getServerHandler().playerEntity;
+            closingPlayer = pContext.getServerHandler().player;
 
             super.handleCommunicationMessage(pMessage, pContext);
         }

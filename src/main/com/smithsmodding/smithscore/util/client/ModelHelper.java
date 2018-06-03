@@ -322,7 +322,7 @@ public class ModelHelper
     @Nonnull
     public static int[] getPackedQuadData(@Nonnull float[][][] unpackedData, @Nonnull VertexFormat format)
     {
-        int[] vertexData = new int[format.getNextOffset()];
+        int[] vertexData = new int[format.getSize()];
 
         for (int vertexIndex = 0; vertexIndex < 4; vertexIndex++)
         {
@@ -513,7 +513,7 @@ public class ModelHelper
             if (texElem != null && texElem.isJsonObject())
             {
                 ItemCameraTransforms itemCameraTransforms = context.deserialize(texElem.getAsJsonObject(), ItemCameraTransforms.class);
-                return IPerspectiveAwareModel.MapWrapper.getTransforms(itemCameraTransforms);
+                return PerspectiveMapWrapper.getTransforms(itemCameraTransforms);
             }
 
             return builder.build();

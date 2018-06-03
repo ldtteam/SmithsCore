@@ -1,6 +1,5 @@
 package com.smithsmodding.smithscore.client.model.data;
 
-import com.google.common.base.Optional;
 import net.minecraftforge.common.model.IModelPart;
 import net.minecraftforge.common.model.TRSRTransformation;
 
@@ -8,6 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Author Orion (Created on: 17.07.2016)
@@ -41,7 +41,7 @@ public class SmithsCoreOBJGroup implements IModelPart
         for (SmithsCoreOBJFace f : this.faces)
         {
 //                if (minUVBounds != null && maxUVBounds != null) f.normalizeUVs(minUVBounds, maxUVBounds);
-            faceSet.add(f.bake(transform.or(TRSRTransformation.identity())));
+            faceSet.add(f.bake(transform.orElse(TRSRTransformation.identity())));
         }
         return faceSet;
     }

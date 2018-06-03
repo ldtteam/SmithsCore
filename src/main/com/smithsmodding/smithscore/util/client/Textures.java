@@ -8,8 +8,6 @@ import com.smithsmodding.smithscore.util.client.gui.MultiComponentTexture;
 import com.smithsmodding.smithscore.util.client.gui.TextureComponent;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.LoaderState;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -34,22 +32,12 @@ public class Textures
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void loadTextures(@Nonnull TextureStitchCollectedEvent event)
     {
-        //Only run the creation once, after all mods have been loaded.
-        if (!Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION))
-        {
-            return;
-        }
-
         Gui.Basic.INFOICON.addIcon(event.getMap().registerSprite(new ResourceLocation(Gui.Basic.INFOICON.getPrimaryLocation())));
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void loadTexturesAfterCreation(TextureStitchEvent.Post event)
     {
-        if (!Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION))
-        {
-            return;
-        }
     }
 
     public static class Gui

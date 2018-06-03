@@ -24,7 +24,7 @@ import java.util.UUID;
 public class ContainerGuiOpenedEvent extends StandardNetworkableEvent
 {
 
-    EntityPlayer player;
+    EntityPlayer openingPlayer;
     UUID         playerID;
     String       containerID;
 
@@ -34,8 +34,8 @@ public class ContainerGuiOpenedEvent extends StandardNetworkableEvent
 
     public ContainerGuiOpenedEvent(@Nonnull EntityPlayer pPlayer, @Nonnull ContainerSmithsCore containerSmithsCore)
     {
-        this.player = pPlayer;
-        this.playerID = player.getUniqueID();
+        this.openingPlayer = pPlayer;
+        this.playerID = openingPlayer.getUniqueID();
         this.containerID = containerSmithsCore.getContainerID();
     }
 
@@ -45,9 +45,9 @@ public class ContainerGuiOpenedEvent extends StandardNetworkableEvent
      * @return The entity opening the UI.
      */
     @Nonnull
-    public EntityPlayer getPlayer()
+    public EntityPlayer getOpeningPlayer()
     {
-        return player;
+        return openingPlayer;
     }
 
     /**
@@ -93,7 +93,7 @@ public class ContainerGuiOpenedEvent extends StandardNetworkableEvent
         //Retrieve the player from the Context.
         if (pContext.side == Side.SERVER)
         {
-            player = pContext.getServerHandler().playerEntity;
+            openingPlayer = pContext.getServerHandler().player;
 
             super.handleCommunicationMessage(pMessage, pContext);
         }

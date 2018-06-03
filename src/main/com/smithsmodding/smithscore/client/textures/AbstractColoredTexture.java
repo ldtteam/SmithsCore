@@ -25,6 +25,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Custom base class for textures used in armory.
@@ -148,7 +149,8 @@ public abstract class AbstractColoredTexture extends TextureAtlasSprite
     }
 
     @Override
-    public boolean load(@Nonnull IResourceManager manager, @Nonnull ResourceLocation location)
+    public boolean load(
+      final IResourceManager manager, final ResourceLocation location, final Function<ResourceLocation, TextureAtlasSprite> textureGetter)
     {
         this.framesTextureData = Lists.newArrayList();
         this.frameCounter = 0;

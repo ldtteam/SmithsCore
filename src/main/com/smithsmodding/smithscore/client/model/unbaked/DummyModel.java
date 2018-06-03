@@ -1,6 +1,5 @@
 package com.smithsmodding.smithscore.client.model.unbaked;
 
-import com.google.common.base.Function;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -40,10 +39,8 @@ public class DummyModel implements IModel
     }
 
     @Override
-    @Nonnull
     public IBakedModel bake(
-                             @Nonnull IModelState state, @Nonnull VertexFormat format,
-                             @Nonnull Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter)
+      final IModelState state, final VertexFormat format, final java.util.function.Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter)
     {
         if (BAKED_MODEL != null)
         {

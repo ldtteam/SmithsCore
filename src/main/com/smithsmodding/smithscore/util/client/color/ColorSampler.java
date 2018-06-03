@@ -156,7 +156,7 @@ public class ColorSampler
                 return;
             }
 
-            MinecraftColor mappedColor = new MinecraftColor(Minecraft.getMinecraft().fontRendererObj.getColorCode((char) character));
+            MinecraftColor mappedColor = new MinecraftColor(Minecraft.getMinecraft().fontRenderer.getColorCode((char) character));
             SmithsCore.getLogger()
               .info("Generated MinecraftColor Code : " + mappedColor.getRed() + "-" + mappedColor.getGreen() + "-" + mappedColor.getBlue() + " for the following TextFormatting: "
                       + TextFormatting.values()[index].name() + ".");
