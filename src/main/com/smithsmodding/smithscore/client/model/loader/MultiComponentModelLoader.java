@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.smithsmodding.smithscore.client.model.deserializers.MultiComponentModelDeserializer;
 import com.smithsmodding.smithscore.client.model.deserializers.definition.MultiComponentModelDefinition;
-import com.smithsmodding.smithscore.client.model.unbaked.DummyModel;
 import com.smithsmodding.smithscore.client.model.unbaked.ItemLayerModel;
 import com.smithsmodding.smithscore.client.model.unbaked.MultiComponentModel;
 import com.smithsmodding.smithscore.util.client.ModelHelper;
@@ -12,8 +11,6 @@ import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ICustomModelLoader;
 import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.LoaderState;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -63,11 +60,6 @@ public class MultiComponentModelLoader implements ICustomModelLoader
     @Nonnull
     public IModel loadModel(@Nonnull ResourceLocation modelLocation) throws Exception
     {
-        if (!Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION))
-        {
-            return DummyModel.INSTANCE;
-        }
-
         modelLocation = ModelHelper.getModelLocation(modelLocation);
 
         MultiComponentModelDefinition definition = MultiComponentModelDeserializer.instance.deserialize(modelLocation);

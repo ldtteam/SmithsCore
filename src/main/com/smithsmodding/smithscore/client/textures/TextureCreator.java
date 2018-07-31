@@ -9,8 +9,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.LoaderState;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -96,15 +94,9 @@ public class TextureCreator implements IResourceManagerReloadListener
      *
      * @param event The events fired before the TextureSheet is stitched. TextureStitchEvent.Pre instance.
      */
-    @SubscribeEvent(priority = EventPriority.NORMAL)
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void createCustomTextures(@Nonnull TextureStitchCollectedEvent event)
     {
-        //Only run the creation once, after all mods have been loaded.
-        if (!Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION))
-        {
-            return;
-        }
-
         //Function is called so that all textures can be created.
         createMaterialTextures(event.getMap());
     }

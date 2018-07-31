@@ -13,7 +13,7 @@ import java.util.Map;
  */
 @IFMLLoadingPlugin.TransformerExclusions("com.smithsmodding.smithscore.core.")
 @IFMLLoadingPlugin.SortingIndex(1001)
-@IFMLLoadingPlugin.MCVersion("1.11.2")
+@IFMLLoadingPlugin.MCVersion("1.12.2")
 public class SmithsCoreFMLPlugin implements IFMLLoadingPlugin
 {
 

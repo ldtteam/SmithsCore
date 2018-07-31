@@ -5,6 +5,7 @@ import com.smithsmodding.smithscore.common.inventory.IItemStorage;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -61,5 +62,10 @@ public class SlotComponentState extends CoreComponentState
     public TextureAtlasSprite getHolographicSprite()
     {
         return sprite;
+    }
+
+    public ItemStack getItemStackInSlot()
+    {
+        return relevantInventory.getStackInSlot(slotIndex);
     }
 }
