@@ -162,11 +162,23 @@ jar {
         attributes 'ForceLoadAsMod': true
     }
 
-    configurations.embed.each { dep ->
-        from(project.zipTree(dep)){
-            exclude 'META-INF', 'META-INF/**'
+    from configurations.embed.collect {
+        if(it.isDirectory()){
+            return it
+        }else{
+            FileTree tmp = zipTree(it)
+            for(File s : tmp.files) {
+                if (s.toString().endsWith(".html")){
+                    System.out.println("File " + s + " removed")
+                    tmp.files.remove(s)
+                }
+            }
+            return tmp
         }
     }
+
+    rename 'LICENSE.txt', 'LICENSE-mixin.txt'
+    from ('LICENSE')
 }
 
 task devJar(type: Jar, dependsOn: 'classes') {
