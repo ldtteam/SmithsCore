@@ -501,7 +501,12 @@ public class ModelHelper
                     try
                     {
                         Reader reader = getReaderForResource(parentLocation);
-                        builder.putAll(gsonPrivate.fromJson(reader, transformtype));
+                        Map<ItemCameraTransforms.TransformType, TRSRTransformation> parentTransforms = gsonPrivate.fromJson(reader, transformtype);
+
+                        if (parentTransforms != null)
+                        {
+                            parentTransforms.entrySet().forEach(builder::put);
+                        }
                     }
                     catch (IOException e)
                     {

@@ -24,6 +24,7 @@ buildscript{
 plugins {
     id "com.matthewprenger.cursegradle" version "1.0.7"
     id "se.bjurr.gitchangelog.git-changelog-gradle-plugin" version "1.34"
+    id "com.github.johnrengelman.shadow" version "2.0.4"
 }
 
 repositories {
@@ -62,21 +63,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 //Initializing the mod environment
-version = config.minecraft_version.toString() + "-" + config.mod_version.toString() + "-" + System.getenv().BUILDID.toString()
-def apiversion = config.minecraft_version.toString() + "-" + config.api_version.toString() + "-" + System.getenv().BUILDID.toString()
-
-def release = System.getenv().RELEASETYPE
-if (release != "release" && release != "alpha" && release != "beta")
-{
-    release = "alpha"
-}
-
-if(release != "release")
-{
-    version = version + "-SNAPSHOT"
-    apiversion = apiversion + "-SNAPSHOT"
-}
-
+version = config.minecraft_version.toString() + "-" + System.getenv()["Version"]
 group = "com.smithsmodding.smithscore"
 archivesBaseName = "smithscore"
 
@@ -92,7 +79,6 @@ minecraft {
     //Replacing stuff inside the code:
     replace "@VERSION@", project.version
     replace "@MCVERSION@", config.minecraft_version
-    replace "@APIVERSION@", apiversion
 }
 
 configurations {
@@ -107,6 +93,7 @@ dependencies {
     //Mixins
     embed('org.spongepowered:mixin:0.7.5-SNAPSHOT') {
         exclude module: 'launchwrapper'
+        transitive = false
     }
 
     //Test dependencies
@@ -162,66 +149,46 @@ jar {
         attributes 'ForceLoadAsMod': true
     }
 
-    from configurations.embed.collect {
-        if(it.isDirectory()){
-            return it
-        }else{
-            FileTree tmp = zipTree(it)
-            for(File s : tmp.files) {
-                if (s.toString().endsWith(".html")){
-                    System.out.println("File " + s + " removed")
-                    tmp.files.remove(s)
-                }
-            }
-            return tmp
-        }
-    }
+    classifier = "slim"
 
     rename 'LICENSE.txt', 'LICENSE-mixin.txt'
     from ('LICENSE')
 }
 
-task devJar(type: Jar, dependsOn: 'classes') {
-    from(sourceSets.main.output) {
-        include '**'
-    }
+shadowJar {
+    configurations = [project.configurations.embed]
+    from(sourceSets["main"].output)
 
-    extension = 'jar'
-    classifier "dev"
-}
-
-task javadocJar(type: Jar, dependsOn: 'javadoc') {
-    from "build/docs/javadoc"
-    classifier "javadoc"
+    classifier = ""
 }
 
 //Shade it.
 reobf {
-    jar {
-        extraLines 'PK: org/spongepowered/asm com/smithsmodding/shading/mixin'
-    }
+    jar {}
+    shadowJar{}
 }
 
 artifacts {
-    archives devJar
-    archives javadocJar
+    archives shadowJar
+    archives sourceJar
 }
 
 curseforge {
-    if (System.getenv().CURSEAPIKEY != null && release != null)
+    if (System.getenv().CURSEAPIKEY != null && System.getenv().CURSERELEASETYPE != null)
     {
         apiKey = System.getenv().CURSEAPIKEY
 
         project {
             id = '246525'
 
-            changelog = file("build/changelog.md")
-            changelogType = "markdown"
+            changelog = file('build/changelog.md')
+            changelogType = 'markdown'
+            releaseType = System.getenv().CURSERELEASETYPE
 
-            releaseType = release
+            displayName = "SmithsCore: " + version
+            mainArtifact shadowJar
 
-            addArtifact devJar
-            addArtifact javadocJar
+            addArtifact sourceJar
         }
     }
     else
