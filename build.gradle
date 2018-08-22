@@ -185,8 +185,9 @@ curseforge {
             changelogType = 'markdown'
             releaseType = System.getenv().CURSERELEASETYPE
 
-            displayName = "SmithsCore: " + version
-            mainArtifact shadowJar
+            mainArtifact (shadowJar) {
+                displayName = "SmithsCore: " + version
+            }
 
             addArtifact sourceJar
         }
