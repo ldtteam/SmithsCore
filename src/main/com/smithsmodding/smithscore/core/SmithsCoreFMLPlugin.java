@@ -1,9 +1,12 @@
 package com.smithsmodding.smithscore.core;
 
+import net.minecraftforge.common.ForgeVersion;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.Mixins;
+import org.spongepowered.asm.mixin.extensibility.IEnvironmentTokenProvider;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -12,21 +15,47 @@ import java.util.Map;
  * The FML Plugin for SmithsCore
  */
 @IFMLLoadingPlugin.TransformerExclusions("com.smithsmodding.smithscore.core.")
-@IFMLLoadingPlugin.SortingIndex(1001)
+@IFMLLoadingPlugin.SortingIndex(5000)
 @IFMLLoadingPlugin.MCVersion("1.12.2")
 public class SmithsCoreFMLPlugin implements IFMLLoadingPlugin
 {
 
+    public static final class TokenProvider implements IEnvironmentTokenProvider
+    {
+
+        @Override
+        public int getPriority()
+        {
+            return IEnvironmentTokenProvider.DEFAULT_PRIORITY;
+        }
+
+        @Override
+        public Integer getToken(String token, MixinEnvironment env)
+        {
+            if ("FORGE".equals(token))
+            {
+                return Integer.valueOf(ForgeVersion.getBuildVersion());
+            }
+            else if ("FML".equals(token))
+            {
+                String fmlVersion = Loader.instance().getFMLVersionString();
+                int build = Integer.parseInt(fmlVersion.substring(fmlVersion.lastIndexOf('.') + 1));
+                return Integer.valueOf(build);
+            }
+            else if ("MC_FORGE".equals(token))
+            {
+                return ForgeVersion.minorVersion;
+            }
+            return null;
+        }
+    }
+
     public SmithsCoreFMLPlugin()
     {
         MixinBootstrap.init();
-
-        //-Dfml.coreMods.load=com.smithsmodding.smithscore.core.SmithsCoreFMLPlugin
-
-        // Retrieves the DEFAULT mixin environment
-        MixinEnvironment.getDefaultEnvironment();
-
         Mixins.addConfiguration("mixins.smithscore.json");
+        MixinEnvironment.getDefaultEnvironment().registerTokenProviderClass(
+          "com.smithsmodding.smithscore.core.SmithsCoreFMLPlugin$TokenProvider");
     }
 
     /**
