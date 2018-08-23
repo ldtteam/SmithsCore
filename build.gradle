@@ -144,7 +144,7 @@ jar {
         attributes 'FMLCorePluginContainsFMLMod': 'true'
         attributes 'FMLAT': 'SmithsCore_at.cfg'
         attributes 'MixinConfigs': 'mixins.smitshcore.json'
-        attributes 'TweakClass': 'com.smithsmodding.shading.mixin.launch.MixinTweaker'
+        attributes 'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker'
         attributes 'TweakOrder': 0
         attributes 'ForceLoadAsMod': true
     }
