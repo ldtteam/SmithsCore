@@ -68,7 +68,7 @@ group = "com.smithsmodding.smithscore"
 archivesBaseName = "smithscore"
 
 minecraft {
-    coreMod="com.smithsmodding.core.SmithsCoreFMLPlugin"
+    coreMod="com.smithsmodding.smithscore.core.SmithsCoreFMLPlugin"
     version = config.minecraft_version+ "-" + config.forge_version
     runDir = "run"
 
