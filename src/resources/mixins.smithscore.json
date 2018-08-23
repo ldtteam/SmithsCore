@@ -1,7 +1,8 @@
 {
+  "minVersion": "0.7",
   "required": true,
   "package": "com.smithsmodding.smithscore.core.hooks",
-  "refmap": "mixins.common.refmap.json",
+  "refmap": "mixin.refmap.json",
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
   "client": [
