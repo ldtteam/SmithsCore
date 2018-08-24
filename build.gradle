@@ -199,6 +199,7 @@ curseforge {
             }
 
             addArtifact sourceJar
+            addArtifact javadoc
         }
     }
     else
