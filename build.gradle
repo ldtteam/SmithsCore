@@ -86,13 +86,14 @@ configurations {
     compile.extendsFrom(embed)
 }
 
+
+
 dependencies {
 	//Mod dependencies
     deobfCompile "mezz.jei:jei_" + config.minecraft_version + ":" + config.jei_version
 
     //Mixins
     embed('org.spongepowered:mixin:0.7.5-SNAPSHOT') {
-        exclude module: 'launchwrapper'
         transitive = false
     }
 
@@ -143,7 +144,6 @@ jar {
         attributes 'FMLCorePlugin': 'com.smithsmodding.smithscore.core.SmithsCoreFMLPlugin'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
         attributes 'FMLAT': 'SmithsCore_at.cfg'
-        attributes 'MixinConfigs': 'mixins.smitshcore.json'
         attributes 'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker'
         attributes 'TweakOrder': 0
         attributes 'ForceLoadAsMod': true
@@ -158,6 +158,15 @@ jar {
 shadowJar {
     configurations = [project.configurations.embed]
     from(sourceSets["main"].output)
+
+    manifest {
+        attributes 'FMLCorePlugin': 'com.smithsmodding.smithscore.core.SmithsCoreFMLPlugin'
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
+        attributes 'FMLAT': 'SmithsCore_at.cfg'
+        attributes 'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker'
+        attributes 'TweakOrder': 0
+        attributes 'ForceLoadAsMod': true
+    }
 
     classifier = ""
 }

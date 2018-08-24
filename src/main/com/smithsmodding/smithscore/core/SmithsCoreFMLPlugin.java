@@ -14,9 +14,9 @@ import java.util.Map;
 /**
  * The FML Plugin for SmithsCore
  */
-@IFMLLoadingPlugin.TransformerExclusions("com.smithsmodding.smithscore.core.")
-@IFMLLoadingPlugin.SortingIndex(5000)
-@IFMLLoadingPlugin.MCVersion("1.12.2")
+@IFMLLoadingPlugin.MCVersion(value = ForgeVersion.mcVersion)
+@IFMLLoadingPlugin.SortingIndex(value = 5000)
+@IFMLLoadingPlugin.TransformerExclusions(value = "smithscore.core.")
 public class SmithsCoreFMLPlugin implements IFMLLoadingPlugin
 {
 
@@ -52,10 +52,7 @@ public class SmithsCoreFMLPlugin implements IFMLLoadingPlugin
 
     public SmithsCoreFMLPlugin()
     {
-        MixinBootstrap.init();
-        Mixins.addConfiguration("mixins.smithscore.json");
-        MixinEnvironment.getDefaultEnvironment().registerTokenProviderClass(
-          "com.smithsmodding.smithscore.core.SmithsCoreFMLPlugin$TokenProvider");
+        InitMixin();
     }
 
     /**
@@ -124,5 +121,13 @@ public class SmithsCoreFMLPlugin implements IFMLLoadingPlugin
     {
         //No additional Acces Transformer.
         return null;
+    }
+
+    public static void InitMixin()
+    {
+        MixinBootstrap.init();
+        Mixins.addConfiguration("mixins.smithscore.json");
+        MixinEnvironment.getDefaultEnvironment().registerTokenProviderClass(
+          "com.smithsmodding.smithscore.core.SmithsCoreFMLPlugin$TokenProvider");
     }
 }

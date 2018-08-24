@@ -32,7 +32,7 @@ public class Textures
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void loadTextures(@Nonnull TextureStitchCollectedEvent event)
     {
-        Gui.Basic.INFOICON.addIcon(event.getMap().registerSprite(new ResourceLocation(Gui.Basic.INFOICON.getPrimaryLocation())));
+        Gui.Basic.INFOICON.addIcon(event.getMap().addNewTextureFromResourceLocation(new ResourceLocation(Gui.Basic.INFOICON.getPrimaryLocation())));
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)

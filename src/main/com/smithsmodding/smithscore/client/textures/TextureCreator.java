@@ -120,7 +120,7 @@ public class TextureCreator implements IResourceManagerReloadListener
                 }
 
                 //Grabbing the base texture so that we can color a copy.
-                TextureAtlasSprite base = map.getTextureExtry(baseTexture.toString());
+                TextureAtlasSprite base = map.getTextureViaName(baseTexture.toString());
                 if (base == null)
                 {
                     //A missing texture does not need coloring. Skipping.
@@ -145,7 +145,7 @@ public class TextureCreator implements IResourceManagerReloadListener
 
         if (ResourceHelper.exists(location))
         {
-            sprite = map.registerSprite(new ResourceLocation(location));
+            sprite = map.addNewTextureFromResourceLocation(new ResourceLocation(location));
         }
         else
         {
@@ -155,7 +155,7 @@ public class TextureCreator implements IResourceManagerReloadListener
             if (controller.getTextureSuffix() != null)
             {
                 String loc2 = baseTexture.toString() + "_" + controller.getTextureSuffix();
-                TextureAtlasSprite base2 = map.getTextureExtry(loc2);
+                TextureAtlasSprite base2 = map.getTextureViaName(loc2);
                 // can we manually load it?
                 if (base2 == null && ResourceHelper.exists(loc2))
                 {
@@ -169,7 +169,7 @@ public class TextureCreator implements IResourceManagerReloadListener
                     };
 
                     // save in the map so it's getting reused by the others and is available
-                    map.setTextureEntry(base2);
+                    map.setEntry(base2);
                 }
                 if (base2 != null)
                 {
@@ -182,7 +182,7 @@ public class TextureCreator implements IResourceManagerReloadListener
         // stitch new textures
         if (sprite != null)
         {
-            map.setTextureEntry(sprite);
+            map.setEntry(sprite);
         }
 
         return sprite;

@@ -8,9 +8,9 @@ import net.minecraft.util.ResourceLocation;
  */
 public interface ITextureMap
 {
-    TextureAtlasSprite getTextureExtry(String name);
+    TextureAtlasSprite getTextureViaName(String name);
 
-    TextureAtlasSprite registerSprite(ResourceLocation location);
+    TextureAtlasSprite addNewTextureFromResourceLocation(ResourceLocation location);
 
-    boolean setTextureEntry(TextureAtlasSprite entry);
+    boolean setEntry(TextureAtlasSprite entry);
 }

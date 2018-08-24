@@ -1,6 +1,8 @@
 package com.smithsmodding.smithscore.core;
 
+import com.google.common.eventbus.EventBus;
 import net.minecraftforge.fml.common.DummyModContainer;
+import net.minecraftforge.fml.common.LoadController;
 import net.minecraftforge.fml.common.ModMetadata;
 
 import java.util.Collections;
@@ -39,6 +41,13 @@ public class SmithsCoreCoreMod extends DummyModContainer
     public static SmithsCoreCoreMod getInstance()
     {
         return instance;
+    }
+
+    @Override
+    public boolean registerBus(final EventBus bus, final LoadController controller)
+    {
+        bus.register(this);
+        return true;
     }
 
     @Override
