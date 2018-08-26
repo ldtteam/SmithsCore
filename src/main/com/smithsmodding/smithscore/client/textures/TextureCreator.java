@@ -152,7 +152,7 @@ public class TextureCreator implements IResourceManagerReloadListener
             TextureAtlasSprite matBase = base;
 
             // different base texture?
-            if (controller.getTextureSuffix() != null)
+            if (controller.getTextureSuffix() != null && !controller.getTextureSuffix().isEmpty())
             {
                 String loc2 = baseTexture.toString() + "_" + controller.getTextureSuffix();
                 TextureAtlasSprite base2 = map.getTextureViaName(loc2);

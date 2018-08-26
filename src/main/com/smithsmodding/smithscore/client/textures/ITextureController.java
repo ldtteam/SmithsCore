@@ -4,6 +4,7 @@ import com.smithsmodding.smithscore.util.client.color.MinecraftColor;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Author Marc (Created on: 09.06.2016)
@@ -57,7 +58,7 @@ public interface ITextureController
      *
      * @return "" When no suffix exists or a suffix.
      */
-    @Nonnull
+    @Nullable
     String getTextureSuffix();
 
     /**
@@ -67,7 +68,7 @@ public interface ITextureController
      * @return The instance this method was called on, used for method chaining.
      */
     @Nonnull
-    ITextureController setTextureSuffix(String suffix);
+    ITextureController setTextureSuffix(@Nullable final String suffix);
 
     /**
      * Gets the identifier for the Texturevariations that this Controller produces.
