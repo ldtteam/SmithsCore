@@ -96,7 +96,7 @@ public class SmithsCore {
      *
      * @return True when the Development flag is set, false when not.
      */
-    public static final boolean isInDevEnvironment() {return isInDevEnvironment || isIsInObfuscatedEnvironment(); }
+    public static final boolean isInDevEnvironment() {return isInDevEnvironment; } // || isIsInObfuscatedEnvironment();
 
     public static final Logger getLogger() { return iLogger; }
 
