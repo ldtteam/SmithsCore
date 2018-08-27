@@ -9,6 +9,7 @@ import com.smithsmodding.smithscore.util.client.color.MinecraftColor;
 import com.smithsmodding.smithscore.util.client.gui.GuiHelper;
 import com.smithsmodding.smithscore.util.client.gui.MultiComponentTexture;
 import com.smithsmodding.smithscore.util.common.positioning.Coordinate2D;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.util.ITooltipFlag;
@@ -108,7 +109,7 @@ public class ComponentSlot extends CoreComponent
         final ArrayList<String> data = new ArrayList<>();
         data.add(stack.getDisplayName());
 
-        stack.getItem().addInformation(stack, null, data, ITooltipFlag.TooltipFlags.NORMAL);
+        stack.getItem().addInformation(stack, Minecraft.getMinecraft().world, data, ITooltipFlag.TooltipFlags.NORMAL);
 
         return data;
     }
