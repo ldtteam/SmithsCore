@@ -1,6 +1,6 @@
 [
 {
-  "modid": "SmithsCore",
+  "modid": "smithscore",
   "name": "Smiths Core",
   "description": "Core Mod for all SmithsModding affiliated mods",
   "version": "${version}",

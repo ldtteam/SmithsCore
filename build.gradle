@@ -68,11 +68,11 @@ targetCompatibility = 1.8
 
 //Initializing the mod environment
 version = config.minecraft_version.toString() + "-" + System.getenv()["Version"]
-group = "com.smithsmodding.smithscore"
+group = "com.ldtteam.smithscore"
 archivesBaseName = "smithscore"
 
 minecraft {
-    coreMod="com.smithsmodding.smithscore.core.SmithsCoreFMLPlugin"
+    coreMod="com.ldtteam.smithscore.core.SmithsCoreFMLPlugin"
     version = config.minecraft_version+ "-" + config.forge_version
     runDir = "run"
 
@@ -145,7 +145,7 @@ processResources
 
 jar {
     manifest {
-        attributes 'FMLCorePlugin': 'com.smithsmodding.smithscore.core.SmithsCoreFMLPlugin'
+        attributes 'FMLCorePlugin': 'com.ldtteam.smithscore.core.SmithsCoreFMLPlugin'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
         attributes 'FMLAT': 'SmithsCore_at.cfg'
         attributes 'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker'
@@ -164,7 +164,7 @@ shadowJar {
     from(sourceSets["main"].output)
 
     manifest {
-        attributes 'FMLCorePlugin': 'com.smithsmodding.smithscore.core.SmithsCoreFMLPlugin'
+        attributes 'FMLCorePlugin': 'com.ldtteam.smithscore.core.SmithsCoreFMLPlugin'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
         attributes 'FMLAT': 'SmithsCore_at.cfg'
         attributes 'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker'

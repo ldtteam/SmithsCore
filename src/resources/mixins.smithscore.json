@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "com.smithsmodding.smithscore.core.hooks",
+  "package": "com.ldtteam.smithscore.core.hooks",
   "refmap": "mixin.refmap.json",
   "compatibilityLevel": "JAVA_8",
   "minVersion": "0.7",
