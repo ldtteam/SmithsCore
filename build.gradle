@@ -68,7 +68,7 @@ targetCompatibility = 1.8
 
 //Initializing the mod environment
 version = config.minecraft_version.toString() + "-" + System.getenv()["Version"]
-group = "com.ldtteam.smithscore"
+group = "com.ldtteam"
 archivesBaseName = "smithscore"
 
 minecraft {
