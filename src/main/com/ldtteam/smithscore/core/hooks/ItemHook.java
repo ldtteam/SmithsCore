@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Item.class)
 public abstract class ItemHook extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<Item>
 {
-    @Inject(method = "getNBTShareTag", at = @At("RETURN"), remap = false)
+    @Inject(method = "getNBTShareTag", at = @At("RETURN"), remap = false, cancellable = true)
     public void onGetNBTShareTag(final ItemStack stack, final CallbackInfoReturnable<NBTTagCompound> callbackInfoReturnable)
     {
         NBTTagCompound compound = callbackInfoReturnable.getReturnValue();
