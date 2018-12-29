@@ -15,17 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Item.class)
 public abstract class ItemHook extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<Item>
 {
-    /**
-     * This method needs to be true. Always.
-     *
-     * @author Marc
-     * @reason This method needs to return true to support SC Cap syncing.
-     */
-    @Overwrite
-    public boolean getShareTag()
-    {
-        return true;
-    }
 
     @Inject(method = "getNBTShareTag", at = @At("RETURN"), remap = false, cancellable = true)
     public void onGetNBTShareTag(final ItemStack stack, final CallbackInfoReturnable<NBTTagCompound> callbackInfoReturnable)
