@@ -90,7 +90,9 @@ configurations {
     compile.extendsFrom(embed)
 }
 
-
+mixin {
+    add sourceSets.main, "mixin.refmap.json"
+}
 
 dependencies {
 	//Mod dependencies

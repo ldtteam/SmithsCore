@@ -3,6 +3,7 @@ package com.ldtteam.smithscore.core.hooks;
 import com.ldtteam.smithscore.client.events.texture.TextureStitchCollectedEvent;
 import com.ldtteam.smithscore.core.interfaces.ITextureMap;
 import net.minecraft.client.renderer.texture.AbstractTexture;
+import net.minecraft.client.renderer.texture.ITickableTextureObject;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
@@ -18,17 +19,17 @@ import javax.annotation.Nullable;
  * Hook Class for the TextureMap.
  */
 @Mixin(TextureMap.class)
-public abstract class TextureMapHook extends AbstractTexture implements ITextureMap
+public abstract class TextureMapHook extends AbstractTexture implements ITextureMap, ITickableTextureObject
 {
+
+    @Shadow
+    public abstract TextureAtlasSprite registerSprite(final ResourceLocation location);
 
     @Inject(method = "loadTextureAtlas", at = @At("HEAD"))
     public void onLoadTextureAtlas(CallbackInfo cbi)
     {
         new TextureStitchCollectedEvent(this).PostClient();
     }
-
-    @Shadow
-    public abstract TextureAtlasSprite registerSprite(final ResourceLocation location);
 
     @Shadow
     @Nullable
