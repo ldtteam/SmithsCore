@@ -8,83 +8,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackHook
 {
-
-    @Inject(method = "getTagCompound", at = @At("RETURN"), cancellable = true)
-    public void onGetTagCompound( final CallbackInfoReturnable<NBTTagCompound> callbackInfoReturnable)
-    {
-        NBTTagCompound compound = callbackInfoReturnable.getReturnValue();
-        if (compound == null)
-        {
-            compound = new NBTTagCompound();
-        }
-
-        if (SmithsCore.isInDevEnvironment())
-        {
-            SmithsCore.getLogger().info("WRITE -> PRE: " + compound);
-        }
-
-        if (!hasCapability(SmithsCoreCapabilityDispatcher.INSTANCE_CAPABILITY, null))
-        {
-            if (SmithsCore.isInDevEnvironment())
-            {
-                SmithsCore.getLogger().info("WRITE -> NO Dispatcher found.");
-            }
-
-            return;
-        }
-
-        final SmithsCoreCapabilityDispatcher.IInstanceCap instanceCap = getCapability(SmithsCoreCapabilityDispatcher.INSTANCE_CAPABILITY, null);
-        if (instanceCap == null)
-        {
-            if (SmithsCore.isInDevEnvironment())
-            {
-                SmithsCore.getLogger().info("WRITE -> Capability is null.");
-            }
-
-            return;
-        }
-
-        final SmithsCoreCapabilityDispatcher dispatcher = instanceCap.getDispatcher();
-        if (dispatcher == null)
-        {
-            if (SmithsCore.isInDevEnvironment())
-            {
-                SmithsCore.getLogger().info("WRITE -> Dispatcher is null.");
-            }
-
-            return;
-        }
-
-        final NBTTagCompound dispatcherData = dispatcher.serializeNBT();
-        if (SmithsCore.isInDevEnvironment())
-        {
-            SmithsCore.getLogger().info("WRITE -> Dispatcher data: " + dispatcherData);
-        }
-
-        if (dispatcherData != null)
-        {
-            compound.setTag(Constants.CONST_ITEMSTACK_SHARE_TAG_IN_COMPOUND_KEY, dispatcherData);
-        }
-
-        if (SmithsCore.isInDevEnvironment())
-        {
-            SmithsCore.getLogger().info("WRITE -> POST: " + compound);
-        }
-
-        callbackInfoReturnable.setReturnValue(compound);
-    }
 
     @Inject(method = "setTagCompound", at = @At("HEAD"))
     public void onSetTagCompound(@Nullable final NBTTagCompound nbt, final CallbackInfo info)
