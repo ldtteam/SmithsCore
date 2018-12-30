@@ -247,9 +247,9 @@ public class ModelHelper
     public static ResourceLocation getModelLocation(@Nonnull ResourceLocation location)
     {
         String path = location.getResourcePath();
-        if (!path.startsWith("models" + File.separator))
+        if (!path.startsWith("models/"))
         {
-            path = "models" + File.separator + path;
+            path = "models/" + path;
         }
 
         if (!path.endsWith(".json"))
@@ -361,17 +361,17 @@ public class ModelHelper
                 }
                 catch (FileNotFoundException e)
                 {
-                    if (modelLocation.getResourcePath().startsWith("models"  + File.separator + "block"  + File.separator))
+                    if (modelLocation.getResourcePath().startsWith("models/block/"))
                     {
                         resource = Minecraft.getMinecraft()
                                      .getResourceManager()
-                                     .getResource(new ResourceLocation(file.getResourceDomain(), "models"  + File.separator + "item"  + File.separator + "" + file.getResourcePath().substring(("models"  + File.separator + "block"  + File.separator).length())));
+                                     .getResource(new ResourceLocation(file.getResourceDomain(), "models/item/" + file.getResourcePath().substring(("models/block/").length())));
                     }
-                    else if (modelLocation.getResourcePath().startsWith("models"  + File.separator + "item"  + File.separator + ""))
+                    else if (modelLocation.getResourcePath().startsWith("models/item/"))
                     {
                         resource = Minecraft.getMinecraft()
                                      .getResourceManager()
-                                     .getResource(new ResourceLocation(file.getResourceDomain(), "models"  + File.separator + "block"  + File.separator + "" + file.getResourcePath().substring(("models"  + File.separator + "item"  + File.separator).length())));
+                                     .getResource(new ResourceLocation(file.getResourceDomain(), "models/block/" + file.getResourcePath().substring(("models/item/").length())));
                     }
                     else
                     {
