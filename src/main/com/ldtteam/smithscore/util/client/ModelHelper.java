@@ -237,7 +237,7 @@ public class ModelHelper
     public static Map<String, String> loadTexturesFromJson(@Nonnull ResourceLocation location) throws IOException
     {
         // get the json
-        IResource iresource = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation(location.getResourceDomain(), location.getResourcePath() + ".json"));
+        IResource iresource = Minecraft.getMinecraft().getResourceManager().getResource(ModelHelper.getModelLocation(location));
         Reader reader = new InputStreamReader(iresource.getInputStream(), Charsets.UTF_8);
 
         return GSON.fromJson(reader, maptype);
