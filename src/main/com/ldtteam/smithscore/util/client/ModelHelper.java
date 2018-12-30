@@ -250,9 +250,9 @@ public class ModelHelper
     public static ResourceLocation getModelLocation(@Nonnull ResourceLocation location)
     {
         String path = location.getResourcePath();
-        if (!path.startsWith("models/"))
+        if (!path.startsWith("models\\"))
         {
-            path = "models/" + path;
+            path = "models\\" + path;
         }
 
         if (!path.endsWith(".json"))
@@ -364,17 +364,17 @@ public class ModelHelper
                 }
                 catch (FileNotFoundException e)
                 {
-                    if (modelLocation.getResourcePath().startsWith("models/block/"))
+                    if (modelLocation.getResourcePath().startsWith("models\\block\\"))
                     {
                         resource = Minecraft.getMinecraft()
                                      .getResourceManager()
-                                     .getResource(new ResourceLocation(file.getResourceDomain(), "models/item/" + file.getResourcePath().substring("models/block/".length())));
+                                     .getResource(new ResourceLocation(file.getResourceDomain(), "models\\item\\" + file.getResourcePath().substring("models\\block\\".length())));
                     }
-                    else if (modelLocation.getResourcePath().startsWith("models/item/"))
+                    else if (modelLocation.getResourcePath().startsWith("models\\item\\"))
                     {
                         resource = Minecraft.getMinecraft()
                                      .getResourceManager()
-                                     .getResource(new ResourceLocation(file.getResourceDomain(), "models/block/" + file.getResourcePath().substring("models/item/".length())));
+                                     .getResource(new ResourceLocation(file.getResourceDomain(), "models\\block\\" + file.getResourcePath().substring("models\\item\\".length())));
                     }
                     else
                     {
