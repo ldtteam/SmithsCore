@@ -37,10 +37,7 @@ import org.apache.logging.log4j.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.vecmath.Vector3f;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.util.Map;
 
@@ -250,9 +247,9 @@ public class ModelHelper
     public static ResourceLocation getModelLocation(@Nonnull ResourceLocation location)
     {
         String path = location.getResourcePath();
-        if (!path.startsWith("models\\"))
+        if (!path.startsWith("models" + File.separator))
         {
-            path = "models\\" + path;
+            path = "models" + File.separator + path;
         }
 
         if (!path.endsWith(".json"))
@@ -364,17 +361,17 @@ public class ModelHelper
                 }
                 catch (FileNotFoundException e)
                 {
-                    if (modelLocation.getResourcePath().startsWith("models\\block\\"))
+                    if (modelLocation.getResourcePath().startsWith("models"  + File.separator + "block"  + File.separator))
                     {
                         resource = Minecraft.getMinecraft()
                                      .getResourceManager()
-                                     .getResource(new ResourceLocation(file.getResourceDomain(), "models\\item\\" + file.getResourcePath().substring("models\\block\\".length())));
+                                     .getResource(new ResourceLocation(file.getResourceDomain(), "models"  + File.separator + "item"  + File.separator + "" + file.getResourcePath().substring(("models"  + File.separator + "block"  + File.separator).length())));
                     }
-                    else if (modelLocation.getResourcePath().startsWith("models\\item\\"))
+                    else if (modelLocation.getResourcePath().startsWith("models"  + File.separator + "item"  + File.separator + ""))
                     {
                         resource = Minecraft.getMinecraft()
                                      .getResourceManager()
-                                     .getResource(new ResourceLocation(file.getResourceDomain(), "models\\block\\" + file.getResourcePath().substring("models\\item\\".length())));
+                                     .getResource(new ResourceLocation(file.getResourceDomain(), "models"  + File.separator + "block"  + File.separator + "" + file.getResourcePath().substring(("models"  + File.separator + "item"  + File.separator).length())));
                     }
                     else
                     {
